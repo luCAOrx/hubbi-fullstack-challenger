@@ -1,0 +1,54 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Backend do desafio fullstack da Hubbi",
+  "main": "./src/server.js",
+  "engines": {
+    "node": "v22.13.0"
+  },
+  "scripts": {
+    "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register ./dist/src/infra/http/server.js",
+    "start:dev": "tsx watch ./src/infra/http/server.ts",
+    "build": "tsc",
+    "test": "tsx --test ./src/domain/**/**/*.spec.ts",
+    "test:e2e": "tsx --test ./test/main.e2e-spec.ts",
+    "test:watch": "tsx --test --watch ./src/domain/**/**/*.spec.ts",
+    "test:watch:e2e": "tsx --test --watch ./test/main.e2e-spec.ts",
+    "prisma:migrate": "npx prisma migrate dev",
+    "prisma:seed": "tsx ./prisma/seeds/*.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luCAOrx/hubbi-fullstack-challenger.git"
+  },
+  "keywords": [
+    "Backend",
+    "Node.js",
+    "Express.js",
+    "DDD",
+    "SOLID",
+    "Unit Test",
+    "E2E Test"
+  ],
+  "author": "Lucas Cunha",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/luCAOrx/hubbi-fullstack-challenger/issues"
+  },
+  "homepage": "https://github.com/luCAOrx/hubbi-fullstack-challenger#readme",
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.19.0",
+    "eslint": "^9.19.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-import-helpers": "^2.0.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "globals": "^15.14.0",
+    "prettier": "^3.4.2",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.21.0"
+  }
+}

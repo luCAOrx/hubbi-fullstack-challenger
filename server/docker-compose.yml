@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  solid-nodejs-crud-server:
+    image: ${SERVER_CONTAINER_IMAGE}
+    container_name: ${SERVER_CONTAINER_NAME}
+    restart: always
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/app
+    working_dir: /usr/app
+    command: sh -c "npm run prisma:migrate && npm run prisma:seed && npm run start:dev"

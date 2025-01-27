@@ -1,5 +1,3 @@
-import { randomUUID } from "node:crypto";
-
 import { Sale, Status } from "@domain/entities/sale/sale";
 import { CreateSaleUseCase } from "@domain/use-cases/create-sale/create-sale-use-case";
 

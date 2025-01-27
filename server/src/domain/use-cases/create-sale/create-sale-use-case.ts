@@ -24,10 +24,10 @@ export class CreateSaleUseCase
   }: CreateSaleRequest): Promise<CreateSaleResponse> {
     const sale = Sale.create({ name, status });
 
-    const nameAlreadyExists = await this.saleRepository.exists(sale.props.name);
+    const saleAlreadyExists = await this.saleRepository.exists(sale.props.name);
 
-    if (nameAlreadyExists) {
-      throw new GlobalUseCaseErrors.NameAlreadyExistsError();
+    if (saleAlreadyExists) {
+      throw new GlobalUseCaseErrors.SaleAlreadyExistsError();
     }
 
     await this.saleRepository.create(sale);

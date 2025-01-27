@@ -1,10 +1,7 @@
-import { randomUUID } from "node:crypto";
+import { app } from "./app";
 
-import { User } from "@domain/entities/user";
-
-const user = User.create({
-  email: "test@example.com",
-  name: "User Test",
+app.listen(process.env.PORT ?? process.env.SERVER_PORT, () => {
+  console.log(
+    `Server running in port: ${process.env.PORT ?? process.env.SERVER_PORT}`,
+  );
 });
-
-console.log({ user: { id: randomUUID(), props: user.props } });

@@ -7,7 +7,6 @@ import { GlobalUseCaseErrors } from "../global-errors/global-use-case-errors";
 interface CreateSaleRequest {
   name: string;
   status: Status;
-  products: { public_id: string; name: string }[];
 }
 
 interface CreateSaleResponse {
@@ -22,9 +21,8 @@ export class CreateSaleUseCase
   async execute({
     name,
     status,
-    products,
   }: CreateSaleRequest): Promise<CreateSaleResponse> {
-    const sale = Sale.create({ name, status, products });
+    const sale = Sale.create({ name, status });
 
     const nameAlreadyExists = await this.saleRepository.exists(sale.props.name);
 

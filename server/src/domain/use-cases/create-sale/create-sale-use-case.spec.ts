@@ -20,17 +20,6 @@ describe("Create sale use case", () => {
         deepStrictEqual(inMemorySaleDatabase.sales[0].props, {
           name: "Produtos de limpeza",
           status: "Pendente",
-          products: [
-            sale.props.products.find(
-              (product) => product.name === "Sabão em pó",
-            ),
-            sale.props.products.find(
-              (product) => product.name === "Sabão líquido",
-            ),
-            sale.props.products.find(
-              (product) => product.name === "Sabão em barra",
-            ),
-          ],
         });
         deepStrictEqual(inMemorySaleDatabase.sales.length, 1);
         ok(sale.created_at instanceof Date);
@@ -46,7 +35,6 @@ describe("Create sale use case", () => {
           override: {
             name: "",
             status: "Pendente",
-            products: [],
           },
         }),
       ValidationErrors.ValidationShouldNotBeEmptyError,

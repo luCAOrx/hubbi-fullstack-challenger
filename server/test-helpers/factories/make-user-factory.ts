@@ -8,7 +8,6 @@ import { InMemorySaleDatabase } from "../in-memory-database/in-memory-sale-datab
 interface SaleProps {
   name: string;
   status: Status;
-  products: { public_id: string; name: string }[];
 }
 
 type Override = Partial<SaleProps>;
@@ -27,20 +26,6 @@ export class MakeSaleFactory {
     const { sale } = await createSaleUseCase.execute({
       name: "Produtos de limpeza",
       status: "Pendente",
-      products: [
-        {
-          public_id: randomUUID(),
-          name: "Sabão em pó",
-        },
-        {
-          public_id: randomUUID(),
-          name: "Sabão líquido",
-        },
-        {
-          public_id: randomUUID(),
-          name: "Sabão em barra",
-        },
-      ],
       ...override,
     });
 

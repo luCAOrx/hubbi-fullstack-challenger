@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register ./dist/src/infra/http/server.js",
-    "start:dev": "tsx watch ./src/infra/http/server.ts",
+    "start:dev": "tsx --env-file=.env --watch ./src/infra/http/server.ts",
     "build": "tsc",
     "test": "tsx --test ./src/domain/**/**/*.spec.ts",
     "test:e2e": "tsx --test ./test/main.e2e-spec.ts",
@@ -39,6 +39,8 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.19.0",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
     "eslint": "^9.19.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-import-helpers": "^2.0.1",
@@ -50,5 +52,9 @@
     "tsx": "^4.19.2",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.21.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
   }
 }

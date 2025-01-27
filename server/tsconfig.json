@@ -26,8 +26,8 @@
       "@infra/*": [
         "./src/infra/*"
       ],
-      "@test/*": [
-        "./test/*"
+      "@test-helpers/*": [
+        "./test-helpers/*"
       ],
       "@doc/*": [
         "./docs/*"

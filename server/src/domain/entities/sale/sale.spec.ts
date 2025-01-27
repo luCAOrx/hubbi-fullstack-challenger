@@ -1,5 +1,4 @@
 import { deepStrictEqual, throws } from "node:assert";
-import { randomUUID } from "node:crypto";
 import { describe, it } from "node:test";
 import { ValidationErrors } from "src/core/logic/domain/validations/errors/validation-errors";
 
@@ -11,20 +10,6 @@ describe("Sale entity", () => {
       {
         name: "Produtos de limpeza",
         status: "Pendente",
-        products: [
-          {
-            public_id: randomUUID(),
-            name: "Sabão em pó",
-          },
-          {
-            public_id: randomUUID(),
-            name: "Sabão líquido",
-          },
-          {
-            public_id: randomUUID(),
-            name: "Sabão em barra",
-          },
-        ],
       },
       1,
     );
@@ -34,13 +19,6 @@ describe("Sale entity", () => {
     deepStrictEqual(sale.props, {
       name: "Produtos de limpeza",
       status: "Pendente",
-      products: [
-        sale.props.products.find((product) => product.name === "Sabão em pó"),
-        sale.props.products.find((product) => product.name === "Sabão líquido"),
-        sale.props.products.find(
-          (product) => product.name === "Sabão em barra",
-        ),
-      ],
     });
   });
 
@@ -49,20 +27,6 @@ describe("Sale entity", () => {
       {
         name: "Produtos de limpeza",
         status: "Finalizada",
-        products: [
-          {
-            public_id: randomUUID(),
-            name: "Sabão em pó",
-          },
-          {
-            public_id: randomUUID(),
-            name: "Sabão líquido",
-          },
-          {
-            public_id: randomUUID(),
-            name: "Sabão em barra",
-          },
-        ],
       },
       2,
     );
@@ -72,13 +36,6 @@ describe("Sale entity", () => {
     deepStrictEqual(sale.props, {
       name: "Produtos de limpeza",
       status: "Finalizada",
-      products: [
-        sale.props.products.find((product) => product.name === "Sabão em pó"),
-        sale.props.products.find((product) => product.name === "Sabão líquido"),
-        sale.props.products.find(
-          (product) => product.name === "Sabão em barra",
-        ),
-      ],
     });
   });
 
@@ -89,22 +46,8 @@ describe("Sale entity", () => {
           {
             name: "",
             status: "Finalizada",
-            products: [
-              {
-                public_id: randomUUID(),
-                name: "Sabão em pó",
-              },
-              {
-                public_id: randomUUID(),
-                name: "Sabão líquido",
-              },
-              {
-                public_id: randomUUID(),
-                name: "Sabão em barra",
-              },
-            ],
           },
-          2,
+          3,
         ),
       ValidationErrors.ValidationShouldNotBeEmptyError,
     );
@@ -117,22 +60,8 @@ describe("Sale entity", () => {
           {
             name: "1234567890",
             status: "Finalizada",
-            products: [
-              {
-                public_id: randomUUID(),
-                name: "Sabão em pó",
-              },
-              {
-                public_id: randomUUID(),
-                name: "Sabão líquido",
-              },
-              {
-                public_id: randomUUID(),
-                name: "Sabão em barra",
-              },
-            ],
           },
-          2,
+          4,
         ),
       ValidationErrors.ValidationShouldOnlyAcceptLettersError,
     );
@@ -145,22 +74,8 @@ describe("Sale entity", () => {
           {
             name: "Produtos de limpeza".repeat(160),
             status: "Finalizada",
-            products: [
-              {
-                public_id: randomUUID(),
-                name: "Sabão em pó",
-              },
-              {
-                public_id: randomUUID(),
-                name: "Sabão líquido",
-              },
-              {
-                public_id: randomUUID(),
-                name: "Sabão em barra",
-              },
-            ],
           },
-          2,
+          5,
         ),
       ValidationErrors.ValidationShouldBeLessThanError,
     );
@@ -173,39 +88,10 @@ describe("Sale entity", () => {
           {
             name: "Cama",
             status: "Finalizada",
-            products: [
-              {
-                public_id: randomUUID(),
-                name: "Sabão em pó",
-              },
-              {
-                public_id: randomUUID(),
-                name: "Sabão líquido",
-              },
-              {
-                public_id: randomUUID(),
-                name: "Sabão em barra",
-              },
-            ],
           },
-          2,
+          6,
         ),
       ValidationErrors.ValidationShouldBeGreaterThanError,
-    );
-  });
-
-  it("should not be able to create a new sale with field products empty", () => {
-    throws(
-      () =>
-        Sale.create(
-          {
-            name: "Produtos de limpeza",
-            status: "Finalizada",
-            products: [],
-          },
-          2,
-        ),
-      ValidationErrors.ValidationShouldNotBeEmptyError,
     );
   });
 });

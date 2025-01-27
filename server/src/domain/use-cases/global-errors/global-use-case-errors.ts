@@ -1,9 +1,9 @@
 export namespace GlobalUseCaseErrors {
-  export class NameAlreadyExistsError extends Error {
+  export class SaleAlreadyExistsError extends Error {
     constructor() {
-      super("ThisNameAlreadyExists");
+      super("ThisSaleAlreadyExists");
 
-      this.message = "Esse nome já existe";
+      this.message = "Uma venda com esse nome já existe";
     }
   }
 }

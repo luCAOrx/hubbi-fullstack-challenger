@@ -3,9 +3,7 @@ import { randomUUID } from "node:crypto";
 import { prisma } from "@infra/http/libs/prisma-client";
 import { Prisma } from "@prisma/client";
 
-// Define the products data
 const productsData: Prisma.ProductCreateInput[] = [
-  // Food products
   {
     id: randomUUID(),
     name: "Bolo de chocolate",
@@ -20,7 +18,6 @@ const productsData: Prisma.ProductCreateInput[] = [
   { id: randomUUID(), name: "Manteiga de amendoim" },
   { id: randomUUID(), name: "Coco ralado" },
 
-  // Toiletries products
   { id: randomUUID(), name: "Sabonete de limão" },
   { id: randomUUID(), name: "Shampoo de coco" },
   { id: randomUUID(), name: "Condizente para cabelo" },
@@ -31,7 +28,6 @@ const productsData: Prisma.ProductCreateInput[] = [
   { id: randomUUID(), name: "Kit de higiene bucal" },
   { id: randomUUID(), name: "Máscara para olhos" },
 
-  // Cleaning products
   { id: randomUUID(), name: "Sabão líquido" },
   { id: randomUUID(), name: "Detergente em pó" },
   { id: randomUUID(), name: "Lavagem de louça" },
@@ -41,7 +37,6 @@ const productsData: Prisma.ProductCreateInput[] = [
   { id: randomUUID(), name: "Escova de chão" },
   { id: randomUUID(), name: "Máscara para armário" },
 
-  // Household utensils
   { id: randomUUID(), name: "Prato de vidro" },
   { id: randomUUID(), name: "Tigela de papel" },
   { id: randomUUID(), name: "Colher de madeira" },
@@ -50,7 +45,6 @@ const productsData: Prisma.ProductCreateInput[] = [
   { id: randomUUID(), name: "Cortina de cortinagem" },
   { id: randomUUID(), name: "Máquina de fazer panquecas" },
 
-  // Furniture
   { id: randomUUID(), name: "Sofá de couro" },
   { id: randomUUID(), name: "Cama de madeira" },
   { id: randomUUID(), name: "Praia de sofá" },

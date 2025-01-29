@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Status {
+  Pendente
+  Finalizada
+}
+
+model Product {
+  id          String        @id
+  name        String
+  created_at  DateTime      @default(now())
+  saleProduct SaleProduct[]
+
+  @@map("product")
+}
+
+model Sale {
+  id          String        @id
+  name        String        @unique
+  status      Status
+  created_at  DateTime      @default(now())
+  saleProduct SaleProduct[]
+
+  @@map("sale")
+}
+
+model SaleProduct {
+  id        String  @id
+  saleId    String
+  productId String
+  products  Product @relation(fields: [productId], references: [id])
+  sales     Sale    @relation(fields: [saleId], references: [id], onDelete: Cascade)
+
+  @@map("saleProduct")
+}

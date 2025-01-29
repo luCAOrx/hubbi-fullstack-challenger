@@ -12,4 +12,10 @@ export class InMemorySaleDatabase implements SaleRepository {
   async exists(name: string): Promise<boolean> {
     return this.sales.some(({ props }) => props.name === name);
   }
+
+  async findMany(page: number): Promise<Sale[]> {
+    const saleOrSales = this.sales.map((sales) => sales);
+
+    return saleOrSales.slice((page - 1) * 10, page * 10);
+  }
 }

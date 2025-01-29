@@ -1,0 +1,47 @@
+import { Request, Response } from "express";
+
+import { GetSalesUseCase } from "@domain/use-cases/get-sales/get-sales-use-case";
+import { PrismaSaleRepository } from "@infra/http/repositories/prisma-sale-repository";
+import { SaleViewModel } from "@infra/http/view-models/sale-view-model";
+
+import { BaseController } from "../base-controller";
+
+interface GetSalesQueryParamsProps {
+  page: string;
+}
+
+export class GetSalesController extends BaseController {
+  protected async executeImplementation(
+    request: Request,
+    response: Response,
+  ): Promise<any> {
+    const { page } = request.query as unknown as GetSalesQueryParamsProps;
+
+    const prismaSaleRepository = new PrismaSaleRepository();
+
+    const getSalesUseCase = new GetSalesUseCase(prismaSaleRepository);
+
+    await getSalesUseCase
+      .execute({ page: Number(page) })
+      .then((sale) => {
+        const saleOrSales = sale.map((saleResponse) => {
+          return SaleViewModel.toHttp(saleResponse);
+        });
+
+        return this.ok({ response, message: { saleOrSales } });
+      })
+      .catch((error: Error) => {
+        if (
+          Object.keys(request.query).length === 0 ||
+          Object.hasOwn(request.query, "page") ||
+          !Object.hasOwn(request.query, "page")
+        ) {
+          return this.clientError({
+            response,
+            message:
+              "The query parameters: page must be provided in the query parameters of the request",
+          });
+        }
+      });
+  }
+}

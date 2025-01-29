@@ -15,16 +15,6 @@ export namespace ValidationErrors {
     }
   }
 
-  export class ValidationShouldBeValidValidationError extends Error {
-    constructor({ propertyName }: ValidationErrorsProps) {
-      super(
-        `[ValidationErrors]: The field ${propertyName} should be valid ${propertyName}`,
-      );
-
-      this.message = `The field ${propertyName} should be valid ${propertyName}`;
-    }
-  }
-
   export class ValidationShouldOnlyAcceptLettersError extends Error {
     constructor({ propertyName }: ValidationErrorsProps) {
       super(

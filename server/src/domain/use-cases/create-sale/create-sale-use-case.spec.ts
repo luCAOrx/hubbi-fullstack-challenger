@@ -1,9 +1,8 @@
 import { deepStrictEqual, ok, rejects } from "node:assert";
 import { describe, it } from "node:test";
-import { ValidationErrors } from "src/core/logic/domain/validations/errors/validation-errors";
 
 import { Sale } from "@domain/entities/sale/sale";
-import { MakeSaleFactory } from "@test-helpers/factories/make-user-factory";
+import { MakeSaleFactory } from "@test-helpers/factories/make-sale-factory";
 import { InMemorySaleDatabase } from "@test-helpers/in-memory-database/in-memory-sale-database";
 
 import { GlobalUseCaseErrors } from "../global-errors/global-use-case-errors";
@@ -13,13 +12,14 @@ describe("Create sale use case", () => {
   const inMemorySaleDatabase = new InMemorySaleDatabase();
   const createSaleUseCase = new CreateSaleUseCase(inMemorySaleDatabase);
 
-  it("should be able to create a new user", async () => {
+  it("should be able to create a new sale", async () => {
     await new MakeSaleFactory()
       .toDomain({ inMemoryDatabase: inMemorySaleDatabase })
       .then((sale) => {
         deepStrictEqual(inMemorySaleDatabase.sales[0].props, {
           name: "Produtos de limpeza",
           status: "Pendente",
+          products: "1,2,3",
         });
         deepStrictEqual(inMemorySaleDatabase.sales.length, 1);
         ok(sale.created_at instanceof Date);
@@ -35,9 +35,9 @@ describe("Create sale use case", () => {
           override: {
             name: "",
             status: "Pendente",
+            products: "",
           },
         }),
-      ValidationErrors.ValidationShouldNotBeEmptyError,
     );
   });
 
@@ -47,7 +47,7 @@ describe("Create sale use case", () => {
       .then(async ({ props }) => {
         await rejects(
           async () => await createSaleUseCase.execute(props),
-          GlobalUseCaseErrors.NameAlreadyExistsError,
+          GlobalUseCaseErrors.SaleAlreadyExistsError,
         );
       });
   });

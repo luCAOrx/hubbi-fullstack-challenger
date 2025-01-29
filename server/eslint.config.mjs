@@ -70,6 +70,7 @@ export default typescriptEslint.config(
       "@typescript-eslint/no-floating-promises": "off",
       "@typescript-eslint/no-namespace": "off",
       "@typescript-eslint/no-identifiers": "off",
+      "@typescript-eslint/no-explicit-any": "off",
     },
   },
 );

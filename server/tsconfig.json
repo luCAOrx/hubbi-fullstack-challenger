@@ -20,6 +20,9 @@
       "./src/infra/http/@types"
     ],
     "paths": {
+      "@core/*": [
+        "./src/core/*"
+      ],
       "@domain/*": [
         "./src/domain/*"
       ],

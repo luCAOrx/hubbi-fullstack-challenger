@@ -1,10 +1,21 @@
-version: '3'
-
 services:
-  solid-nodejs-crud-server:
+  hubbi-database:
+    image: ${DATABASE_CONTAINER_IMAGE}
+    container_name: ${DATABASE_CONTAINER_NAME}
+    restart: always
+    ports:
+      - ${DATABASE_PORT}:${DATABASE_PORT}
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DATABASE: ${DATABASE_NAME}
+
+  hubbi-server:
     image: ${SERVER_CONTAINER_IMAGE}
     container_name: ${SERVER_CONTAINER_NAME}
     restart: always
+    depends_on:
+      - hubbi-database
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
     env_file:
@@ -12,4 +23,4 @@ services:
     volumes:
       - .:/usr/app
     working_dir: /usr/app
-    command: sh -c "npm run prisma:migrate && npm run prisma:seed && npm run start:dev"
+    command: sh -c "npm run prisma:migrate && npm run prisma:seed:prod && npm run start:dev"

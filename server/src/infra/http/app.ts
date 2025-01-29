@@ -8,6 +8,7 @@ import { swaggerSpec } from "@doc/swagger";
 
 import { pageNotFoundError } from "./errors/page-not-found/page-not-found-error";
 import { createSaleRoute } from "./routes/create-sale.routes";
+import { getSalesRoute } from "./routes/get-sales.routes";
 
 export const app = express();
 
@@ -23,4 +24,5 @@ app.use(
 );
 
 app.use(createSaleRoute);
+app.use(getSalesRoute);
 app.all("*", pageNotFoundError);

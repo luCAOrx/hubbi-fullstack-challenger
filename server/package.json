@@ -7,15 +7,16 @@
     "node": "v22.13.0"
   },
   "scripts": {
-    "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register ./dist/src/infra/http/server.js",
-    "start:dev": "tsx --env-file=.env --watch ./src/infra/http/server.ts",
+    "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register ./dist/src/infra/http/server.js --env-file=.env",
+    "start:dev": "tsx  --watch ./src/infra/http/server.ts --env-file=.env",
     "build": "tsc",
-    "test": "tsx --test ./src/domain/**/**/*.spec.ts",
-    "test:e2e": "tsx --test ./test/main.e2e-spec.ts",
+    "test:unit": "tsx --test ./src/domain/**/**/*.spec.ts",
+    "test:e2e": "tsx --test ./test-helpers/main.e2e-spec.ts",
     "test:watch": "tsx --test --watch ./src/domain/**/**/*.spec.ts",
-    "test:watch:e2e": "tsx --test --watch ./test/main.e2e-spec.ts",
+    "test:watch:e2e": "tsx --test --watch ./test-helpers/main.e2e-spec.ts",
     "prisma:migrate": "npx prisma migrate dev",
-    "prisma:seed": "tsx ./prisma/seeds/*.ts"
+    "prisma:seed:prod": "tsx ./prisma/seeds/create-products-seed-to-production.ts",
+    "prisma:seed:test": "tsx ./prisma/seeds/create-products-seed-to-tests.ts"
   },
   "repository": {
     "type": "git",
@@ -41,12 +42,17 @@
     "@eslint/js": "^9.19.0",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
+    "@types/pg": "^8.11.11",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.7",
     "eslint": "^9.19.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-import-helpers": "^2.0.1",
     "eslint-plugin-prettier": "^5.2.3",
     "globals": "^15.14.0",
+    "pg": "^8.13.1",
     "prettier": "^3.4.2",
+    "prisma": "^6.2.1",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.19.2",
@@ -54,7 +60,11 @@
     "typescript-eslint": "^8.21.0"
   },
   "dependencies": {
+    "@prisma/client": "^6.2.1",
     "cors": "^2.8.5",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "express-async-errors": "^3.1.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   }
 }

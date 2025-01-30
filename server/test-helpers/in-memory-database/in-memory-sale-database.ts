@@ -9,8 +9,27 @@ export class InMemorySaleDatabase implements SaleRepository {
 
     return sale;
   }
+
   async exists(name: string): Promise<boolean> {
     return this.sales.some(({ props }) => props.name === name);
+  }
+
+  async update(sale: Sale): Promise<Sale> {
+    const saleIndex = this.sales.findIndex(
+      (saleFound) => saleFound.id === sale.id,
+    );
+
+    this.sales[saleIndex] = sale;
+
+    return sale;
+  }
+
+  async findById(id: string): Promise<Sale | null> {
+    const sale = this.sales.find((sale) => sale.id === id);
+
+    if (sale == null) return null;
+
+    return sale;
   }
 
   async findMany(page: number): Promise<Sale[]> {

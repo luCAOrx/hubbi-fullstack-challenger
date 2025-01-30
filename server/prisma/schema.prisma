@@ -19,20 +19,22 @@ enum Status {
 }
 
 model Product {
-  id          String        @id
-  name        String
-  created_at  DateTime      @default(now())
-  saleProduct SaleProduct[]
+  id         String            @id
+  name       String
+  created_at DateTime          @default(now())
+  sales      SaleProduct[]
+  products   ProductPurchase[]
 
   @@map("product")
 }
 
 model Sale {
-  id          String        @id
-  name        String        @unique
-  status      Status
-  created_at  DateTime      @default(now())
-  saleProduct SaleProduct[]
+  id         String        @id
+  name       String        @unique
+  status     Status
+  created_at DateTime      @default(now())
+  products   SaleProduct[]
+  purchases  Purchase[]
 
   @@map("sale")
 }
@@ -45,4 +47,22 @@ model SaleProduct {
   sales     Sale    @relation(fields: [saleId], references: [id], onDelete: Cascade)
 
   @@map("saleProduct")
+}
+
+model Purchase {
+  id         String   @id
+  created_at DateTime @default(now())
+  saleId     String
+  sales      Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
+
+  @@map("purchase")
+}
+
+model ProductPurchase {
+  id         String   @id
+  created_at DateTime @default(now())
+  productId  String
+  products   Product  @relation(fields: [productId], references: [id])
+
+  @@map("productPurchase")
 }

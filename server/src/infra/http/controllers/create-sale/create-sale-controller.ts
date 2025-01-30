@@ -3,7 +3,7 @@ import { type Request, type Response } from "express";
 import { ValidationErrors } from "@core/logic/domain/validations/errors/validation-errors";
 import { Status } from "@domain/entities/sale/sale";
 import { CreateSaleUseCase } from "@domain/use-cases/create-sale/create-sale-use-case";
-import { GlobalUseCaseErrors } from "@domain/use-cases/global-errors/global-use-case-errors";
+import { CreateSaleUseCaseErrors } from "@domain/use-cases/create-sale/errors/sale-already-exists-error";
 import { PrismaSaleRepository } from "@infra/http/repositories/prisma-sale-repository";
 import { SaleViewModel } from "@infra/http/view-models/sale-view-model";
 
@@ -45,7 +45,7 @@ export class CreateSaleController extends BaseController {
       })
       .catch((error: Error) => {
         if (
-          error instanceof GlobalUseCaseErrors.SaleAlreadyExistsError ||
+          error instanceof CreateSaleUseCaseErrors.SaleAlreadyExistsError ||
           error instanceof ValidationErrors.ValidationShouldNotBeEmptyError ||
           error instanceof ValidationErrors.ValidationShouldBeLessThanError ||
           error instanceof

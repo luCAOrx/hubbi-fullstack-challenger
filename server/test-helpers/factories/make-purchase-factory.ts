@@ -42,7 +42,7 @@ export class MakePurchaseFactory {
 
     const { sale } = await createSaleUseCase.execute({
       name: "Produtos de limpeza",
-      status: "Pendente",
+      status: "Finalizada",
       products: "1,2,3",
     });
 
@@ -60,15 +60,17 @@ export class MakePurchaseFactory {
   }
 
   public async toHttp({
+    saleId,
     override,
   }: {
+    saleId?: string;
     override?: Override;
   }): Promise<Response> {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
 
     return await MakeRequestFactory.execute({
-      url: `${String(process.env.TEST_SERVER_URL)}/create-purchase`,
+      url: `${String(process.env.TEST_SERVER_URL)}/create-purchase/${saleId}`,
       method: "POST",
       headers,
       data: {

@@ -7,6 +7,7 @@ import { serve, setup } from "swagger-ui-express";
 import { swaggerSpec } from "@doc/swagger";
 
 import { pageNotFoundError } from "./errors/page-not-found/page-not-found-error";
+import { createPurchaseRoute } from "./routes/create-purchase.routes";
 import { createSaleRoute } from "./routes/create-sale.routes";
 import { getSalesRoute } from "./routes/get-sales.routes";
 
@@ -25,4 +26,5 @@ app.use(
 
 app.use(createSaleRoute);
 app.use(getSalesRoute);
+app.use(createPurchaseRoute);
 app.all("*", pageNotFoundError);

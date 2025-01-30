@@ -2,6 +2,7 @@ import { describe, before, after } from "node:test";
 import { PrismaTestEnvironment } from "prisma/prismaTestEnvironment";
 
 import { app } from "@infra/http/app";
+import { createPurchaseControllerEndToEndTests } from "@infra/http/controllers/create-purchase/create-purchase-controller.e2e-spec";
 import { createSaleControllerEndToEndTests } from "@infra/http/controllers/create-sale/create-sale-controller.e2e-spec";
 import { getSalesControllerEndToEndTests } from "@infra/http/controllers/get-sales/get-sales-controller-e2e-spec";
 import { pageNotFoundErrorEndToEndTests } from "@infra/http/errors/page-not-found/page-not-found-error.e2e-spec";
@@ -35,6 +36,7 @@ describe("End to end (E2E) tests", () => {
 
   createSaleControllerEndToEndTests();
   getSalesControllerEndToEndTests();
+  createPurchaseControllerEndToEndTests();
   pageNotFoundErrorEndToEndTests();
 
   after(async () => {

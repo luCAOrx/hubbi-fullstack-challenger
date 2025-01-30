@@ -7,7 +7,7 @@
     "node": "v22.13.0"
   },
   "scripts": {
-    "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register ./dist/src/infra/http/server.js --env-file=.env",
+    "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register ./dist/src/infra/http/server.js",
     "start:dev": "tsx  --watch ./src/infra/http/server.ts --env-file=.env",
     "build": "tsc",
     "test:unit": "tsx --test ./src/domain/**/**/*.spec.ts",

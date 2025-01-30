@@ -42,10 +42,19 @@ export const swaggerComponents: Components = {
       },
     },
 
-    SaleRouteParams: {
+    PurchaseRequestBody: {
+      type: "object",
+      properties: {
+        products: {
+          type: "string",
+        },
+      },
+    },
+
+    PurchaseRouteParams: {
       type: "string",
       properties: {
-        id: {
+        saleId: {
           type: "string",
           format: "uuid",
         },

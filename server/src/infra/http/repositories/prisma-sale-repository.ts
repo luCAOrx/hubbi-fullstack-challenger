@@ -55,7 +55,7 @@ export class PrismaSaleRepository implements SaleRepository {
   async findMany(page: number): Promise<Sale[]> {
     const saleOrSales = await prisma.sale.findMany({
       include: {
-        saleProduct: true,
+        products: true,
         _count: true,
       },
       orderBy: { created_at: "desc" },
@@ -63,8 +63,6 @@ export class PrismaSaleRepository implements SaleRepository {
       take: 10,
     });
 
-    return saleOrSales.map((sale) =>
-      SaleMapper.toDomain(sale, sale.saleProduct),
-    );
+    return saleOrSales.map((sale) => SaleMapper.toDomain(sale, sale.products));
   }
 }

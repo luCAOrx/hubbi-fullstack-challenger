@@ -2,7 +2,7 @@ import { Sale, Status } from "@domain/entities/sale/sale";
 import { SaleRepository } from "@domain/repositories/sale-repository";
 
 import { BaseUseCase } from "../base-use-case";
-import { GlobalUseCaseErrors } from "../global-errors/global-use-case-errors";
+import { CreateSaleUseCaseErrors } from "./errors/sale-already-exists-error";
 
 interface CreateSaleRequest {
   name: string;
@@ -29,7 +29,7 @@ export class CreateSaleUseCase
     const saleAlreadyExists = await this.saleRepository.exists(sale.props.name);
 
     if (saleAlreadyExists) {
-      throw new GlobalUseCaseErrors.SaleAlreadyExistsError();
+      throw new CreateSaleUseCaseErrors.SaleAlreadyExistsError();
     }
 
     await this.saleRepository.create(sale);

@@ -34,10 +34,7 @@ export class CreatePurchaseUseCase
 
     const purchase = Purchase.create({ saleId, products });
 
-    saleOrNull.props.status = "Finalizada";
-
     await this.purchaseRepository.create(purchase);
-    await this.saleRepository.update(saleOrNull);
 
     return { purchase };
   }

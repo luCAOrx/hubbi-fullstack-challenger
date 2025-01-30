@@ -4,6 +4,7 @@ import { PrismaTestEnvironment } from "prisma/prismaTestEnvironment";
 import { app } from "@infra/http/app";
 import { createPurchaseControllerEndToEndTests } from "@infra/http/controllers/create-purchase/create-purchase-controller.e2e-spec";
 import { createSaleControllerEndToEndTests } from "@infra/http/controllers/create-sale/create-sale-controller.e2e-spec";
+import { getPurchasesControllerEndToEndTests } from "@infra/http/controllers/get-purchases/get-purchases-controller-e2e-spec";
 import { getSalesControllerEndToEndTests } from "@infra/http/controllers/get-sales/get-sales-controller-e2e-spec";
 import { pageNotFoundErrorEndToEndTests } from "@infra/http/errors/page-not-found/page-not-found-error.e2e-spec";
 
@@ -11,6 +12,8 @@ import { MakeSaleFactory } from "./factories/make-sale-factory";
 
 const prismaTestEnvironment = new PrismaTestEnvironment();
 const server = app.listen(process.env.TEST_SERVER_PORT);
+
+export let makeSaleFactoryToHttp: Response;
 
 describe("End to end (E2E) tests", () => {
   before(async () => {
@@ -26,7 +29,7 @@ describe("End to end (E2E) tests", () => {
     for (let i = 0; i < 20; i++) {
       const letter = String.fromCharCode(65 + i);
 
-      await new MakeSaleFactory().toHttp({
+      makeSaleFactoryToHttp = await new MakeSaleFactory().toHttp({
         override: {
           name: `Doces ${letter}`,
         },
@@ -37,6 +40,7 @@ describe("End to end (E2E) tests", () => {
   createSaleControllerEndToEndTests();
   getSalesControllerEndToEndTests();
   createPurchaseControllerEndToEndTests();
+  getPurchasesControllerEndToEndTests();
   pageNotFoundErrorEndToEndTests();
 
   after(async () => {

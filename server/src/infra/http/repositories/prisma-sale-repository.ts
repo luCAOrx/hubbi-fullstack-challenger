@@ -52,6 +52,16 @@ export class PrismaSaleRepository implements SaleRepository {
     return saleAlreadyExists !== null;
   }
 
+  async findById(id: string): Promise<Sale | null> {
+    const saleOrNull = await prisma.sale.findUnique({
+      where: { id },
+    });
+
+    if (saleOrNull === null) return null;
+
+    return SaleMapper.toDomain(saleOrNull);
+  }
+
   async findMany(page: number): Promise<Sale[]> {
     const saleOrSales = await prisma.sale.findMany({
       include: {

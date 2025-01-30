@@ -12,13 +12,15 @@ interface ToPersistenceResponse {
 export class SaleMapper {
   static toDomain(
     rawPrismaSale: PrismaSale,
-    rawSaleProducts: SaleProduct[],
+    rawSaleProducts?: SaleProduct[],
   ): DomainSale {
     return DomainSale.create(
       {
         name: rawPrismaSale.name,
         status: rawPrismaSale.status,
-        products: rawSaleProducts.map((product) => product.productId).join(","),
+        products: String(
+          rawSaleProducts?.map((product) => product.productId).join(","),
+        ),
       },
       rawPrismaSale.id,
     );

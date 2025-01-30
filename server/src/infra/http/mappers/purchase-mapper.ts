@@ -1,5 +1,11 @@
 import { Purchase as DomainPurchase } from "@domain/entities/purchase/purchase";
-import { Purchase as PrismaPurchase, ProductPurchase } from "@prisma/client";
+import {
+  Purchase as PrismaPurchase,
+  ProductPurchase,
+  Sale as PrismaSale,
+} from "@prisma/client";
+
+import { SaleMapper } from "./sale-mapper";
 
 interface ToPersistenceResponse {
   id: string;
@@ -9,10 +15,17 @@ interface ToPersistenceResponse {
 }
 
 export class PurchaseMapper {
-  static toDomain(
-    rawPrismaPurchase: PrismaPurchase,
-    rawPurchaseProducts?: ProductPurchase[],
-  ): DomainPurchase {
+  static toDomain({
+    rawPrismaPurchase,
+    rawPurchaseProducts,
+    rawSales,
+  }: {
+    rawPrismaPurchase: PrismaPurchase;
+    rawPurchaseProducts?: ProductPurchase[];
+    rawSales: PrismaSale;
+  }): DomainPurchase {
+    const saleMapper = SaleMapper.toDomain(rawSales);
+
     return DomainPurchase.create(
       {
         saleId: rawPrismaPurchase.saleId,
@@ -21,6 +34,7 @@ export class PurchaseMapper {
         ),
       },
       rawPrismaPurchase.id,
+      saleMapper,
     );
   }
 

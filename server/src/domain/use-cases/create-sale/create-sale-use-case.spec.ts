@@ -5,8 +5,8 @@ import { Sale } from "@domain/entities/sale/sale";
 import { MakeSaleFactory } from "@test-helpers/factories/make-sale-factory";
 import { InMemorySaleDatabase } from "@test-helpers/in-memory-database/in-memory-sale-database";
 
-import { GlobalUseCaseErrors } from "../global-errors/global-use-case-errors";
 import { CreateSaleUseCase } from "./create-sale-use-case";
+import { CreateSaleUseCaseErrors } from "./errors/sale-already-exists-error";
 
 describe("Create sale use case", () => {
   const inMemorySaleDatabase = new InMemorySaleDatabase();
@@ -47,7 +47,7 @@ describe("Create sale use case", () => {
       .then(async ({ props }) => {
         await rejects(
           async () => await createSaleUseCase.execute(props),
-          GlobalUseCaseErrors.SaleAlreadyExistsError,
+          CreateSaleUseCaseErrors.SaleAlreadyExistsError,
         );
       });
   });

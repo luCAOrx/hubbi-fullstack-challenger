@@ -19,6 +19,9 @@ export class PrismaPurchaseRepository implements PurchaseRepository {
             saleId,
             created_at,
           },
+          include: {
+            sales: true,
+          },
         });
 
         const productIds = products
@@ -30,7 +33,7 @@ export class PrismaPurchaseRepository implements PurchaseRepository {
             trx.productPurchase.create({
               data: {
                 id: randomUUID(),
-                productId: productId,
+                productId,
               },
             }),
           ),
@@ -46,7 +49,11 @@ export class PrismaPurchaseRepository implements PurchaseRepository {
         return { createdPurchase, createdPurchaseProducts };
       });
 
-    return PurchaseMapper.toDomain(createdPurchase, createdPurchaseProducts);
+    return PurchaseMapper.toDomain({
+      rawPrismaPurchase: createdPurchase,
+      rawPurchaseProducts: createdPurchaseProducts,
+      rawSales: createdPurchase.sales,
+    });
   }
 
   async findMany(page: number): Promise<Purchase[]> {
@@ -60,7 +67,10 @@ export class PrismaPurchaseRepository implements PurchaseRepository {
     });
 
     return purchaseOrPurchases.map((purchase) =>
-      PurchaseMapper.toDomain(purchase),
+      PurchaseMapper.toDomain({
+        rawPrismaPurchase: purchase,
+        rawSales: purchase.sales,
+      }),
     );
   }
 }

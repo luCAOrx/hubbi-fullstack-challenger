@@ -56,7 +56,7 @@ export class MakePurchaseFactory {
 
     await inMemoryDatabaseToSale?.createSaleWithTotalSales(sale);
 
-    await inMemoryDatabaseToPurchase.create(purchase);
+    await inMemoryDatabaseToPurchase.createPurchaseWithTotalPurchases(purchase);
 
     return { purchase, sale };
   }

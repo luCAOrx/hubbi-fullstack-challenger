@@ -1,4 +1,4 @@
-import { Sale, Status } from "@domain/entities/sale/sale";
+import { Sale } from "@domain/entities/sale/sale";
 import { SaleRepository } from "@domain/repositories/sale-repository";
 
 import { BaseUseCase } from "../base-use-case";
@@ -6,7 +6,6 @@ import { CreateSaleUseCaseErrors } from "./errors/sale-already-exists-error";
 
 interface CreateSaleRequest {
   name: string;
-  status: Status;
   products: string;
 }
 
@@ -21,10 +20,9 @@ export class CreateSaleUseCase
 
   async execute({
     name,
-    status,
     products,
   }: CreateSaleRequest): Promise<CreateSaleResponse> {
-    const sale = Sale.create({ name, status, products });
+    const sale = Sale.create({ name, products, status: "Pendente" }, {});
 
     const saleAlreadyExists = await this.saleRepository.exists(sale.props.name);
 
@@ -32,7 +30,7 @@ export class CreateSaleUseCase
       throw new CreateSaleUseCaseErrors.SaleAlreadyExistsError();
     }
 
-    await this.saleRepository.create(sale);
+    await this.saleRepository.createSaleWithTotalSales(sale);
 
     return { sale };
   }

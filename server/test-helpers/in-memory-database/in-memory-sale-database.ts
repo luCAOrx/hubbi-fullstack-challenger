@@ -1,10 +1,17 @@
 import { Sale } from "@domain/entities/sale/sale";
 import { SaleRepository } from "@domain/repositories/sale-repository";
 
+interface SaleCounter {
+  totalSales: number;
+}
+
 export class InMemorySaleDatabase implements SaleRepository {
   public sales: Sale[] = [];
+  public saleCounter: SaleCounter = { totalSales: 0 };
 
-  async create(sale: Sale): Promise<Sale> {
+  async createSaleWithTotalSales(sale: Sale): Promise<Sale> {
+    this.saleCounter.totalSales++;
+
     this.sales.push(sale);
 
     return sale;
@@ -22,9 +29,13 @@ export class InMemorySaleDatabase implements SaleRepository {
     return sale;
   }
 
-  async findMany(page: number): Promise<Sale[]> {
+  async findMany(page: number, perPage: number): Promise<Sale[]> {
     const saleOrSales = this.sales.map((sales) => sales);
 
-    return saleOrSales.slice((page - 1) * 10, page * 10);
+    return saleOrSales.slice((page - 1) * perPage, page * perPage);
+  }
+
+  async getTotalSalesCount(): Promise<number> {
+    return this.saleCounter.totalSales ?? 0;
   }
 }

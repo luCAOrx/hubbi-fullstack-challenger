@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 import { GetPurchasesUseCase } from "@domain/use-cases/get-purchases/get-purchases-use-case";
 import { PrismaPurchaseRepository } from "@infra/http/repositories/prisma-purchase-repository";
 import { GetPurchasesViewModel } from "@infra/http/view-models/get-purchases-view-model";
-import { PurchaseViewModel } from "@infra/http/view-models/purchase-view-model";
 
 import { BaseController } from "../base-controller";
 
@@ -26,12 +25,16 @@ export class GetPurchasesController extends BaseController {
 
     await getPurchasesUseCase
       .execute({ page: Number(page) })
-      .then((purchase) => {
-        const purchaseOrPurchases = purchase.map((purchaseResponse) => {
-          return GetPurchasesViewModel.toHttp(purchaseResponse);
+      .then(({ page, perPage, pages, totalPurchases, data }) => {
+        const message = GetPurchasesViewModel.toHttp({
+          page,
+          perPage,
+          pages,
+          totalPurchases,
+          data,
         });
 
-        return this.ok({ response, message: { purchaseOrPurchases } });
+        return this.ok({ response, message });
       })
       .catch((error: Error) => {
         if (

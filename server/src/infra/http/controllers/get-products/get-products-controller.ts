@@ -20,7 +20,7 @@ export class GetProductsController extends BaseController {
       .catch((error: Error) => {
         return this.clientError({
           response,
-          message: error.message,
+          message: "Erro ao listar produtos",
         });
       });
   }

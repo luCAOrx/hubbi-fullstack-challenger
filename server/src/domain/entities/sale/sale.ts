@@ -6,7 +6,7 @@ export type Status = "Pendente" | "Finalizada";
 
 interface SaleProps {
   name: string;
-  status: Status;
+  status?: Status;
   products: string;
 }
 
@@ -31,13 +31,27 @@ export class Sale {
     return this._created_at;
   }
 
-  private constructor({ name, products, status }: SaleProps, _id?: string) {
+  private constructor(
+    { name, products, status }: SaleProps,
+    {
+      _id,
+    }: {
+      _id?: string;
+    },
+  ) {
     this._id = _id ?? randomUUID();
     this._props = { name, status, products };
     this._created_at = new Date();
   }
 
-  static create({ name, products, status }: SaleProps, _id?: string): Sale {
+  static create(
+    { name, products, status }: SaleProps,
+    {
+      _id,
+    }: {
+      _id?: string;
+    },
+  ): Sale {
     return new Sale(
       {
         name: NameValidation.valid({
@@ -52,7 +66,9 @@ export class Sale {
           propertyValue: products,
         }),
       },
-      _id,
+      {
+        _id,
+      },
     );
   }
 }

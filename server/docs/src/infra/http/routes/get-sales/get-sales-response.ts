@@ -5,7 +5,11 @@ const httpResponseToSuccessRequest: Response = {
   content: {
     "application/json": {
       example: {
-        saleOrSales: [
+        page: 1,
+        perPage: 10,
+        pages: 0,
+        totalPurchases: 0,
+        data: [
           {
             id: "1f714ab8-5267-4a74-9275-1bd8a3fd86f7",
             name: "Produtos de limpeza",

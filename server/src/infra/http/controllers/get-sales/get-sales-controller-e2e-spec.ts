@@ -1,8 +1,7 @@
 import { deepStrictEqual } from "node:assert";
-import { describe, it, ok } from "node:test";
+import { describe, it } from "node:test";
 
-import { Sale } from "@domain/entities/sale/sale";
-import { GeSalesResponse } from "@domain/use-cases/get-sales/get-sales-use-case";
+import { GetSalesResponse } from "@domain/use-cases/get-sales/get-sales-use-case";
 import { MakeRequestFactory } from "@test-helpers/factories/make-request-factory";
 
 export function getSalesControllerEndToEndTests(): void {
@@ -16,9 +15,8 @@ export function getSalesControllerEndToEndTests(): void {
         method: "GET",
         headers,
       }).then(async (response) => {
-        const { data, totalSales, page, pages, perPage }: GeSalesResponse =
-          (await response.json()) as GeSalesResponse;
-        console.log(data[0].props);
+        const { data, totalSales, page, pages, perPage }: GetSalesResponse =
+          (await response.json()) as GetSalesResponse;
 
         deepStrictEqual(response.status, 200);
         deepStrictEqual(data.length, 10);

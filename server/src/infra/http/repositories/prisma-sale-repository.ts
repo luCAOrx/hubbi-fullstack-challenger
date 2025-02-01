@@ -6,18 +6,42 @@ import { SaleRepository } from "@domain/repositories/sale-repository";
 import { prisma } from "../libs/prisma-client";
 import { SaleMapper } from "../mappers/sale-mapper";
 export class PrismaSaleRepository implements SaleRepository {
-  async create(sale: Sale): Promise<Sale> {
+  async createSaleWithTotalSales(sale: Sale): Promise<Sale> {
     const { id, name, status, created_at, products } =
       SaleMapper.toPersistence(sale);
 
     const { createdSale, createdSaleProducts } = await prisma.$transaction(
       async (trx) => {
+        const counter = await trx.saleCounter.findUnique({
+          where: { id: 1 },
+        });
+
+        if (!counter) {
+          await trx.saleCounter.create({
+            data: {
+              id: 1,
+              totalSale: 0,
+            },
+          });
+        }
+
         const createdSale = await trx.sale.create({
           data: {
             id,
             name,
             status,
             created_at,
+          },
+        });
+
+        await trx.saleCounter.update({
+          where: {
+            id: 1,
+          },
+          data: {
+            totalSale: {
+              increment: 1,
+            },
           },
         });
 
@@ -62,17 +86,26 @@ export class PrismaSaleRepository implements SaleRepository {
     return SaleMapper.toDomain(saleOrNull);
   }
 
-  async findMany(page: number): Promise<Sale[]> {
+  async findMany(page: number, perPage: number): Promise<Sale[]> {
     const saleOrSales = await prisma.sale.findMany({
       include: {
         products: true,
         _count: true,
       },
       orderBy: { created_at: "desc" },
-      skip: (page - 1) * 10,
-      take: 10,
+      skip: (page - 1) * perPage,
+      take: perPage,
     });
 
     return saleOrSales.map((sale) => SaleMapper.toDomain(sale, sale.products));
+  }
+
+  async getTotalSalesCount(): Promise<number> {
+    const salesCounter = await prisma.saleCounter.findUnique({
+      where: {
+        id: 1,
+      },
+    });
+    return salesCounter?.totalSale ?? 0;
   }
 }

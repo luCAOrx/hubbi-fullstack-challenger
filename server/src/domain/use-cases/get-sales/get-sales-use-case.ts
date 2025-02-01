@@ -7,7 +7,7 @@ interface GetSalesRequest {
   page?: number;
 }
 
-export interface GeSalesResponse {
+export interface GetSalesResponse {
   page: number;
   perPage: number;
   pages: number;
@@ -16,11 +16,11 @@ export interface GeSalesResponse {
 }
 
 export class GetSalesUseCase
-  implements BaseUseCase<GetSalesRequest, GeSalesResponse>
+  implements BaseUseCase<GetSalesRequest, GetSalesResponse>
 {
   constructor(private readonly saleRepository: SaleRepository) {}
 
-  async execute({ page = 1 }: GetSalesRequest): Promise<GeSalesResponse> {
+  async execute({ page = 1 }: GetSalesRequest): Promise<GetSalesResponse> {
     const perPage = 10;
     const saleOrSales = await this.saleRepository.findMany(page, perPage);
 

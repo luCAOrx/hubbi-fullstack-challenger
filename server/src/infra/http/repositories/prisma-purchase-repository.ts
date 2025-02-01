@@ -7,12 +7,27 @@ import { prisma } from "../libs/prisma-client";
 import { PurchaseMapper } from "../mappers/purchase-mapper";
 
 export class PrismaPurchaseRepository implements PurchaseRepository {
-  async create(purchase: Purchase): Promise<Purchase> {
+  async createPurchaseWithTotalPurchases(
+    purchase: Purchase,
+  ): Promise<Purchase> {
     const { id, saleId, created_at, products } =
       PurchaseMapper.toPersistence(purchase);
 
     const { createdPurchase, createdPurchaseProducts } =
       await prisma.$transaction(async (trx) => {
+        const counter = await trx.purchaseCounter.findUnique({
+          where: { id: 1 },
+        });
+
+        if (!counter) {
+          await trx.purchaseCounter.create({
+            data: {
+              id: 1,
+              totalPurchase: 0,
+            },
+          });
+        }
+
         const createdPurchase = await trx.purchase.create({
           data: {
             id,
@@ -21,6 +36,17 @@ export class PrismaPurchaseRepository implements PurchaseRepository {
           },
           include: {
             sales: true,
+          },
+        });
+
+        await trx.purchaseCounter.update({
+          where: {
+            id: 1,
+          },
+          data: {
+            totalPurchase: {
+              increment: 1,
+            },
           },
         });
 
@@ -56,14 +82,14 @@ export class PrismaPurchaseRepository implements PurchaseRepository {
     });
   }
 
-  async findMany(page: number): Promise<Purchase[]> {
+  async findMany(page: number, perPage: number): Promise<Purchase[]> {
     const purchaseOrPurchases = await prisma.purchase.findMany({
       include: {
         sales: true,
       },
       orderBy: { created_at: "desc" },
-      skip: (page - 1) * 10,
-      take: 10,
+      skip: (page - 1) * perPage,
+      take: perPage,
     });
 
     return purchaseOrPurchases.map((purchase) =>
@@ -72,5 +98,14 @@ export class PrismaPurchaseRepository implements PurchaseRepository {
         rawSales: purchase.sales,
       }),
     );
+  }
+
+  async getTotalPurchasesCount(): Promise<number> {
+    const purchasesCounter = await prisma.purchaseCounter.findUnique({
+      where: {
+        id: 1,
+      },
+    });
+    return purchasesCounter?.totalPurchase ?? 0;
   }
 }

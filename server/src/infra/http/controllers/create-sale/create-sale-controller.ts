@@ -1,7 +1,6 @@
 import { type Request, type Response } from "express";
 
 import { ValidationErrors } from "@core/logic/domain/validations/errors/validation-errors";
-import { Status } from "@domain/entities/sale/sale";
 import { CreateSaleUseCase } from "@domain/use-cases/create-sale/create-sale-use-case";
 import { CreateSaleUseCaseErrors } from "@domain/use-cases/create-sale/errors/sale-already-exists-error";
 import { PrismaSaleRepository } from "@infra/http/repositories/prisma-sale-repository";
@@ -11,7 +10,6 @@ import { BaseController } from "../base-controller";
 
 interface CreateSaleRequestBodyProps {
   name: string;
-  status: Status;
   products: string;
 }
 
@@ -20,8 +18,7 @@ export class CreateSaleController extends BaseController {
     request: Request,
     response: Response,
   ): Promise<any> {
-    const { name, status, products } =
-      request.body as CreateSaleRequestBodyProps;
+    const { name, products } = request.body as CreateSaleRequestBodyProps;
 
     const prismaSaleRepository = new PrismaSaleRepository();
 
@@ -30,7 +27,6 @@ export class CreateSaleController extends BaseController {
     await createSaleUseCase
       .execute({
         name,
-        status,
         products,
       })
       .then(({ sale }) => {
@@ -62,16 +58,14 @@ export class CreateSaleController extends BaseController {
         if (
           Object.keys(request.body).length === 0 ||
           Object.hasOwn(request.body, "name") ||
-          Object.hasOwn(request.body, "status") ||
           Object.hasOwn(request.body, "products") ||
           !Object.hasOwn(request.body, "name") ||
-          !Object.hasOwn(request.body, "status") ||
           !Object.hasOwn(request.body, "products")
         ) {
           return this.clientError({
             response,
             message:
-              "The properties: name, status and products, should be provided in the request body",
+              "The properties: name and products, should be provided in the request body",
           });
         }
       });

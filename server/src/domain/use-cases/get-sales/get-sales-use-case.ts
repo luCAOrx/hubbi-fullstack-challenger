@@ -7,12 +7,33 @@ interface GetSalesRequest {
   page?: number;
 }
 
-export class GetSalesUseCase implements BaseUseCase<GetSalesRequest, Sale[]> {
+export interface GeSalesResponse {
+  page: number;
+  perPage: number;
+  pages: number;
+  totalSales: number;
+  data: Sale[];
+}
+
+export class GetSalesUseCase
+  implements BaseUseCase<GetSalesRequest, GeSalesResponse>
+{
   constructor(private readonly saleRepository: SaleRepository) {}
 
-  async execute({ page = 1 }: GetSalesRequest): Promise<Sale[]> {
-    const saleOrSales = await this.saleRepository.findMany(page);
+  async execute({ page = 1 }: GetSalesRequest): Promise<GeSalesResponse> {
+    const perPage = 10;
+    const saleOrSales = await this.saleRepository.findMany(page, perPage);
 
-    return saleOrSales;
+    const totalSales = await this.saleRepository.getTotalSalesCount();
+
+    const pages = Math.ceil(totalSales / perPage);
+
+    return {
+      page,
+      perPage,
+      pages,
+      totalSales,
+      data: saleOrSales,
+    };
   }
 }

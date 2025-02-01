@@ -1,7 +1,6 @@
 import { Purchase } from "@domain/entities/purchase/purchase";
 import { Sale } from "@domain/entities/sale/sale";
 import { CreatePurchaseUseCase } from "@domain/use-cases/create-purchase/create-purchase-use-case";
-import { CreateSaleUseCase } from "@domain/use-cases/create-sale/create-sale-use-case";
 import { InMemoryPurchaseDatabase } from "@test-helpers/in-memory-database/in-memory-purchase-database";
 import { InMemorySaleDatabase } from "@test-helpers/in-memory-database/in-memory-sale-database";
 
@@ -38,13 +37,16 @@ export class MakePurchaseFactory {
       inMemorySaleDatabase,
     );
 
-    const createSaleUseCase = new CreateSaleUseCase(inMemorySaleDatabase);
+    const sale = Sale.create(
+      {
+        name: "Produtos de limpeza",
+        products: "1,2,3",
+        status: "Finalizada",
+      },
+      {},
+    );
 
-    const { sale } = await createSaleUseCase.execute({
-      name: "Produtos de limpeza",
-      status: "Finalizada",
-      products: "1,2,3",
-    });
+    await inMemorySaleDatabase.createSaleWithTotalSales(sale);
 
     const { purchase } = await createPurchaseUseCase.execute({
       saleId: saleId ?? sale.id,
@@ -52,7 +54,7 @@ export class MakePurchaseFactory {
       ...override,
     });
 
-    await inMemoryDatabaseToSale?.create(sale);
+    await inMemoryDatabaseToSale?.createSaleWithTotalSales(sale);
 
     await inMemoryDatabaseToPurchase.create(purchase);
 

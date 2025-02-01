@@ -8,7 +8,7 @@ import { InMemorySaleDatabase } from "@test-helpers/in-memory-database/in-memory
 
 import { GetPurchasesUseCase } from "./get-purchases-use-case";
 
-describe("Get sales use case", () => {
+describe("Get purchases use case", () => {
   const inMemoryPurchaseDatabase = new InMemoryPurchaseDatabase();
   const inMemorySaleDatabase = new InMemorySaleDatabase();
   const getPurchasesUseCase = new GetPurchasesUseCase(inMemoryPurchaseDatabase);

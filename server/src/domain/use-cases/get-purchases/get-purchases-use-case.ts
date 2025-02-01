@@ -10,11 +10,11 @@ interface GetPurchasesRequest {
 export class GetPurchasesUseCase
   implements BaseUseCase<GetPurchasesRequest, Purchase[]>
 {
-  constructor(private readonly saleRepository: PurchaseRepository) {}
+  constructor(private readonly purchaseRepository: PurchaseRepository) {}
 
   async execute({ page = 1 }: GetPurchasesRequest): Promise<Purchase[]> {
-    const saleOrPurchases = await this.saleRepository.findMany(page);
+    const purchaseOrPurchases = await this.purchaseRepository.findMany(page);
 
-    return saleOrPurchases;
+    return purchaseOrPurchases;
   }
 }

@@ -17,7 +17,7 @@ export class SaleViewModel {
     return {
       id,
       name,
-      status,
+      status: status!,
       products,
       created_at,
     };

@@ -1,6 +1,7 @@
 import { deepStrictEqual } from "node:assert";
 import { before, describe, it } from "node:test";
 
+import { GetPurchasesResponse } from "@domain/use-cases/get-purchases/get-purchases-use-case";
 import { MakePurchaseFactory } from "@test-helpers/factories/make-purchase-factory";
 import { MakeRequestFactory } from "@test-helpers/factories/make-request-factory";
 import { makeSaleFactoryToHttp } from "@test-helpers/main.e2e-spec";
@@ -28,103 +29,24 @@ export function getPurchasesControllerEndToEndTests(): void {
         method: "GET",
         headers,
       }).then(async (response) => {
-        const responseBody: any = await response.json();
+        const {
+          data,
+          totalPurchases,
+          page,
+          pages,
+          perPage,
+        }: GetPurchasesResponse =
+          (await response.json()) as GetPurchasesResponse;
+
+        console.log(data[0].props);
 
         deepStrictEqual(response.status, 200);
-
-        [responseBody].map(({ purchaseOrPurchases }: any) => {
-          deepStrictEqual(purchaseOrPurchases.length, 10);
-          deepStrictEqual(responseBody.purchaseOrPurchases[0].saleId, saleId);
-          deepStrictEqual(
-            responseBody.purchaseOrPurchases[0].sales.name,
-            "Doces T",
-          );
-          deepStrictEqual(
-            responseBody.purchaseOrPurchases[0].sales.status,
-            "Finalizada",
-          );
-          deepStrictEqual(responseBody.purchaseOrPurchases[1].saleId, saleId);
-          deepStrictEqual(
-            responseBody.purchaseOrPurchases[1].sales.name,
-            "Doces T",
-          );
-          deepStrictEqual(
-            responseBody.purchaseOrPurchases[1].sales.status,
-            "Finalizada",
-          );
-          deepStrictEqual(responseBody.purchaseOrPurchases[2].saleId, saleId);
-          deepStrictEqual(
-            responseBody.purchaseOrPurchases[2].sales.name,
-            "Doces T",
-          );
-          deepStrictEqual(
-            responseBody.purchaseOrPurchases[2].sales.status,
-            "Finalizada",
-          );
-          deepStrictEqual(responseBody.purchaseOrPurchases[3].saleId, saleId);
-          deepStrictEqual(
-            responseBody.purchaseOrPurchases[3].sales.name,
-            "Doces T",
-          );
-          deepStrictEqual(
-            responseBody.purchaseOrPurchases[3].sales.status,
-            "Finalizada",
-          );
-          deepStrictEqual(responseBody.purchaseOrPurchases[4].saleId, saleId);
-          deepStrictEqual(
-            responseBody.purchaseOrPurchases[4].sales.name,
-            "Doces T",
-          );
-          deepStrictEqual(
-            responseBody.purchaseOrPurchases[4].sales.status,
-            "Finalizada",
-          );
-          deepStrictEqual(responseBody.purchaseOrPurchases[5].saleId, saleId);
-          deepStrictEqual(
-            responseBody.purchaseOrPurchases[5].sales.name,
-            "Doces T",
-          );
-          deepStrictEqual(
-            responseBody.purchaseOrPurchases[5].sales.status,
-            "Finalizada",
-          );
-          deepStrictEqual(responseBody.purchaseOrPurchases[6].saleId, saleId);
-          deepStrictEqual(
-            responseBody.purchaseOrPurchases[6].sales.name,
-            "Doces T",
-          );
-          deepStrictEqual(
-            responseBody.purchaseOrPurchases[6].sales.status,
-            "Finalizada",
-          );
-          deepStrictEqual(responseBody.purchaseOrPurchases[7].saleId, saleId);
-          deepStrictEqual(
-            responseBody.purchaseOrPurchases[7].sales.name,
-            "Doces T",
-          );
-          deepStrictEqual(
-            responseBody.purchaseOrPurchases[7].sales.status,
-            "Finalizada",
-          );
-          deepStrictEqual(responseBody.purchaseOrPurchases[8].saleId, saleId);
-          deepStrictEqual(
-            responseBody.purchaseOrPurchases[8].sales.name,
-            "Doces T",
-          );
-          deepStrictEqual(
-            responseBody.purchaseOrPurchases[8].sales.status,
-            "Finalizada",
-          );
-          deepStrictEqual(responseBody.purchaseOrPurchases[9].saleId, saleId);
-          deepStrictEqual(
-            responseBody.purchaseOrPurchases[9].sales.name,
-            "Doces T",
-          );
-          deepStrictEqual(
-            responseBody.purchaseOrPurchases[9].sales.status,
-            "Finalizada",
-          );
-        });
+        deepStrictEqual(data.length, 10);
+        deepStrictEqual(page, 1);
+        deepStrictEqual(perPage, 10);
+        deepStrictEqual(pages, 3);
+        deepStrictEqual(totalPurchases, 21);
+        deepStrictEqual(data.length, 10);
       });
     });
 

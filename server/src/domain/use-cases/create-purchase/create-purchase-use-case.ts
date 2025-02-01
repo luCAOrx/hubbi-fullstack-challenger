@@ -34,7 +34,7 @@ export class CreatePurchaseUseCase
 
     const purchase = Purchase.create({ saleId, products });
 
-    await this.purchaseRepository.create(purchase);
+    await this.purchaseRepository.createPurchaseWithTotalPurchases(purchase);
 
     return { purchase };
   }

@@ -66,3 +66,13 @@ model ProductPurchase {
 
   @@map("productPurchase")
 }
+
+model SaleCounter {
+  id        Int @id @default(1)
+  totalSale Int @default(0)
+}
+
+model PurchaseCounter {
+  id            Int @id @default(1)
+  totalPurchase Int @default(0)
+}

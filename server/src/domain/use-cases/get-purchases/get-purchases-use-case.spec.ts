@@ -32,20 +32,50 @@ describe("Get purchases use case", () => {
   });
 
   it("should be able list purchase or purchases", async () => {
-    await getPurchasesUseCase.execute({ page: 2 }).then((response) => {
-      notDeepStrictEqual(response.length, 11);
-      deepStrictEqual(response.length, 10);
-      deepStrictEqual(inMemoryPurchaseDatabase.purchases.length, 20);
-      deepStrictEqual(response[0].props.products, "1,2,3");
-      deepStrictEqual(response[1].props.products, "1,2,3");
-      deepStrictEqual(response[2].props.products, "1,2,3");
-      deepStrictEqual(response[3].props.products, "1,2,3");
-      deepStrictEqual(response[4].props.products, "1,2,3");
-      deepStrictEqual(response[5].props.products, "1,2,3");
-      deepStrictEqual(response[6].props.products, "1,2,3");
-      deepStrictEqual(response[7].props.products, "1,2,3");
-      deepStrictEqual(response[8].props.products, "1,2,3");
-      deepStrictEqual(response[9].props.products, "1,2,3");
-    });
+    await getPurchasesUseCase
+      .execute({})
+      .then(({ page, pages, perPage, totalPurchases, data }) => {
+        notDeepStrictEqual(data.length, 11);
+        deepStrictEqual(page, 1);
+        deepStrictEqual(pages, 2);
+        deepStrictEqual(perPage, 10);
+        deepStrictEqual(totalPurchases, 20);
+        deepStrictEqual(inMemorySaleDatabase.sales.length, 40);
+        deepStrictEqual(inMemoryPurchaseDatabase.purchases.length, 20);
+        deepStrictEqual(data[0].props.products, "1,2,3");
+        deepStrictEqual(data[1].props.products, "1,2,3");
+        deepStrictEqual(data[2].props.products, "1,2,3");
+        deepStrictEqual(data[3].props.products, "1,2,3");
+        deepStrictEqual(data[4].props.products, "1,2,3");
+        deepStrictEqual(data[5].props.products, "1,2,3");
+        deepStrictEqual(data[6].props.products, "1,2,3");
+        deepStrictEqual(data[7].props.products, "1,2,3");
+        deepStrictEqual(data[8].props.products, "1,2,3");
+        deepStrictEqual(data[9].props.products, "1,2,3");
+      });
+  });
+
+  it("should be able jump to next page on purchases list", async () => {
+    await getPurchasesUseCase
+      .execute({})
+      .then(({ page, pages, perPage, totalPurchases, data }) => {
+        notDeepStrictEqual(data.length, 11);
+        deepStrictEqual(page, 1);
+        deepStrictEqual(pages, 2);
+        deepStrictEqual(perPage, 10);
+        deepStrictEqual(totalPurchases, 20);
+        deepStrictEqual(inMemorySaleDatabase.sales.length, 40);
+        deepStrictEqual(inMemoryPurchaseDatabase.purchases.length, 20);
+        deepStrictEqual(data[0].props.products, "1,2,3");
+        deepStrictEqual(data[1].props.products, "1,2,3");
+        deepStrictEqual(data[2].props.products, "1,2,3");
+        deepStrictEqual(data[3].props.products, "1,2,3");
+        deepStrictEqual(data[4].props.products, "1,2,3");
+        deepStrictEqual(data[5].props.products, "1,2,3");
+        deepStrictEqual(data[6].props.products, "1,2,3");
+        deepStrictEqual(data[7].props.products, "1,2,3");
+        deepStrictEqual(data[8].props.products, "1,2,3");
+        deepStrictEqual(data[9].props.products, "1,2,3");
+      });
   });
 });

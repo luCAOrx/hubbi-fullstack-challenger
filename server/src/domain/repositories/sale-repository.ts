@@ -1,8 +1,9 @@
 import { Sale } from "@domain/entities/sale/sale";
 
 export abstract class SaleRepository {
-  abstract create(sale: Sale): Promise<Sale>;
+  abstract createSaleWithTotalSales(sale: Sale): Promise<Sale>;
   abstract exists(name: string): Promise<boolean>;
   abstract findById(id: string): Promise<Sale | null>;
-  abstract findMany(page: number): Promise<Sale[]>;
+  abstract findMany(page: number, perPage: number): Promise<Sale[]>;
+  abstract getTotalSalesCount(): Promise<number>;
 }

@@ -32,10 +32,6 @@ export const swaggerComponents: Components = {
         name: {
           type: "string",
         },
-        status: {
-          type: "string",
-          format: "Pendente || Finalizada",
-        },
         products: {
           type: "string",
         },

@@ -66,7 +66,7 @@ export const swaggerComponents: Components = {
       },
     },
 
-    SaleHttpError: {
+    GlobalHttpError: {
       type: "object",
       properties: {
         statusCode: {

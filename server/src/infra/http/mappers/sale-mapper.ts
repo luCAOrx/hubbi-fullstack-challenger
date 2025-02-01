@@ -22,7 +22,7 @@ export class SaleMapper {
           rawSaleProducts?.map((product) => product.productId).join(","),
         ),
       },
-      rawPrismaSale.id,
+      { _id: rawPrismaSale.id },
     );
   }
 
@@ -34,7 +34,7 @@ export class SaleMapper {
     return {
       id,
       name,
-      status,
+      status: status!,
       products,
       created_at,
     };

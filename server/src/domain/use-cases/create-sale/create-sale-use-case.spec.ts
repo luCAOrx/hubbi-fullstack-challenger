@@ -13,16 +13,53 @@ describe("Create sale use case", () => {
   const createSaleUseCase = new CreateSaleUseCase(inMemorySaleDatabase);
 
   it("should be able to create a new sale", async () => {
-    await new MakeSaleFactory()
-      .toDomain({ inMemoryDatabase: inMemorySaleDatabase })
-      .then((sale) => {
+    await createSaleUseCase
+      .execute({
+        name: "Produtos A",
+        products: "1,2,3",
+      })
+      .then(({ sale }) => {
         deepStrictEqual(inMemorySaleDatabase.sales[0].props, {
-          name: "Produtos de limpeza",
+          name: "Produtos A",
           status: "Pendente",
           products: "1,2,3",
         });
-        deepStrictEqual(inMemorySaleDatabase.sales.length, 1);
-        ok(sale.created_at instanceof Date);
+        deepStrictEqual(inMemorySaleDatabase.saleCounter.totalSales, 1);
+        ok(inMemorySaleDatabase.sales[0].created_at instanceof Date);
+        ok(sale instanceof Sale);
+      });
+
+    await createSaleUseCase
+      .execute({
+        name: "Produtos B",
+        products: "1,2,3",
+      })
+      .then(({ sale }) => {
+        deepStrictEqual(inMemorySaleDatabase.sales[1].props, {
+          name: "Produtos B",
+          status: "Pendente",
+          products: "1,2,3",
+        });
+        deepStrictEqual(inMemorySaleDatabase.saleCounter.totalSales, 2);
+        deepStrictEqual(inMemorySaleDatabase.sales.length, 2);
+        ok(inMemorySaleDatabase.sales[0].created_at instanceof Date);
+        ok(sale instanceof Sale);
+      });
+
+    await createSaleUseCase
+      .execute({
+        name: "Produtos C",
+        products: "1,2,3",
+      })
+      .then(({ sale }) => {
+        deepStrictEqual(inMemorySaleDatabase.sales[2].props, {
+          name: "Produtos C",
+          status: "Pendente",
+          products: "1,2,3",
+        });
+        deepStrictEqual(inMemorySaleDatabase.saleCounter.totalSales, 3);
+        deepStrictEqual(inMemorySaleDatabase.sales.length, 3);
+        ok(inMemorySaleDatabase.sales[0].created_at instanceof Date);
         ok(sale instanceof Sale);
       });
   });
@@ -34,7 +71,6 @@ describe("Create sale use case", () => {
           inMemoryDatabase: inMemorySaleDatabase,
           override: {
             name: "",
-            status: "Pendente",
             products: "",
           },
         }),

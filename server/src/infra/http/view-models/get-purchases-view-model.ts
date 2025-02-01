@@ -1,35 +1,28 @@
 import { Purchase } from "@domain/entities/purchase/purchase";
-import { Status } from "@domain/entities/sale/sale";
+import { GetPurchasesResponse } from "@domain/use-cases/get-purchases/get-purchases-use-case";
 
 export interface ToHttpResponse {
-  id: string;
-  saleId: string;
-  created_at: Date;
-  sales: {
-    id: string;
-    name: string;
-    status: Status;
-    created_at: Date;
-  };
+  page: number;
+  perPage: number;
+  pages: number;
+  totalPurchases: number;
+  data: Purchase[];
 }
 
 export class GetPurchasesViewModel {
   static toHttp({
-    id,
-    props: { saleId },
-    created_at,
-    sales,
-  }: Purchase): ToHttpResponse {
+    page,
+    perPage,
+    pages,
+    totalPurchases,
+    data,
+  }: GetPurchasesResponse): ToHttpResponse {
     return {
-      id,
-      saleId,
-      created_at,
-      sales: {
-        id: String(sales?.id),
-        name: String(sales?.props.name),
-        status: sales?.props.status,
-        created_at: sales?.created_at,
-      },
+      page,
+      perPage,
+      pages,
+      totalPurchases,
+      data,
     };
   }
 }

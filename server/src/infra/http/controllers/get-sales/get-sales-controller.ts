@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import { GetSalesUseCase } from "@domain/use-cases/get-sales/get-sales-use-case";
 import { PrismaSaleRepository } from "@infra/http/repositories/prisma-sale-repository";
-import { SaleViewModel } from "@infra/http/view-models/sale-view-model";
+import { GetSalesViewModel } from "@infra/http/view-models/get-sales-view-model";
 
 import { BaseController } from "../base-controller";
 
@@ -23,12 +23,16 @@ export class GetSalesController extends BaseController {
 
     await getSalesUseCase
       .execute({ page: Number(page) })
-      .then((sale) => {
-        const saleOrSales = sale.map((saleResponse) => {
-          return SaleViewModel.toHttp(saleResponse);
+      .then(({ page, perPage, pages, totalSales, data }) => {
+        const message = GetSalesViewModel.toHttp({
+          page,
+          perPage,
+          pages,
+          totalSales,
+          data,
         });
 
-        return this.ok({ response, message: { saleOrSales } });
+        return this.ok({ response, message });
       })
       .catch((error: Error) => {
         if (

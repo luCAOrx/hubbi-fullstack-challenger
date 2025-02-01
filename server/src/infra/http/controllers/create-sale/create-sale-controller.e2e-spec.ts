@@ -59,13 +59,13 @@ export function createSaleControllerEndToEndTests(): void {
         deepStrictEqual(responseBody, {
           statusCode: 400,
           message:
-            "The properties: name, status and products, should be provided in the request body",
+            "The properties: name and products, should be provided in the request body",
           error: "Bad request",
         });
       });
     });
 
-    it("should not be able to create new sale if properties of request body not same as name, status and products", async () => {
+    it("should not be able to create new sale if properties of request body not same as name and products", async () => {
       const headers = new Headers();
       headers.append("Content-Type", "application/json");
 
@@ -75,7 +75,6 @@ export function createSaleControllerEndToEndTests(): void {
         headers,
         data: {
           fakeName: "zzzzz",
-          fakeStatus: "xxxxx",
           fakeProducts: "lllllll",
         },
       }).then(async (response) => {
@@ -85,7 +84,7 @@ export function createSaleControllerEndToEndTests(): void {
         deepStrictEqual(responseBody, {
           statusCode: 400,
           message:
-            "The properties: name, status and products, should be provided in the request body",
+            "The properties: name and products, should be provided in the request body",
           error: "Bad request",
         });
       });
@@ -107,29 +106,7 @@ export function createSaleControllerEndToEndTests(): void {
         deepStrictEqual(responseBody, {
           statusCode: 400,
           message:
-            "The properties: name, status and products, should be provided in the request body",
-          error: "Bad request",
-        });
-      });
-    });
-
-    it("should not be able to create new sale just with status property of the request body", async () => {
-      const headers = new Headers();
-      headers.append("Content-Type", "application/json");
-
-      await MakeRequestFactory.execute({
-        url: `${String(process.env.TEST_SERVER_URL)}/create-sale`,
-        method: "POST",
-        headers,
-        data: { status: "Pendente" },
-      }).then(async (response) => {
-        const responseBody = await response.json();
-
-        deepStrictEqual(response.status, 400);
-        deepStrictEqual(responseBody, {
-          statusCode: 400,
-          message:
-            "The properties: name, status and products, should be provided in the request body",
+            "The properties: name and products, should be provided in the request body",
           error: "Bad request",
         });
       });
@@ -151,7 +128,7 @@ export function createSaleControllerEndToEndTests(): void {
         deepStrictEqual(responseBody, {
           statusCode: 400,
           message:
-            "The properties: name, status and products, should be provided in the request body",
+            "The properties: name and products, should be provided in the request body",
           error: "Bad request",
         });
       });

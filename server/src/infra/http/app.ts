@@ -9,6 +9,7 @@ import { swaggerSpec } from "@doc/swagger";
 import { pageNotFoundError } from "./errors/page-not-found/page-not-found-error";
 import { createPurchaseRoute } from "./routes/create-purchase.routes";
 import { createSaleRoute } from "./routes/create-sale.routes";
+import { getProductsRoute } from "./routes/get-products.routes";
 import { getPurchasesRoute } from "./routes/get-purchases.routes";
 import { getSalesRoute } from "./routes/get-sales.routes";
 
@@ -29,4 +30,5 @@ app.use(createSaleRoute);
 app.use(getSalesRoute);
 app.use(createPurchaseRoute);
 app.use(getPurchasesRoute);
+app.use(getProductsRoute);
 app.all("*", pageNotFoundError);

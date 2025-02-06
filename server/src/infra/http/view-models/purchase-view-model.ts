@@ -1,6 +1,6 @@
 import { Purchase } from "@domain/entities/purchase/purchase";
 
-export interface ToHttpResponse {
+export interface CreatePurchaseToHttpResponse {
   id: string;
   saleId: string;
   products: string;
@@ -12,7 +12,7 @@ export class PurchaseViewModel {
     id,
     props: { saleId, products },
     created_at,
-  }: Purchase): ToHttpResponse {
+  }: Purchase): CreatePurchaseToHttpResponse {
     return {
       id,
       products,

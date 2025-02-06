@@ -5,15 +5,17 @@ import { app } from "@infra/http/app";
 import { createPurchaseControllerEndToEndTests } from "@infra/http/controllers/create-purchase/create-purchase-controller.e2e-spec";
 import { createSaleControllerEndToEndTests } from "@infra/http/controllers/create-sale/create-sale-controller.e2e-spec";
 import { getPurchasesControllerEndToEndTests } from "@infra/http/controllers/get-purchases/get-purchases-controller-e2e-spec";
+import { getSaleProductByIdControllerEndToEndTests } from "@infra/http/controllers/get-sale-product-by-id/get-sale-product-by-id-controller.e2e-spec";
 import { getSalesControllerEndToEndTests } from "@infra/http/controllers/get-sales/get-sales-controller-e2e-spec";
 import { pageNotFoundErrorEndToEndTests } from "@infra/http/errors/page-not-found/page-not-found-error.e2e-spec";
 
+import { MakePurchaseFactory } from "./factories/make-purchase-factory";
 import { MakeSaleFactory } from "./factories/make-sale-factory";
 
 const prismaTestEnvironment = new PrismaTestEnvironment();
 const server = app.listen(process.env.TEST_SERVER_PORT);
 
-export let makeSaleFactoryToHttp: Response;
+export const saleId: string[] = [];
 
 describe("End to end (E2E) tests", () => {
   before(async () => {
@@ -29,9 +31,26 @@ describe("End to end (E2E) tests", () => {
     for (let i = 0; i < 20; i++) {
       const letter = String.fromCharCode(65 + i);
 
-      makeSaleFactoryToHttp = await new MakeSaleFactory().toHttp({
+      await new MakeSaleFactory()
+        .toHttp({
+          override: {
+            name: `Doces ${letter}`,
+            products:
+              "25255125-a94f-47cf-85d9-e7717badb661,0c81db75-3c03-4220-8fdc-76d532e4b1b2,cc5a9e1b-c5ab-450d-b9bd-1be0899f36a5",
+          },
+        })
+        .then(async (response) => {
+          const data: any = await response.json();
+
+          saleId.push(data.sale.id);
+          return data.sale.id;
+        });
+
+      await new MakePurchaseFactory().toHttp({
+        saleId: saleId[0],
         override: {
-          name: `Doces ${letter}`,
+          products:
+            "25255125-a94f-47cf-85d9-e7717badb661,0c81db75-3c03-4220-8fdc-76d532e4b1b2",
         },
       });
     }
@@ -40,6 +59,7 @@ describe("End to end (E2E) tests", () => {
   createSaleControllerEndToEndTests();
   getSalesControllerEndToEndTests();
   createPurchaseControllerEndToEndTests();
+  getSaleProductByIdControllerEndToEndTests();
   getPurchasesControllerEndToEndTests();
   pageNotFoundErrorEndToEndTests();
 

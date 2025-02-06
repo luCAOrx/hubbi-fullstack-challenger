@@ -24,7 +24,7 @@ export class PurchaseMapper {
     rawPurchaseProducts?: ProductPurchase[];
     rawSales: PrismaSale;
   }): DomainPurchase {
-    const saleMapper = SaleMapper.toDomain(rawSales);
+    const saleMapper = SaleMapper.toDomain({ rawPrismaSale: rawSales });
 
     return DomainPurchase.create(
       {

@@ -1,7 +1,7 @@
-import { deepStrictEqual } from "node:assert";
+import { deepStrictEqual, notDeepStrictEqual } from "node:assert";
 import { describe, it } from "node:test";
 
-import { GetSalesResponse } from "@domain/use-cases/get-sales/get-sales-use-case";
+import { GetSalesToHttpResponse } from "@infra/http/view-models/get-sales-view-model";
 import { MakeRequestFactory } from "@test-helpers/factories/make-request-factory";
 
 export function getSalesControllerEndToEndTests(): void {
@@ -15,8 +15,14 @@ export function getSalesControllerEndToEndTests(): void {
         method: "GET",
         headers,
       }).then(async (response) => {
-        const { data, totalSales, page, pages, perPage }: GetSalesResponse =
-          (await response.json()) as GetSalesResponse;
+        const {
+          data,
+          totalSales,
+          page,
+          pages,
+          perPage,
+        }: GetSalesToHttpResponse =
+          (await response.json()) as GetSalesToHttpResponse;
 
         deepStrictEqual(response.status, 200);
         deepStrictEqual(data.length, 10);
@@ -24,6 +30,34 @@ export function getSalesControllerEndToEndTests(): void {
         deepStrictEqual(perPage, 10);
         deepStrictEqual(pages, 3);
         deepStrictEqual(totalSales, 21);
+
+        notDeepStrictEqual(data[0].id, data[1].id);
+        notDeepStrictEqual(data[2].id, data[3].id);
+        notDeepStrictEqual(data[4].id, data[5].id);
+        notDeepStrictEqual(data[6].id, data[7].id);
+        notDeepStrictEqual(data[8].id, data[9].id);
+
+        deepStrictEqual(data[0].name, "Produtos de limpeza");
+        deepStrictEqual(data[1].name, "Doces T");
+        deepStrictEqual(data[2].name, "Doces S");
+        deepStrictEqual(data[3].name, "Doces R");
+        deepStrictEqual(data[4].name, "Doces Q");
+        deepStrictEqual(data[5].name, "Doces P");
+        deepStrictEqual(data[6].name, "Doces O");
+        deepStrictEqual(data[7].name, "Doces N");
+        deepStrictEqual(data[8].name, "Doces M");
+        deepStrictEqual(data[9].name, "Doces L");
+
+        deepStrictEqual(data[0].status, "Pendente");
+        deepStrictEqual(data[1].status, "Pendente");
+        deepStrictEqual(data[2].status, "Pendente");
+        deepStrictEqual(data[3].status, "Pendente");
+        deepStrictEqual(data[4].status, "Pendente");
+        deepStrictEqual(data[5].status, "Pendente");
+        deepStrictEqual(data[6].status, "Pendente");
+        deepStrictEqual(data[7].status, "Pendente");
+        deepStrictEqual(data[8].status, "Pendente");
+        deepStrictEqual(data[9].status, "Pendente");
       });
     });
 

@@ -3,7 +3,7 @@ import { PurchaseRepository } from "@domain/repositories/purchase-repository";
 import { SaleRepository } from "@domain/repositories/sale-repository";
 
 import { BaseUseCase } from "../base-use-case";
-import { CreatePurchaseUseCaseErrors } from "./errors/sale-not-found-error";
+import { GlobalUseCaseErrors } from "../global-errors/global-use-case-errors";
 
 interface CreatePurchaseRequest {
   saleId: string;
@@ -29,7 +29,7 @@ export class CreatePurchaseUseCase
     const saleOrNull = await this.saleRepository.findById(saleId);
 
     if (saleOrNull === null) {
-      throw new CreatePurchaseUseCaseErrors.SaleNotFoundError();
+      throw new GlobalUseCaseErrors.SaleNotFoundError();
     }
 
     const purchase = Purchase.create({ saleId, products });

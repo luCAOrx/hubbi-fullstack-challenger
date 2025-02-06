@@ -8,8 +8,8 @@ import { MakeSaleFactory } from "@test-helpers/factories/make-sale-factory";
 import { InMemoryPurchaseDatabase } from "@test-helpers/in-memory-database/in-memory-purchase-database";
 import { InMemorySaleDatabase } from "@test-helpers/in-memory-database/in-memory-sale-database";
 
+import { GlobalUseCaseErrors } from "../global-errors/global-use-case-errors";
 import { CreatePurchaseUseCase } from "./create-purchase-use-case";
-import { CreatePurchaseUseCaseErrors } from "./errors/sale-not-found-error";
 
 describe("Create purchase use case", () => {
   const inMemorySaleDatabase = new InMemorySaleDatabase();
@@ -129,7 +129,7 @@ describe("Create purchase use case", () => {
               saleId: "f2983hf",
               products,
             }),
-          CreatePurchaseUseCaseErrors.SaleNotFoundError,
+          GlobalUseCaseErrors.SaleNotFoundError,
         );
       });
   });

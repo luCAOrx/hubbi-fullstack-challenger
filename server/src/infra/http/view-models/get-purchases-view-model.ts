@@ -1,12 +1,15 @@
-import { Purchase } from "@domain/entities/purchase/purchase";
 import { GetPurchasesResponse } from "@domain/use-cases/get-purchases/get-purchases-use-case";
 
-export interface ToHttpResponse {
+export interface GetPurchasesToHttpResponse {
   page: number;
   perPage: number;
   pages: number;
   totalPurchases: number;
-  data: Purchase[];
+  data: {
+    purchaseId: string;
+    saleName: string;
+    purchase_created_at: Date;
+  }[];
 }
 
 export class GetPurchasesViewModel {
@@ -16,13 +19,21 @@ export class GetPurchasesViewModel {
     pages,
     totalPurchases,
     data,
-  }: GetPurchasesResponse): ToHttpResponse {
+  }: GetPurchasesResponse): GetPurchasesToHttpResponse {
+    const purchases = data.map((purchase) => {
+      return {
+        purchaseId: purchase.id,
+        saleName: purchase.sales.props.name,
+        purchase_created_at: purchase.created_at,
+      };
+    });
+
     return {
       page,
       perPage,
       pages,
       totalPurchases,
-      data,
+      data: purchases,
     };
   }
 }

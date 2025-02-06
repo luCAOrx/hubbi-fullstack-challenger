@@ -65,7 +65,10 @@ export class PrismaSaleRepository implements SaleRepository {
       },
     );
 
-    return SaleMapper.toDomain(createdSale, createdSaleProducts);
+    return SaleMapper.toDomain({
+      rawPrismaSale: createdSale,
+      rawSaleProducts: createdSaleProducts,
+    });
   }
 
   async exists(name: string): Promise<boolean> {
@@ -83,7 +86,31 @@ export class PrismaSaleRepository implements SaleRepository {
 
     if (saleOrNull === null) return null;
 
-    return SaleMapper.toDomain(saleOrNull);
+    return SaleMapper.toDomain({ rawPrismaSale: saleOrNull });
+  }
+
+  async findSaleProductById(saleId: string): Promise<Sale | null> {
+    const saleOrNull = await prisma.sale.findUnique({
+      where: { id: saleId },
+      include: {
+        products: {
+          select: {
+            products: true,
+          },
+        },
+      },
+    });
+
+    if (saleOrNull === null) return null;
+
+    const products = saleOrNull.products.map(
+      (saleProduct) => saleProduct.products,
+    );
+
+    return SaleMapper.toDomain({
+      rawPrismaSale: saleOrNull,
+      rawPrismaProduct: products,
+    });
   }
 
   async findMany(page: number, perPage: number): Promise<Sale[]> {
@@ -97,7 +124,12 @@ export class PrismaSaleRepository implements SaleRepository {
       take: perPage,
     });
 
-    return saleOrSales.map((sale) => SaleMapper.toDomain(sale, sale.products));
+    return saleOrSales.map((sale) =>
+      SaleMapper.toDomain({
+        rawPrismaSale: sale,
+        rawSaleProducts: sale.products,
+      }),
+    );
   }
 
   async getTotalSalesCount(): Promise<number> {

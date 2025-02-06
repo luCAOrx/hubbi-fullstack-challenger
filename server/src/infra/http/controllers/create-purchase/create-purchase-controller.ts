@@ -2,7 +2,7 @@ import { type Request, type Response } from "express";
 
 import { ValidationErrors } from "@core/logic/domain/validations/errors/validation-errors";
 import { CreatePurchaseUseCase } from "@domain/use-cases/create-purchase/create-purchase-use-case";
-import { CreatePurchaseUseCaseErrors } from "@domain/use-cases/create-purchase/errors/sale-not-found-error";
+import { GlobalUseCaseErrors } from "@domain/use-cases/global-errors/global-use-case-errors";
 import { PrismaPurchaseRepository } from "@infra/http/repositories/prisma-purchase-repository";
 import { PrismaSaleRepository } from "@infra/http/repositories/prisma-sale-repository";
 import { PurchaseViewModel } from "@infra/http/view-models/purchase-view-model";
@@ -40,18 +40,16 @@ export class CreatePurchaseController extends BaseController {
         products,
       })
       .then(({ purchase }) => {
-        const purchaseResponse = PurchaseViewModel.toHttp(purchase);
+        const message = PurchaseViewModel.toHttp(purchase);
 
         return this.created({
           response,
-          message: {
-            purchase: purchaseResponse,
-          },
+          message,
         });
       })
       .catch((error: Error) => {
         if (
-          error instanceof CreatePurchaseUseCaseErrors.SaleNotFoundError ||
+          error instanceof GlobalUseCaseErrors.SaleNotFoundError ||
           error instanceof ValidationErrors.ValidationShouldNotBeEmptyError ||
           error instanceof ValidationErrors.ValidationShouldBeLessThanError ||
           error instanceof

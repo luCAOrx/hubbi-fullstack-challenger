@@ -1,5 +1,11 @@
 import { Sale as DomainSale, Status } from "@domain/entities/sale/sale";
-import { Sale as PrismaSale, SaleProduct } from "@prisma/client";
+import {
+  Sale as PrismaSale,
+  SaleProduct,
+  Product as PrismaProduct,
+} from "@prisma/client";
+
+import { ProductMapper } from "./product-mapper";
 
 interface ToPersistenceResponse {
   id: string;
@@ -10,10 +16,21 @@ interface ToPersistenceResponse {
 }
 
 export class SaleMapper {
-  static toDomain(
-    rawPrismaSale: PrismaSale,
-    rawSaleProducts?: SaleProduct[],
-  ): DomainSale {
+  static toDomain({
+    rawPrismaSale,
+    rawPrismaProduct,
+    rawSaleProducts,
+  }: {
+    rawPrismaSale: PrismaSale;
+    rawPrismaProduct?: PrismaProduct[];
+    rawSaleProducts?: SaleProduct[];
+  }): DomainSale {
+    const products = rawPrismaProduct
+      ? rawPrismaProduct.map((product) =>
+          ProductMapper.toDomain({ rawPrismaProduct: product }),
+        )
+      : [];
+
     return DomainSale.create(
       {
         name: rawPrismaSale.name,
@@ -22,7 +39,7 @@ export class SaleMapper {
           rawSaleProducts?.map((product) => product.productId).join(","),
         ),
       },
-      { _id: rawPrismaSale.id },
+      { _id: rawPrismaSale.id, _products: products },
     );
   }
 

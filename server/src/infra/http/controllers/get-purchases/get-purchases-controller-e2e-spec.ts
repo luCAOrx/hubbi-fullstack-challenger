@@ -1,27 +1,13 @@
-import { deepStrictEqual } from "node:assert";
-import { before, describe, it } from "node:test";
+import { deepStrictEqual, notDeepStrictEqual } from "node:assert";
+import { describe, it } from "node:test";
 
-import { GetPurchasesResponse } from "@domain/use-cases/get-purchases/get-purchases-use-case";
-import { MakePurchaseFactory } from "@test-helpers/factories/make-purchase-factory";
+import { GetPurchasesToHttpResponse } from "@infra/http/view-models/get-purchases-view-model";
 import { MakeRequestFactory } from "@test-helpers/factories/make-request-factory";
-import { makeSaleFactoryToHttp } from "@test-helpers/main.e2e-spec";
 
 export function getPurchasesControllerEndToEndTests(): void {
   describe("Get purchases controller", () => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
-    let saleId: string;
-    before(async () => {
-      saleId = await makeSaleFactoryToHttp
-        .json()
-        .then(({ sale }: any) => sale.id);
-
-      for (let i = 0; i < 20; i++) {
-        await new MakePurchaseFactory().toHttp({
-          saleId,
-        });
-      }
-    });
 
     it("should be able list purchase or purchases", async () => {
       await MakeRequestFactory.execute({
@@ -35,10 +21,8 @@ export function getPurchasesControllerEndToEndTests(): void {
           page,
           pages,
           perPage,
-        }: GetPurchasesResponse =
-          (await response.json()) as GetPurchasesResponse;
-
-        console.log(data[0].props);
+        }: GetPurchasesToHttpResponse =
+          (await response.json()) as GetPurchasesToHttpResponse;
 
         deepStrictEqual(response.status, 200);
         deepStrictEqual(data.length, 10);
@@ -47,6 +31,21 @@ export function getPurchasesControllerEndToEndTests(): void {
         deepStrictEqual(pages, 3);
         deepStrictEqual(totalPurchases, 21);
         deepStrictEqual(data.length, 10);
+        notDeepStrictEqual(data[0].purchaseId, data[1].purchaseId);
+        notDeepStrictEqual(data[2].purchaseId, data[3].purchaseId);
+        notDeepStrictEqual(data[4].purchaseId, data[5].purchaseId);
+        notDeepStrictEqual(data[6].purchaseId, data[7].purchaseId);
+        notDeepStrictEqual(data[8].purchaseId, data[9].purchaseId);
+        deepStrictEqual(data[0].saleName, "Doces A");
+        deepStrictEqual(data[1].saleName, "Doces A");
+        deepStrictEqual(data[2].saleName, "Doces A");
+        deepStrictEqual(data[3].saleName, "Doces A");
+        deepStrictEqual(data[4].saleName, "Doces A");
+        deepStrictEqual(data[5].saleName, "Doces A");
+        deepStrictEqual(data[6].saleName, "Doces A");
+        deepStrictEqual(data[7].saleName, "Doces A");
+        deepStrictEqual(data[8].saleName, "Doces A");
+        deepStrictEqual(data[9].saleName, "Doces A");
       });
     });
 

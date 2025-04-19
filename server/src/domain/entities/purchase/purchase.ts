@@ -1,19 +1,18 @@
 import { randomUUID } from "node:crypto";
 
-import { ProductsValidation } from "@core/logic/domain/validations/products-validation";
-
+import { PurchaseSaleProduct } from "../purchase-sale-product/purchase-sale-product";
 import { Sale } from "../sale/sale";
 
 interface PurchaseProps {
   saleId: string;
-  products: string;
 }
 
 export class Purchase {
   private readonly _id: string;
   private _props: PurchaseProps;
   private readonly _created_at: Date;
-  private readonly _sales: Sale;
+  private readonly _sale: Sale;
+  private readonly _purchaseSaleProducts: PurchaseSaleProduct[];
 
   public get id(): string {
     return this._id;
@@ -31,36 +30,56 @@ export class Purchase {
     return this._created_at;
   }
 
-  public get sales(): Sale {
-    return this._sales;
+  public get sale(): Sale {
+    return this._sale;
+  }
+
+  public get purchaseSaleProducts(): PurchaseSaleProduct[] {
+    return this._purchaseSaleProducts;
   }
 
   private constructor(
-    { saleId, products }: PurchaseProps,
-    _id?: string,
-    _sales?: Sale,
+    { saleId }: PurchaseProps,
+    {
+      _id,
+      _sale,
+      _purchaseSaleProducts,
+    }: {
+      _id?: string;
+      _sale?: Sale;
+      _purchaseSaleProducts?: PurchaseSaleProduct[];
+    },
   ) {
     this._id = _id ?? randomUUID();
-    this._props = { saleId, products };
+    this._props = { saleId };
     this._created_at = new Date();
-    this._sales = _sales ?? Sale.prototype;
+    this._sale = _sale ?? Sale.prototype;
+    this._purchaseSaleProducts = _purchaseSaleProducts ?? [
+      PurchaseSaleProduct.prototype,
+    ];
   }
 
   static create(
-    { saleId, products }: PurchaseProps,
-    _id?: string,
-    sales?: Sale,
+    { saleId }: PurchaseProps,
+    {
+      _id,
+      _sale,
+      _purchaseSaleProducts,
+    }: {
+      _id?: string;
+      _sale?: Sale;
+      _purchaseSaleProducts?: PurchaseSaleProduct[];
+    },
   ): Purchase {
     return new Purchase(
       {
         saleId,
-        products: ProductsValidation.valid({
-          propertyName: "products",
-          propertyValue: products,
-        }),
       },
-      _id,
-      sales,
+      {
+        _id,
+        _sale,
+        _purchaseSaleProducts,
+      },
     );
   }
 }

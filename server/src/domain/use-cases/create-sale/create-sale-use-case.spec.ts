@@ -16,13 +16,35 @@ describe("Create sale use case", () => {
     await createSaleUseCase
       .execute({
         name: "Produtos A",
-        products: "1,2,3",
+        products:
+          "ab5b8162-553b-4807-920e-49693b4e7dfc,cf4523df-ae70-4e13-82d3-4f71314f0177,416a797d-bda4-449c-895b-b32462ae92e0",
       })
       .then(({ sale }) => {
+        const saleProduct = inMemorySaleDatabase.saleProducts;
+
+        deepStrictEqual(saleProduct[0].props.saleId, sale.id);
+        deepStrictEqual(saleProduct[1].props.saleId, sale.id);
+        deepStrictEqual(saleProduct[2].props.saleId, sale.id);
+
+        deepStrictEqual(
+          saleProduct[0].props.productId,
+          "ab5b8162-553b-4807-920e-49693b4e7dfc",
+        );
+        deepStrictEqual(
+          saleProduct[1].props.productId,
+          "cf4523df-ae70-4e13-82d3-4f71314f0177",
+        );
+        deepStrictEqual(
+          saleProduct[2].props.productId,
+          "416a797d-bda4-449c-895b-b32462ae92e0",
+        );
+        deepStrictEqual(inMemorySaleDatabase.saleProducts.length, 3);
+
         deepStrictEqual(inMemorySaleDatabase.sales[0].props, {
           name: "Produtos A",
           status: "Pendente",
-          products: "1,2,3",
+          products:
+            "ab5b8162-553b-4807-920e-49693b4e7dfc,cf4523df-ae70-4e13-82d3-4f71314f0177,416a797d-bda4-449c-895b-b32462ae92e0",
         });
         deepStrictEqual(inMemorySaleDatabase.saleCounter.totalSales, 1);
         ok(inMemorySaleDatabase.sales[0].created_at instanceof Date);
@@ -32,13 +54,35 @@ describe("Create sale use case", () => {
     await createSaleUseCase
       .execute({
         name: "Produtos B",
-        products: "1,2,3",
+        products:
+          "444179a6-ff23-4d8b-8e55-8e65ccc0a32f,a0b368dc-4cd4-4529-9f71-8b1e5d729773,fdf5f18e-7e6c-4e87-8c04-3455d449af56",
       })
       .then(({ sale }) => {
+        const saleProduct = inMemorySaleDatabase.saleProducts;
+
+        deepStrictEqual(saleProduct[3].props.saleId, sale.id);
+        deepStrictEqual(saleProduct[4].props.saleId, sale.id);
+        deepStrictEqual(saleProduct[5].props.saleId, sale.id);
+
+        deepStrictEqual(
+          saleProduct[3].props.productId,
+          "444179a6-ff23-4d8b-8e55-8e65ccc0a32f",
+        );
+        deepStrictEqual(
+          saleProduct[4].props.productId,
+          "a0b368dc-4cd4-4529-9f71-8b1e5d729773",
+        );
+        deepStrictEqual(
+          saleProduct[5].props.productId,
+          "fdf5f18e-7e6c-4e87-8c04-3455d449af56",
+        );
+        deepStrictEqual(inMemorySaleDatabase.saleProducts.length, 6);
+
         deepStrictEqual(inMemorySaleDatabase.sales[1].props, {
           name: "Produtos B",
           status: "Pendente",
-          products: "1,2,3",
+          products:
+            "444179a6-ff23-4d8b-8e55-8e65ccc0a32f,a0b368dc-4cd4-4529-9f71-8b1e5d729773,fdf5f18e-7e6c-4e87-8c04-3455d449af56",
         });
         deepStrictEqual(inMemorySaleDatabase.saleCounter.totalSales, 2);
         deepStrictEqual(inMemorySaleDatabase.sales.length, 2);
@@ -49,13 +93,35 @@ describe("Create sale use case", () => {
     await createSaleUseCase
       .execute({
         name: "Produtos C",
-        products: "1,2,3",
+        products:
+          "d95f56ae-71f8-49ee-927d-07d652f4ad42,de74d057-c3a5-40cc-a7ec-76099d828541,c8e4ce7f-2559-45a1-945b-043b6defd17b",
       })
       .then(({ sale }) => {
+        const saleProduct = inMemorySaleDatabase.saleProducts;
+
+        deepStrictEqual(saleProduct[6].props.saleId, sale.id);
+        deepStrictEqual(saleProduct[7].props.saleId, sale.id);
+        deepStrictEqual(saleProduct[8].props.saleId, sale.id);
+
+        deepStrictEqual(
+          saleProduct[6].props.productId,
+          "d95f56ae-71f8-49ee-927d-07d652f4ad42",
+        );
+        deepStrictEqual(
+          saleProduct[7].props.productId,
+          "de74d057-c3a5-40cc-a7ec-76099d828541",
+        );
+        deepStrictEqual(
+          saleProduct[8].props.productId,
+          "c8e4ce7f-2559-45a1-945b-043b6defd17b",
+        );
+        deepStrictEqual(inMemorySaleDatabase.saleProducts.length, 9);
+
         deepStrictEqual(inMemorySaleDatabase.sales[2].props, {
           name: "Produtos C",
           status: "Pendente",
-          products: "1,2,3",
+          products:
+            "d95f56ae-71f8-49ee-927d-07d652f4ad42,de74d057-c3a5-40cc-a7ec-76099d828541,c8e4ce7f-2559-45a1-945b-043b6defd17b",
         });
         deepStrictEqual(inMemorySaleDatabase.saleCounter.totalSales, 3);
         deepStrictEqual(inMemorySaleDatabase.sales.length, 3);

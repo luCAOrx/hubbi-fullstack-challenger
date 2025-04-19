@@ -19,32 +19,34 @@ enum Status {
 }
 
 model Product {
-  id         String            @id
+  id         String        @id
   name       String
-  created_at DateTime          @default(now())
+  created_at DateTime      @default(now())
   sales      SaleProduct[]
-  products   ProductPurchase[]
 
   @@map("product")
 }
 
 model Sale {
-  id         String        @id
-  name       String        @unique
+  id         String   @id
+  name       String   @unique
   status     Status
-  created_at DateTime      @default(now())
-  products   SaleProduct[]
-  purchases  Purchase[]
+  created_at DateTime @default(now())
+
+  products  SaleProduct[]
+  purchases Purchase[]
 
   @@map("sale")
 }
 
 model SaleProduct {
-  id        String  @id
+  id        String @id
   saleId    String
   productId String
-  products  Product @relation(fields: [productId], references: [id])
-  sales     Sale    @relation(fields: [saleId], references: [id], onDelete: Cascade)
+
+  product              Product               @relation(fields: [productId], references: [id])
+  sale                 Sale                  @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  purchaseSaleProducts PurchaseSaleProduct[]
 
   @@map("saleProduct")
 }
@@ -53,26 +55,35 @@ model Purchase {
   id         String   @id
   created_at DateTime @default(now())
   saleId     String
-  sales      Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
+
+  sale                 Sale                  @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  purchaseSaleProducts PurchaseSaleProduct[]
 
   @@map("purchase")
 }
 
-model ProductPurchase {
-  id         String   @id
-  created_at DateTime @default(now())
-  productId  String
-  products   Product  @relation(fields: [productId], references: [id])
+model PurchaseSaleProduct {
+  id            String   @id
+  created_at    DateTime @default(now())
+  purchaseId    String
+  saleProductId String
 
-  @@map("productPurchase")
+  purchase    Purchase    @relation(fields: [purchaseId], references: [id])
+  saleProduct SaleProduct @relation(fields: [saleProductId], references: [id])
+
+  @@map("purchaseSaleProduct")
 }
 
 model SaleCounter {
   id        Int @id @default(1)
   totalSale Int @default(0)
+
+  @@map("saleCounter")
 }
 
 model PurchaseCounter {
   id            Int @id @default(1)
   totalPurchase Int @default(0)
+
+  @@map("purchaseCounter")
 }

@@ -4,7 +4,7 @@ import { Sale } from "@domain/entities/sale/sale";
 export abstract class SaleRepository {
   abstract transactionCreateSaleWithSaleProductAndSaleCounter(
     sale: Sale,
-    saleProduct: SaleProduct[],
+    saleProducts: SaleProduct[],
   ): Promise<Sale>;
   abstract exists(name: string): Promise<boolean>;
   abstract findById(id: string): Promise<Sale | null>;

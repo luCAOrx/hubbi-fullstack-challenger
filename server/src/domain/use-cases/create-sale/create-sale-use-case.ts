@@ -1,3 +1,4 @@
+import { SaleProduct } from "@domain/entities/sale-product/sale-product";
 import { Sale } from "@domain/entities/sale/sale";
 import { SaleRepository } from "@domain/repositories/sale-repository";
 
@@ -30,7 +31,24 @@ export class CreateSaleUseCase
       throw new CreateSaleUseCaseErrors.SaleAlreadyExistsError();
     }
 
-    await this.saleRepository.createSaleWithTotalSales(sale);
+    const saleProducts = products.split(",").map((productId) => {
+      const saleProduct = SaleProduct.create(
+        {
+          saleId: sale.id,
+          productId,
+        },
+        { _sale: sale },
+      );
+
+      return saleProduct;
+    });
+
+    const saleProduct = saleProducts.map((saleProduct) => saleProduct);
+
+    await this.saleRepository.transactionCreateSaleWithSaleProductAndSaleCounter(
+      sale,
+      saleProduct,
+    );
 
     return { sale };
   }

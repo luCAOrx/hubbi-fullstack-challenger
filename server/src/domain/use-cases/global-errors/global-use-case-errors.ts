@@ -6,4 +6,12 @@ export namespace GlobalUseCaseErrors {
       this.message = "Venda não encontrada";
     }
   }
+
+  export class PurchaseNotFoundError extends Error {
+    constructor() {
+      super("PurchaseNotFoundError");
+
+      this.message = "Compra não encontrada";
+    }
+  }
 }

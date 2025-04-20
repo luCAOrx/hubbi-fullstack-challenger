@@ -10,6 +10,7 @@ import { pageNotFoundError } from "./errors/page-not-found/page-not-found-error"
 import { createPurchaseRoute } from "./routes/create-purchase.routes";
 import { createSaleRoute } from "./routes/create-sale.routes";
 import { getProductsRoute } from "./routes/get-products.routes";
+import { getPurchaseSaleProductByPurchaseIdRoute } from "./routes/get-purchase-sale-product-by-purchase-id.routes";
 import { getPurchasesRoute } from "./routes/get-purchases.routes";
 import { getSaleProductByIdRoute } from "./routes/get-sale-product-by-id.routes";
 import { getSalesRoute } from "./routes/get-sales.routes";
@@ -33,4 +34,5 @@ app.use(getSaleProductByIdRoute);
 app.use(createPurchaseRoute);
 app.use(getPurchasesRoute);
 app.use(getProductsRoute);
+app.use(getPurchaseSaleProductByPurchaseIdRoute);
 app.all("*", pageNotFoundError);

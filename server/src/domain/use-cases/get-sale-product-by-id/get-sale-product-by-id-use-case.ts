@@ -20,7 +20,7 @@ export class GetSaleProductByIdUseCase
   async execute({
     saleId,
   }: GetSaleProductByIdRequest): Promise<GetSaleProductByIdResponse> {
-    const saleOrNull = await this.saleRepository.findSaleProductById(saleId);
+    const saleOrNull = await this.saleRepository.findById(saleId);
 
     if (saleOrNull === null) {
       throw new GlobalUseCaseErrors.SaleNotFoundError();

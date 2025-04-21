@@ -1,26 +1,47 @@
 import { deepStrictEqual } from "node:assert";
 import { describe, it } from "node:test";
 
+import { GetSaleProductByIdToHttpResponse } from "@infra/http/view-models/get-sale-product-by-id-view-model";
+import { CreateSaleToHttpResponse } from "@infra/http/view-models/sale-view-model";
 import { MakeRequestFactory } from "@test-helpers/factories/make-request-factory";
 import { MakeSaleFactory } from "@test-helpers/factories/make-sale-factory";
 
 export function createSaleControllerEndToEndTests(): void {
   describe("Create sale controller", () => {
     it("should be able create new sale", async () => {
+      const headers = new Headers();
+      headers.append("Content-Type", "application/json");
+
       await new MakeSaleFactory().toHttp({}).then(async (response) => {
-        const responseBody: any = await response.json();
+        const sale: CreateSaleToHttpResponse =
+          (await response.json()) as CreateSaleToHttpResponse;
+
+        const saleProduct = await MakeRequestFactory.execute({
+          url: `${String(process.env.TEST_SERVER_URL)}/get-sale-product-by-id/${sale.id}`,
+          method: "GET",
+          headers,
+        }).then(async (response) => {
+          const data: GetSaleProductByIdToHttpResponse =
+            (await response.json()) as GetSaleProductByIdToHttpResponse;
+
+          return data;
+        });
 
         deepStrictEqual(response.status, 201);
-        deepStrictEqual(responseBody, {
-          sale: {
-            id: responseBody.sale.id,
-            name: "Produtos de limpeza",
-            status: "Pendente",
-            products:
-              "d2ef3c85-a5ed-4fcb-bc50-22e04e3dd43f,1831c265-4d88-4184-bd8b-82b87c6458f7,4ceeeda9-e10e-4453-9874-e70fb27bb1b8",
-            created_at: responseBody.sale.created_at,
-          },
+        deepStrictEqual(sale, {
+          id: sale.id,
+          name: "Produtos de limpeza",
+          status: "Pendente",
+          products:
+            "d2ef3c85-a5ed-4fcb-bc50-22e04e3dd43f,1831c265-4d88-4184-bd8b-82b87c6458f7,4ceeeda9-e10e-4453-9874-e70fb27bb1b8",
+          created_at: sale.created_at,
         });
+        deepStrictEqual(
+          saleProduct.products[0].productName,
+          "Lavagem de louça",
+        );
+        deepStrictEqual(saleProduct.products[1].productName, "Pano de limpar");
+        deepStrictEqual(saleProduct.products[2].productName, "Escova de chão");
       });
     });
 

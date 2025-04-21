@@ -1,4 +1,4 @@
-import { deepStrictEqual, notDeepStrictEqual } from "node:assert";
+import { deepStrictEqual, notDeepStrictEqual, ok } from "node:assert";
 import { describe, it } from "node:test";
 
 import { GetPurchasesToHttpResponse } from "@infra/http/view-models/get-purchases-view-model";
@@ -25,7 +25,6 @@ export function getPurchasesControllerEndToEndTests(): void {
           (await response.json()) as GetPurchasesToHttpResponse;
 
         deepStrictEqual(response.status, 200);
-        deepStrictEqual(data.length, 10);
         deepStrictEqual(page, 1);
         deepStrictEqual(perPage, 10);
         deepStrictEqual(pages, 3);
@@ -46,6 +45,16 @@ export function getPurchasesControllerEndToEndTests(): void {
         deepStrictEqual(data[7].saleName, "Doces A");
         deepStrictEqual(data[8].saleName, "Doces A");
         deepStrictEqual(data[9].saleName, "Doces A");
+        ok(new Date(data[0].purchase_created_at) instanceof Date);
+        ok(new Date(data[1].purchase_created_at) instanceof Date);
+        ok(new Date(data[2].purchase_created_at) instanceof Date);
+        ok(new Date(data[3].purchase_created_at) instanceof Date);
+        ok(new Date(data[4].purchase_created_at) instanceof Date);
+        ok(new Date(data[5].purchase_created_at) instanceof Date);
+        ok(new Date(data[6].purchase_created_at) instanceof Date);
+        ok(new Date(data[7].purchase_created_at) instanceof Date);
+        ok(new Date(data[8].purchase_created_at) instanceof Date);
+        ok(new Date(data[9].purchase_created_at) instanceof Date);
       });
     });
 

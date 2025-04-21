@@ -1,14 +1,22 @@
-import { randomUUID } from "node:crypto";
-
+import { SaleProduct } from "@domain/entities/sale-product/sale-product";
 import { Sale } from "@domain/entities/sale/sale";
 import { SaleRepository } from "@domain/repositories/sale-repository";
 
 import { prisma } from "../libs/prisma-client";
 import { SaleMapper } from "../mappers/sale-mapper";
+import { SaleProductMapper } from "../mappers/sale-product-mapper";
+
 export class PrismaSaleRepository implements SaleRepository {
-  async createSaleWithTotalSales(sale: Sale): Promise<Sale> {
-    const { id, name, status, created_at, products } =
-      SaleMapper.toPersistence(sale);
+  async transactionCreateSaleWithSaleProductAndSaleCounter(
+    sale: Sale,
+    saleProducts: SaleProduct[],
+  ): Promise<Sale> {
+    const { id, name, status, created_at } = SaleMapper.toPersistence(sale);
+
+    const saleProductIds = saleProducts.map((saleProduct) => {
+      const { productId, id } = SaleProductMapper.toPersistence(saleProduct);
+      return { productId, id };
+    });
 
     const { createdSale, createdSaleProducts } = await prisma.$transaction(
       async (trx) => {
@@ -32,6 +40,13 @@ export class PrismaSaleRepository implements SaleRepository {
             status,
             created_at,
           },
+          include: {
+            products: {
+              select: {
+                product: true,
+              },
+            },
+          },
         });
 
         await trx.saleCounter.update({
@@ -45,19 +60,16 @@ export class PrismaSaleRepository implements SaleRepository {
           },
         });
 
-        const productIds = products
-          .split(",")
-          .map((product: string) => product.trim());
-
         const createdSaleProducts = await Promise.all(
-          productIds.map((productId) =>
-            trx.saleProduct.create({
-              data: {
-                saleId: createdSale.id,
-                productId: productId,
-                id: randomUUID(),
-              },
-            }),
+          saleProductIds.map(
+            async ({ id, productId }) =>
+              await trx.saleProduct.create({
+                data: {
+                  saleId: createdSale.id,
+                  productId,
+                  id,
+                },
+              }),
           ),
         );
 
@@ -67,7 +79,8 @@ export class PrismaSaleRepository implements SaleRepository {
 
     return SaleMapper.toDomain({
       rawPrismaSale: createdSale,
-      rawSaleProducts: createdSaleProducts,
+      rawPrismaSaleProducts: createdSaleProducts,
+      rawPrismaProduct: createdSale.products.map(({ product }) => product),
     });
   }
 
@@ -82,20 +95,10 @@ export class PrismaSaleRepository implements SaleRepository {
   async findById(id: string): Promise<Sale | null> {
     const saleOrNull = await prisma.sale.findUnique({
       where: { id },
-    });
-
-    if (saleOrNull === null) return null;
-
-    return SaleMapper.toDomain({ rawPrismaSale: saleOrNull });
-  }
-
-  async findSaleProductById(saleId: string): Promise<Sale | null> {
-    const saleOrNull = await prisma.sale.findUnique({
-      where: { id: saleId },
       include: {
         products: {
           select: {
-            products: true,
+            product: true,
           },
         },
       },
@@ -104,12 +107,32 @@ export class PrismaSaleRepository implements SaleRepository {
     if (saleOrNull === null) return null;
 
     const products = saleOrNull.products.map(
-      (saleProduct) => saleProduct.products,
+      (saleProduct) => saleProduct.product,
     );
 
     return SaleMapper.toDomain({
       rawPrismaSale: saleOrNull,
       rawPrismaProduct: products,
+    });
+  }
+
+  async findSaleProductById(saleId: string): Promise<SaleProduct[]> {
+    const saleProductOrSaleProducts = await prisma.saleProduct.findMany({
+      where: { saleId },
+      include: {
+        sale: true,
+        product: true,
+      },
+    });
+
+    return saleProductOrSaleProducts.map((saleProduct) => {
+      const product = SaleProductMapper.toDomain({
+        rawPrismaSale: saleProduct.sale,
+        rawPrismaProduct: saleProduct.product,
+        rawPrismaSaleProduct: saleProduct,
+      });
+
+      return product;
     });
   }
 
@@ -127,7 +150,7 @@ export class PrismaSaleRepository implements SaleRepository {
     return saleOrSales.map((sale) =>
       SaleMapper.toDomain({
         rawPrismaSale: sale,
-        rawSaleProducts: sale.products,
+        rawPrismaSaleProducts: sale.products,
       }),
     );
   }

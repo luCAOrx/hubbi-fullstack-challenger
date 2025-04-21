@@ -34,9 +34,7 @@ export class CreateSaleController extends BaseController {
 
         return this.created({
           response,
-          message: {
-            sale: saleResponse,
-          },
+          message: saleResponse,
         });
       })
       .catch((error: Error) => {

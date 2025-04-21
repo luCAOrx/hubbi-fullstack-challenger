@@ -14,41 +14,46 @@ interface ToPersistenceResponse {
   id: string;
   saleId: string;
   productId: string;
-  products: Product;
   sales?: Sale;
 }
 
 export class SaleProductMapper {
-  static toDomain(
-    rawPrismaSaleProduct: PrismaSaleProduct,
-    rawPrismaProduct: PrismaProduct,
-    rawPrismaSale: PrismaSale,
-  ): DomainSaleProduct {
+  static toDomain({
+    rawPrismaSaleProduct,
+    rawPrismaProduct,
+    rawPrismaSale,
+  }: {
+    rawPrismaSaleProduct: PrismaSaleProduct;
+    rawPrismaProduct: PrismaProduct;
+    rawPrismaSale: PrismaSale;
+  }): DomainSaleProduct {
     const productMapper: Product = ProductMapper.toDomain({
-      rawPrismaProduct: rawPrismaProduct!,
+      rawPrismaProduct: rawPrismaProduct,
     });
+
     const saleMapper: Sale = SaleMapper.toDomain({ rawPrismaSale });
 
     return DomainSaleProduct.create(
       {
-        productId: rawPrismaSaleProduct.productId,
-        saleId: rawPrismaSaleProduct.saleId,
-        products: productMapper,
-        sales: saleMapper,
+        productId: rawPrismaProduct.id,
+        saleId: rawPrismaSale.id,
       },
-      { _id: rawPrismaSaleProduct.id },
+      {
+        _id: rawPrismaSaleProduct.id,
+        _sale: saleMapper,
+        _product: productMapper,
+      },
     );
   }
 
   static toPersistence({
     id,
-    props: { productId, saleId, products },
+    props: { productId, saleId },
   }: DomainSaleProduct): ToPersistenceResponse {
     return {
       id,
       productId,
       saleId,
-      products: products!,
     };
   }
 }

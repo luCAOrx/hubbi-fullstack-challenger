@@ -19,11 +19,11 @@ export class SaleMapper {
   static toDomain({
     rawPrismaSale,
     rawPrismaProduct,
-    rawSaleProducts,
+    rawPrismaSaleProducts,
   }: {
     rawPrismaSale: PrismaSale;
     rawPrismaProduct?: PrismaProduct[];
-    rawSaleProducts?: SaleProduct[];
+    rawPrismaSaleProducts?: SaleProduct[];
   }): DomainSale {
     const products = rawPrismaProduct
       ? rawPrismaProduct.map((product) =>
@@ -36,7 +36,7 @@ export class SaleMapper {
         name: rawPrismaSale.name,
         status: rawPrismaSale.status,
         products: String(
-          rawSaleProducts?.map((product) => product.productId).join(","),
+          rawPrismaSaleProducts?.map((product) => product.productId),
         ),
       },
       { _id: rawPrismaSale.id, _products: products },

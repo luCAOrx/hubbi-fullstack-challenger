@@ -98,7 +98,7 @@ export function createPurchaseControllerEndToEndTests(): void {
         method: "POST",
         headers,
         data: {
-          fakeSaleProductId: "lllllll",
+          fakeSaleProductId: "552f99f0-8717-4171-9d35-3a9398a9819a",
         },
       }).then(async (response) => {
         const responseBody = await response.json();

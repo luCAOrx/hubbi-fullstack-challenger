@@ -2,6 +2,7 @@ import { type Request, type Response } from "express";
 
 import { ValidationErrors } from "@core/logic/domain/validations/errors/validation-errors";
 import { CreatePurchaseUseCase } from "@domain/use-cases/create-purchase/create-purchase-use-case";
+import { CreatePurchaseUseCaseErrors } from "@domain/use-cases/create-purchase/errors/these-products-are-not-part-of-this-sale-error";
 import { GlobalUseCaseErrors } from "@domain/use-cases/global-errors/global-use-case-errors";
 import { PrismaPurchaseRepository } from "@infra/http/repositories/prisma-purchase-repository";
 import { PrismaSaleRepository } from "@infra/http/repositories/prisma-sale-repository";
@@ -14,7 +15,7 @@ interface CreatePurchaseRouteParamsProps {
 }
 
 interface CreatePurchaseRequestBodyProps {
-  products: string;
+  saleProductId: string;
 }
 
 export class CreatePurchaseController extends BaseController {
@@ -24,7 +25,7 @@ export class CreatePurchaseController extends BaseController {
   ): Promise<any> {
     const { saleId } =
       request.params as unknown as CreatePurchaseRouteParamsProps;
-    const { products } = request.body as CreatePurchaseRequestBodyProps;
+    const { saleProductId } = request.body as CreatePurchaseRequestBodyProps;
 
     const prismaPurchaseRepository = new PrismaPurchaseRepository();
     const prismaSaleRepository = new PrismaSaleRepository();
@@ -37,7 +38,7 @@ export class CreatePurchaseController extends BaseController {
     await createPurchaseUseCase
       .execute({
         saleId,
-        products,
+        saleProductId,
       })
       .then(({ purchase }) => {
         const message = PurchaseViewModel.toHttp(purchase);
@@ -50,12 +51,9 @@ export class CreatePurchaseController extends BaseController {
       .catch((error: Error) => {
         if (
           error instanceof GlobalUseCaseErrors.SaleNotFoundError ||
-          error instanceof ValidationErrors.ValidationShouldNotBeEmptyError ||
-          error instanceof ValidationErrors.ValidationShouldBeLessThanError ||
           error instanceof
-            ValidationErrors.ValidationShouldBeGreaterThanError ||
-          error instanceof
-            ValidationErrors.ValidationShouldOnlyAcceptLettersError
+            CreatePurchaseUseCaseErrors.TheseProductsAreNotPartOfThisSaleError ||
+          error instanceof ValidationErrors.ValidationShouldNotBeEmptyError
         ) {
           return this.clientError({
             response,
@@ -65,12 +63,13 @@ export class CreatePurchaseController extends BaseController {
 
         if (
           Object.keys(request.body).length === 0 ||
-          !Object.hasOwn(request.body, "products")
+          Object.hasOwn(request.body, "saleProductId") ||
+          !Object.hasOwn(request.body, "saleProductId")
         ) {
           return this.clientError({
             response,
             message:
-              "The property products should be provided in the request body",
+              "The property: saleProductId, should be provided in the request body",
           });
         }
       });

@@ -6,7 +6,7 @@ import { CreatePurchaseUseCaseErrors } from "@domain/use-cases/create-purchase/e
 import { GlobalUseCaseErrors } from "@domain/use-cases/global-errors/global-use-case-errors";
 import { PrismaPurchaseRepository } from "@infra/http/repositories/prisma-purchase-repository";
 import { PrismaSaleRepository } from "@infra/http/repositories/prisma-sale-repository";
-import { PurchaseViewModel } from "@infra/http/view-models/purchase-view-model";
+import { CreatePurchaseViewModel } from "@infra/http/view-models/create-purchase-view-model";
 
 import { BaseController } from "../base-controller";
 
@@ -41,7 +41,7 @@ export class CreatePurchaseController extends BaseController {
         saleProductId,
       })
       .then(({ purchase }) => {
-        const message = PurchaseViewModel.toHttp(purchase);
+        const message = CreatePurchaseViewModel.toHttp(purchase);
 
         return this.created({
           response,

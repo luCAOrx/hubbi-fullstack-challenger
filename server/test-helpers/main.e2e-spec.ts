@@ -9,6 +9,7 @@ import { getPurchasesControllerEndToEndTests } from "@infra/http/controllers/get
 import { getSaleProductByIdControllerEndToEndTests } from "@infra/http/controllers/get-sale-product-by-id/get-sale-product-by-id-controller.e2e-spec";
 import { getSalesControllerEndToEndTests } from "@infra/http/controllers/get-sales/get-sales-controller-e2e-spec";
 import { pageNotFoundErrorEndToEndTests } from "@infra/http/errors/page-not-found/page-not-found-error.e2e-spec";
+import { CreatePurchaseToHttpResponse } from "@infra/http/view-models/purchase-view-model";
 import { CreateSaleToHttpResponse } from "@infra/http/view-models/sale-view-model";
 
 import { MakePurchaseFactory } from "./factories/make-purchase-factory";
@@ -56,11 +57,12 @@ describe("End to end (E2E) tests", () => {
           saleId: saleId[0],
         })
         .then(async (response) => {
-          const data: any = await response.json();
+          const purchase: CreatePurchaseToHttpResponse =
+            (await response.json()) as CreatePurchaseToHttpResponse;
 
-          purchaseId.push(data.id);
+          purchaseId.push(purchase.id);
 
-          return data;
+          return purchase;
         });
     }
   });

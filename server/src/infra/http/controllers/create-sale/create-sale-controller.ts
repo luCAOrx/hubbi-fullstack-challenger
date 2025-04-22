@@ -4,7 +4,7 @@ import { ValidationErrors } from "@core/logic/domain/validations/errors/validati
 import { CreateSaleUseCase } from "@domain/use-cases/create-sale/create-sale-use-case";
 import { CreateSaleUseCaseErrors } from "@domain/use-cases/create-sale/errors/sale-already-exists-error";
 import { PrismaSaleRepository } from "@infra/http/repositories/prisma-sale-repository";
-import { SaleViewModel } from "@infra/http/view-models/sale-view-model";
+import { CreateSaleViewModel } from "@infra/http/view-models/create-sale-view-model";
 
 import { BaseController } from "../base-controller";
 
@@ -30,7 +30,7 @@ export class CreateSaleController extends BaseController {
         products,
       })
       .then(({ sale }) => {
-        const saleResponse = SaleViewModel.toHttp(sale);
+        const saleResponse = CreateSaleViewModel.toHttp(sale);
 
         return this.created({
           response,

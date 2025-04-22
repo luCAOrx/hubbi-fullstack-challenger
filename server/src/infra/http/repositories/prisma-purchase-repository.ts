@@ -87,7 +87,6 @@ export class PrismaPurchaseRepository implements PurchaseRepository {
     const purchaseOrPurchases = await prisma.purchase.findMany({
       include: {
         sale: true,
-        purchaseSaleProducts: true,
       },
       orderBy: { created_at: "desc" },
       skip: (page - 1) * perPage,

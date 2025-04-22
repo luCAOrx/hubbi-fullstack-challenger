@@ -1,6 +1,6 @@
 import { Sale, Status } from "@domain/entities/sale/sale";
 
-export interface ToHttpResponse {
+export interface CreateSaleToHttpResponse {
   id: string;
   name: string;
   status: Status;
@@ -13,7 +13,7 @@ export class SaleViewModel {
     id,
     props: { name, status, products },
     created_at,
-  }: Sale): ToHttpResponse {
+  }: Sale): CreateSaleToHttpResponse {
     return {
       id,
       name,

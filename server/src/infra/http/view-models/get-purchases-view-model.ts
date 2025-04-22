@@ -23,7 +23,7 @@ export class GetPurchasesViewModel {
     const purchases = data.map((purchase) => {
       return {
         purchaseId: purchase.id,
-        saleName: purchase.sales.props.name,
+        saleName: purchase.sale.props.name,
         purchase_created_at: purchase.created_at,
       };
     });

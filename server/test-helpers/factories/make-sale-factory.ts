@@ -1,3 +1,5 @@
+import { Product } from "@domain/entities/product/product";
+import { SaleProduct } from "@domain/entities/sale-product/sale-product";
 import { Sale } from "@domain/entities/sale/sale";
 import { CreateSaleUseCase } from "@domain/use-cases/create-sale/create-sale-use-case";
 import { InMemorySaleDatabase } from "@test-helpers/in-memory-database/in-memory-sale-database";
@@ -22,13 +24,55 @@ export class MakeSaleFactory {
     const inMemorySaleDatabase = new InMemorySaleDatabase();
     const createSaleUseCase = new CreateSaleUseCase(inMemorySaleDatabase);
 
+    const productZero = Product.create(
+      {
+        name: "Cachorro quente 0",
+      },
+      {
+        _id: "1aec1cf9-3443-4e4a-a9c9-319967bfe74c",
+      },
+    );
+
+    const productOne = Product.create(
+      {
+        name: "Cachorro quente 1",
+      },
+      {
+        _id: "1bd59f2d-b6b8-4f63-acd9-068246b6fee5",
+      },
+    );
+
+    const productTwo = Product.create(
+      {
+        name: "Cachorro quente 2",
+      },
+      {
+        _id: "2d1cf07f-617d-4aac-892c-6b26ceecf36f",
+      },
+    );
+
     const { sale } = await createSaleUseCase.execute({
       name: "Produtos de limpeza",
-      products: "1,2,3",
+      products: `${productZero.id},${productOne.id},${productTwo.id}`,
       ...override,
     });
 
-    await inMemoryDatabase.createSaleWithTotalSales(sale);
+    const saleProducts = sale.props.products.split(",").map((productId) => {
+      const saleProduct = SaleProduct.create(
+        {
+          saleId: sale.id,
+          productId,
+        },
+        { _sale: sale },
+      );
+
+      return saleProduct;
+    });
+
+    await inMemoryDatabase.transactionCreateSaleWithSaleProductAndSaleCounter(
+      sale,
+      saleProducts,
+    );
 
     return sale;
   }

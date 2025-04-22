@@ -1,6 +1,10 @@
+import { Product } from "@domain/entities/product/product";
+import { PurchaseSaleProduct } from "@domain/entities/purchase-sale-product/purchase-sale-product";
 import { Purchase } from "@domain/entities/purchase/purchase";
+import { SaleProduct } from "@domain/entities/sale-product/sale-product";
 import { Sale } from "@domain/entities/sale/sale";
 import { CreatePurchaseUseCase } from "@domain/use-cases/create-purchase/create-purchase-use-case";
+import { prisma } from "@infra/http/libs/prisma-client";
 import { InMemoryPurchaseDatabase } from "@test-helpers/in-memory-database/in-memory-purchase-database";
 import { InMemorySaleDatabase } from "@test-helpers/in-memory-database/in-memory-sale-database";
 
@@ -8,7 +12,8 @@ import { MakeRequestFactory } from "./make-request-factory";
 
 interface PurchaseProps {
   saleId: string;
-  products: string;
+  saleProductId: string;
+  saleName?: string;
 }
 
 interface MakePurchaseFactoryToDomainResponse {
@@ -21,13 +26,11 @@ type Override = Partial<PurchaseProps>;
 export class MakePurchaseFactory {
   public async toDomain({
     saleId,
-    inMemoryDatabaseToPurchase,
-    inMemoryDatabaseToSale,
+    inMemoryDatabase,
     override,
   }: {
     saleId?: string;
-    inMemoryDatabaseToPurchase: InMemoryPurchaseDatabase;
-    inMemoryDatabaseToSale?: InMemorySaleDatabase;
+    inMemoryDatabase: InMemoryPurchaseDatabase;
     override?: Override;
   }): Promise<MakePurchaseFactoryToDomainResponse> {
     const inMemorySaleDatabase = new InMemorySaleDatabase();
@@ -37,26 +40,79 @@ export class MakePurchaseFactory {
       inMemorySaleDatabase,
     );
 
-    const sale = Sale.create(
+    const productZero = Product.create(
       {
-        name: "Produtos de limpeza",
-        products: "1,2,3",
-        status: "Finalizada",
+        name: "Cachorro quente 0",
       },
-      {},
+      {
+        _id: "1aec1cf9-3443-4e4a-a9c9-319967bfe74c",
+      },
     );
 
-    await inMemorySaleDatabase.createSaleWithTotalSales(sale);
+    const productOne = Product.create(
+      {
+        name: "Cachorro quente 1",
+      },
+      {
+        _id: "1bd59f2d-b6b8-4f63-acd9-068246b6fee5",
+      },
+    );
+
+    const productTwo = Product.create(
+      {
+        name: "Cachorro quente 2",
+      },
+      {
+        _id: "2d1cf07f-617d-4aac-892c-6b26ceecf36f",
+      },
+    );
+
+    const sale = Sale.create(
+      {
+        name: override?.saleName ?? "Create Purchase Test Unit",
+        status: "Finalizada",
+        products: `${productZero.id},${productOne.id},${productTwo.id}`,
+      },
+      { _products: inMemorySaleDatabase.products },
+    );
+
+    const saleProducts = sale.props.products.split(",").map((productId) => {
+      return SaleProduct.create(
+        {
+          saleId: sale.id,
+          productId,
+        },
+        { _sale: sale },
+      );
+    });
+
+    await inMemorySaleDatabase.transactionCreateSaleWithSaleProductAndSaleCounter(
+      sale,
+      saleProducts,
+    );
 
     const { purchase } = await createPurchaseUseCase.execute({
       saleId: saleId ?? sale.id,
-      products: "1,2,3",
+      saleProductId: `${inMemorySaleDatabase.saleProducts[0].id},${inMemorySaleDatabase.saleProducts[1].id},${inMemorySaleDatabase.saleProducts[2].id}`,
       ...override,
     });
 
-    await inMemoryDatabaseToSale?.createSaleWithTotalSales(sale);
+    const purchaseSaleProducts = inMemorySaleDatabase.saleProducts.map(
+      (saleProduct) => {
+        return PurchaseSaleProduct.create(
+          {
+            purchaseId: purchase.id,
+            saleProductId: saleProduct.id,
+          },
+          { _saleProduct: saleProduct, _purchase: purchase },
+        );
+      },
+    );
 
-    await inMemoryDatabaseToPurchase.createPurchaseWithTotalPurchases(purchase);
+    await inMemoryDatabase.transactionCreatePurchaseWithPurchaseSaleProductAndPurchaseCounter(
+      purchase,
+      purchaseSaleProducts,
+    );
 
     return { purchase, sale };
   }
@@ -71,13 +127,20 @@ export class MakePurchaseFactory {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
 
+    const saleProductOrSaleProducts = await prisma.saleProduct.findMany({
+      where: { saleId },
+    });
+
+    const saleProducts = saleProductOrSaleProducts.map(
+      (saleProduct) => saleProduct,
+    );
+
     return await MakeRequestFactory.execute({
       url: `${String(process.env.TEST_SERVER_URL)}/create-purchase/${saleId}`,
       method: "POST",
       headers,
       data: {
-        products:
-          "d2ef3c85-a5ed-4fcb-bc50-22e04e3dd43f,1831c265-4d88-4184-bd8b-82b87c6458f7,4ceeeda9-e10e-4453-9874-e70fb27bb1b8",
+        saleProductId: `${saleProducts[0].id},${saleProducts[1].id},${saleProducts[2].id}`,
         ...override,
       },
     });

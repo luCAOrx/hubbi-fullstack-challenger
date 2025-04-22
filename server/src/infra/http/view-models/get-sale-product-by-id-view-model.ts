@@ -1,4 +1,4 @@
-import { GetSaleProductByIdResponse } from "@domain/use-cases/get-sale-product-by-id/get-sale-product-by-id";
+import { GetSaleProductByIdResponse } from "@domain/use-cases/get-sale-product-by-id/get-sale-product-by-id-use-case";
 
 export interface GetSaleProductByIdToHttpResponse {
   saleId: string;

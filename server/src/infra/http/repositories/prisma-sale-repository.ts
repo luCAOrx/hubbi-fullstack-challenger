@@ -140,7 +140,6 @@ export class PrismaSaleRepository implements SaleRepository {
     const saleOrSales = await prisma.sale.findMany({
       include: {
         products: true,
-        _count: true,
       },
       orderBy: { created_at: "desc" },
       skip: (page - 1) * perPage,

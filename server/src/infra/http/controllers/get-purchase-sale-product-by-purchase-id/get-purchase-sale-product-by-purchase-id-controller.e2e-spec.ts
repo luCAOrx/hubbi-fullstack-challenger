@@ -1,7 +1,7 @@
 import { deepStrictEqual } from "node:assert";
 import { describe, it } from "node:test";
 
-import { GetPurchaseSaleProductByPurchaseIdToHttpResponse } from "@infra/http/view-models/get-purchase-sale-product-by-purchase-id";
+import { GetPurchaseSaleProductByPurchaseIdToHttpResponse } from "@infra/http/view-models/get-purchase-sale-product-by-purchase-id-view-model";
 import { MakeRequestFactory } from "@test-helpers/factories/make-request-factory";
 import { purchaseId } from "@test-helpers/main.e2e-spec";
 

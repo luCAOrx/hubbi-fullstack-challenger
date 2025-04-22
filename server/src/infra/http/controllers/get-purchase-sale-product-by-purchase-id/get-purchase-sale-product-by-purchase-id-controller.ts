@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { GetPurchaseSaleProductByPurchaseIdUseCase } from "@domain/use-cases/get-purchase-sale-product-by-purchase-id/get-purchase-sale-product-by-purchase-id-use-case";
 import { GlobalUseCaseErrors } from "@domain/use-cases/global-errors/global-use-case-errors";
 import { PrismaPurchaseRepository } from "@infra/http/repositories/prisma-purchase-repository";
-import { GetPurchaseSaleProductByPurchaseIdViewModel } from "@infra/http/view-models/get-purchase-sale-product-by-purchase-id";
+import { GetPurchaseSaleProductByPurchaseIdViewModel } from "@infra/http/view-models/get-purchase-sale-product-by-purchase-id-view-model";
 
 import { BaseController } from "../base-controller";
 

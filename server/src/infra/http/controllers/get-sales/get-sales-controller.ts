@@ -34,7 +34,7 @@ export class GetSalesController extends BaseController {
 
         return this.ok({ response, message });
       })
-      .catch((error: Error) => {
+      .catch(() => {
         if (
           Object.keys(request.query).length === 0 ||
           Object.hasOwn(request.query, "page") ||

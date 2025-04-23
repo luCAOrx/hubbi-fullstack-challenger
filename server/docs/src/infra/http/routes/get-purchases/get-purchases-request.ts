@@ -12,12 +12,7 @@ export const getPurchasesRequest: Operation = {
       name: "page",
       required: true,
       schema: {
-        type: "number",
-        properties: {
-          page: {
-            type: "number",
-          },
-        },
+        $ref: "#/components/schemas/GetPurchasesQueryParams",
       },
       example: "1",
     },

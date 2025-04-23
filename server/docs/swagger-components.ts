@@ -2,31 +2,7 @@ import { type Components } from "swagger-jsdoc";
 
 export const swaggerComponents: Components = {
   schemas: {
-    Sale: {
-      type: "object",
-      properties: {
-        id: {
-          type: "string",
-          format: "uuid",
-        },
-        name: {
-          type: "string",
-        },
-        status: {
-          type: "string",
-          format: "Pendente || Finalizada",
-        },
-        products: {
-          type: "string",
-        },
-        created_at: {
-          type: "string",
-          format: "date",
-        },
-      },
-    },
-
-    SaleRequestBody: {
+    CreateSaleRequestBody: {
       type: "object",
       properties: {
         name: {
@@ -38,16 +14,16 @@ export const swaggerComponents: Components = {
       },
     },
 
-    PurchaseRequestBody: {
+    CreatePurchaseRequestBody: {
       type: "object",
       properties: {
-        products: {
+        saleProductId: {
           type: "string",
         },
       },
     },
 
-    PurchaseRouteParams: {
+    CreatePurchaseRouteParams: {
       type: "string",
       properties: {
         saleId: {
@@ -57,11 +33,30 @@ export const swaggerComponents: Components = {
       },
     },
 
-    SaleRouteQueryParams: {
+    GetSalesQueryParams: {
       type: "number",
       properties: {
         page: {
           type: "number",
+        },
+      },
+    },
+
+    GetPurchasesQueryParams: {
+      type: "number",
+      properties: {
+        page: {
+          type: "number",
+        },
+      },
+    },
+
+    GetPurchaseSaleProductByPurchaseIdRouteParams: {
+      type: "string",
+      properties: {
+        purchaseId: {
+          type: "string",
+          format: "uuid",
         },
       },
     },

@@ -5,13 +5,9 @@ const httpResponseToCreatedResource: Response = {
   content: {
     "application/json": {
       example: {
-        purchase: {
-          id: "172d0289-6d10-4114-a506-a29d49e20ee7",
-          saleId: "584d84c6-673a-4e09-9513-9e47adcbd30a",
-          products:
-            "d2ef3c85-a5ed-4fcb-bc50-22e04e3dd43f,1831c265-4d88-4184-bd8b-82b87c6458f7,4ceeeda9-e10e-4453-9874-e70fb27bb1b8",
-          created_at: "2025-01-29T04:16:53.128Z",
-        },
+        id: "34998f10-2613-4220-b20d-a31fafae211e",
+        saleId: "212508dd-8b45-4a5a-8e6f-ee976e85f87a",
+        created_at: "2025-04-22T10:12:52.063Z",
       },
     },
   },

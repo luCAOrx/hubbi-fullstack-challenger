@@ -12,7 +12,7 @@ export const createSaleRequest: Operation = {
     content: {
       "application/json": {
         schema: {
-          $ref: "#/components/schemas/SaleRequestBody",
+          $ref: "#/components/schemas/CreateSaleRequestBody",
         },
         example: {
           name: "Produtos de limpeza",

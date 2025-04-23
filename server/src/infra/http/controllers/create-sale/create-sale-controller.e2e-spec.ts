@@ -1,8 +1,8 @@
 import { deepStrictEqual } from "node:assert";
 import { describe, it } from "node:test";
 
+import { CreateSaleToHttpResponse } from "@infra/http/view-models/create-sale-view-model";
 import { GetSaleProductByIdToHttpResponse } from "@infra/http/view-models/get-sale-product-by-id-view-model";
-import { CreateSaleToHttpResponse } from "@infra/http/view-models/sale-view-model";
 import { MakeRequestFactory } from "@test-helpers/factories/make-request-factory";
 import { MakeSaleFactory } from "@test-helpers/factories/make-sale-factory";
 

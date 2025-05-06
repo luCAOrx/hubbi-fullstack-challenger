@@ -2,7 +2,7 @@ import { type Response, type Responses } from "swagger-jsdoc";
 
 const httpResponseToSuccessRequest: Response = {
   description:
-    "Resposta HTTP ao buscar um produto da compra de uma determinada venda",
+    "Resposta HTTP ao buscar um ou mais produtos da compra de uma determinada venda",
   content: {
     "application/json": {
       example: {

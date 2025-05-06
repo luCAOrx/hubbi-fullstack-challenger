@@ -15,37 +15,20 @@ export class InMemorySaleDatabase implements SaleRepository {
 
   async transactionCreateSaleWithSaleProductAndSaleCounter(
     sale: Sale,
-    saleProduct: SaleProduct[],
+    saleProducts: SaleProduct[],
   ): Promise<Sale> {
     this.saleCounter.totalSales++;
 
-    const productZero = Product.create(
-      {
-        name: "Cachorro quente 0",
-      },
-      {
-        _id: sale.props.products.split(",")[0],
-      },
-    );
+    sale.props.products.split(",").map((productId, index) => {
+      const product = Product.create(
+        {
+          name: `Cachorro quente ${index}`,
+        },
+        { _id: productId },
+      );
 
-    const productOne = Product.create(
-      {
-        name: "Cachorro quente 1",
-      },
-      {
-        _id: sale.props.products.split(",")[1],
-      },
-    );
-
-    const productTwo = Product.create(
-      {
-        name: "Cachorro quente 2",
-      },
-      {
-        _id: sale.props.products.split(",")[2],
-      },
-    );
-    this.products.push(productZero, productOne, productTwo);
+      this.products.push(product);
+    });
 
     sale = Sale.create(
       {
@@ -57,20 +40,38 @@ export class InMemorySaleDatabase implements SaleRepository {
     );
     this.sales.push(sale);
 
-    saleProduct = sale.props.products.split(",").map((productId) => {
-      const saleProduct = SaleProduct.create(
-        {
-          saleId: sale.id,
-          productId,
-        },
-        {},
-      );
+    const salePropsProducts = sale.props.products
+      .split(",")
+      .map((productId) => {
+        const saleProduct = SaleProduct.create(
+          {
+            saleId: sale.id,
+            productId,
+          },
+          { _sale: sale },
+        );
 
-      return saleProduct;
+        return saleProduct;
+      });
+
+    sale.products?.map((product) => {
+      saleProducts = salePropsProducts.map((saleProduct) => {
+        return SaleProduct.create(
+          {
+            saleId: saleProduct.props.saleId,
+            productId: saleProduct.props.productId,
+          },
+          {
+            _sale: saleProduct.sale,
+            _product: product,
+            _id: saleProduct.id,
+          },
+        );
+      });
     });
 
-    saleProduct.map((product) => {
-      this.saleProducts.push(product);
+    saleProducts.map((saleProduct) => {
+      this.saleProducts.push(saleProduct);
     });
 
     return sale;
@@ -88,12 +89,16 @@ export class InMemorySaleDatabase implements SaleRepository {
     return sale;
   }
 
-  async findSaleProductById(saleId: string): Promise<SaleProduct[]> {
+  async findSaleProductById(
+    saleId: string,
+    page: number,
+    perPage: number,
+  ): Promise<SaleProduct[]> {
     const saleProductOrNull = this.saleProducts.filter(
       (saleProduct) => saleProduct.props.saleId === saleId,
     );
 
-    return saleProductOrNull;
+    return saleProductOrNull.slice((page - 1) * perPage, page * perPage);
   }
 
   async findMany(page: number, perPage: number): Promise<Sale[]> {

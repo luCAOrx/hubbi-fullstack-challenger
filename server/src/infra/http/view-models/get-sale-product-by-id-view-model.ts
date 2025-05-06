@@ -1,27 +1,28 @@
 import { GetSaleProductByIdResponse } from "@domain/use-cases/get-sale-product-by-id/get-sale-product-by-id-use-case";
 
 export interface GetSaleProductByIdToHttpResponse {
-  saleId: string;
-  products: {
-    productId: string;
+  page: number;
+  data: {
+    saleProductId: string;
     productName: string;
   }[];
 }
 
 export class GetSaleProductByIdViewModel {
   static toHttp({
-    saleProduct: { id, products },
+    page,
+    data,
   }: GetSaleProductByIdResponse): GetSaleProductByIdToHttpResponse {
-    const saleProducts = products?.map((product) => {
+    const saleProducts = data.map(({ id, product }) => {
       return {
-        productId: product.id,
-        productName: product.props.name,
+        saleProductId: id,
+        productName: product!.props.name,
       };
     });
 
     return {
-      saleId: id,
-      products: saleProducts!,
+      page,
+      data: saleProducts,
     };
   }
 }

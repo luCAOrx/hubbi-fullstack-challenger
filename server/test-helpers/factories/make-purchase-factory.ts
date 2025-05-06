@@ -1,4 +1,3 @@
-import { Product } from "@domain/entities/product/product";
 import { PurchaseSaleProduct } from "@domain/entities/purchase-sale-product/purchase-sale-product";
 import { Purchase } from "@domain/entities/purchase/purchase";
 import { SaleProduct } from "@domain/entities/sale-product/sale-product";
@@ -40,50 +39,42 @@ export class MakePurchaseFactory {
       inMemorySaleDatabase,
     );
 
-    const productZero = Product.create(
-      {
-        name: "Cachorro quente 0",
-      },
-      {
-        _id: "1aec1cf9-3443-4e4a-a9c9-319967bfe74c",
-      },
-    );
-
-    const productOne = Product.create(
-      {
-        name: "Cachorro quente 1",
-      },
-      {
-        _id: "1bd59f2d-b6b8-4f63-acd9-068246b6fee5",
-      },
-    );
-
-    const productTwo = Product.create(
-      {
-        name: "Cachorro quente 2",
-      },
-      {
-        _id: "2d1cf07f-617d-4aac-892c-6b26ceecf36f",
-      },
-    );
-
     const sale = Sale.create(
       {
         name: override?.saleName ?? "Create Purchase Test Unit",
         status: "Finalizada",
-        products: `${productZero.id},${productOne.id},${productTwo.id}`,
+        products:
+          "1aec1cf9-3443-4e4a-a9c9-319967bfe74c,1bd59f2d-b6b8-4f63-acd9-068246b6fee5,2d1cf07f-617d-4aac-892c-6b26ceecf36f",
       },
       { _products: inMemorySaleDatabase.products },
     );
 
-    const saleProducts = sale.props.products.split(",").map((productId) => {
-      return SaleProduct.create(
+    let saleProducts = sale.props.products.split(",").map((productId) => {
+      const saleProduct = SaleProduct.create(
         {
           saleId: sale.id,
           productId,
         },
         { _sale: sale },
       );
+
+      return saleProduct;
+    });
+
+    sale.products?.map((product) => {
+      saleProducts = saleProducts.map((saleProduct) => {
+        return SaleProduct.create(
+          {
+            saleId: saleProduct.props.saleId,
+            productId: saleProduct.props.productId,
+          },
+          {
+            _sale: saleProduct.sale,
+            _product: product,
+            _id: saleProduct.id,
+          },
+        );
+      });
     });
 
     await inMemorySaleDatabase.transactionCreateSaleWithSaleProductAndSaleCounter(

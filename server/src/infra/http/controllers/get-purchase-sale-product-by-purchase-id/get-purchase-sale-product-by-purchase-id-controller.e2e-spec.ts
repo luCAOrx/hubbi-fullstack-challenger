@@ -24,9 +24,9 @@ export function getPurchaseSaleProductByPurchaseId(): void {
         deepStrictEqual(data[0].saleName, "Doces A");
         deepStrictEqual(data[1].saleName, "Doces A");
         deepStrictEqual(data[2].saleName, "Doces A");
-        deepStrictEqual(data[0].productName, "Açaí com granola");
-        deepStrictEqual(data[1].productName, "Pão de queijo");
-        deepStrictEqual(data[2].productName, "Torta de frutas");
+        deepStrictEqual(data[0].productName, "Bolo de chocolate");
+        deepStrictEqual(data[1].productName, "Arroz integral");
+        deepStrictEqual(data[2].productName, "Feijão preto");
         deepStrictEqual(data.length, 3);
       });
     });

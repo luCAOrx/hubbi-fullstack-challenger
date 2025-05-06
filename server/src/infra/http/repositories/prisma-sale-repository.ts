@@ -116,13 +116,20 @@ export class PrismaSaleRepository implements SaleRepository {
     });
   }
 
-  async findSaleProductById(saleId: string): Promise<SaleProduct[]> {
+  async findSaleProductById(
+    saleId: string,
+    page: number,
+    perPage: number,
+  ): Promise<SaleProduct[]> {
     const saleProductOrSaleProducts = await prisma.saleProduct.findMany({
       where: { saleId },
       include: {
         sale: true,
         product: true,
       },
+      orderBy: { sale: { created_at: "desc" } },
+      skip: (page - 1) * perPage,
+      take: perPage,
     });
 
     return saleProductOrSaleProducts.map((saleProduct) => {

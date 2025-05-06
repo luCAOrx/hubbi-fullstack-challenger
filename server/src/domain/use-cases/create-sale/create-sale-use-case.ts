@@ -31,7 +31,7 @@ export class CreateSaleUseCase
       throw new CreateSaleUseCaseErrors.SaleAlreadyExistsError();
     }
 
-    const saleProducts = products.split(",").map((productId) => {
+    let saleProducts = products.split(",").map((productId) => {
       const saleProduct = SaleProduct.create(
         {
           saleId: sale.id,
@@ -43,11 +43,25 @@ export class CreateSaleUseCase
       return saleProduct;
     });
 
-    const saleProduct = saleProducts.map((saleProduct) => saleProduct);
+    sale.products?.map((product) => {
+      saleProducts = saleProducts.map((saleProduct) => {
+        return SaleProduct.create(
+          {
+            saleId: saleProduct.props.saleId,
+            productId: saleProduct.props.productId,
+          },
+          {
+            _sale: saleProduct.sale,
+            _product: product,
+            _id: saleProduct.id,
+          },
+        );
+      });
+    });
 
     await this.saleRepository.transactionCreateSaleWithSaleProductAndSaleCounter(
       sale,
-      saleProduct,
+      saleProducts,
     );
 
     return { sale };

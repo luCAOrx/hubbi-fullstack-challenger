@@ -33,6 +33,25 @@ export const swaggerComponents: Components = {
       },
     },
 
+    GetSaleProductByIdRouteParams: {
+      type: "string",
+      properties: {
+        saleId: {
+          type: "string",
+          format: "uuid",
+        },
+      },
+    },
+
+    GetSaleProductByIdQueryParams: {
+      type: "number",
+      properties: {
+        page: {
+          type: "number",
+        },
+      },
+    },
+
     GetSalesQueryParams: {
       type: "number",
       properties: {

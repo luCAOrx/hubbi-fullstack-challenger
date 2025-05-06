@@ -17,7 +17,7 @@ export function createSaleControllerEndToEndTests(): void {
           (await response.json()) as CreateSaleToHttpResponse;
 
         const saleProduct = await MakeRequestFactory.execute({
-          url: `${String(process.env.TEST_SERVER_URL)}/get-sale-product-by-id/${sale.id}`,
+          url: `${String(process.env.TEST_SERVER_URL)}/get-sale-product-by-id/${sale.id}?page=1`,
           method: "GET",
           headers,
         }).then(async (response) => {
@@ -36,12 +36,9 @@ export function createSaleControllerEndToEndTests(): void {
             "d2ef3c85-a5ed-4fcb-bc50-22e04e3dd43f,1831c265-4d88-4184-bd8b-82b87c6458f7,4ceeeda9-e10e-4453-9874-e70fb27bb1b8",
           created_at: sale.created_at,
         });
-        deepStrictEqual(
-          saleProduct.products[0].productName,
-          "Lavagem de louça",
-        );
-        deepStrictEqual(saleProduct.products[1].productName, "Pano de limpar");
-        deepStrictEqual(saleProduct.products[2].productName, "Escova de chão");
+        deepStrictEqual(saleProduct.data[0].productName, "Lavagem de louça");
+        deepStrictEqual(saleProduct.data[1].productName, "Pano de limpar");
+        deepStrictEqual(saleProduct.data[2].productName, "Escova de chão");
       });
     });
 

@@ -7,8 +7,12 @@ import { GetSaleProductByIdViewModel } from "@infra/http/view-models/get-sale-pr
 
 import { BaseController } from "../base-controller";
 
-interface GetSalesRouteParamsProps {
+interface GetSaleProductByIdRouteParamsProps {
   saleId: string;
+}
+
+interface GetSaleProductByIdQueryParamsProps {
+  page: string;
 }
 
 export class GetSaleProductByIdController extends BaseController {
@@ -16,7 +20,11 @@ export class GetSaleProductByIdController extends BaseController {
     request: Request,
     response: Response,
   ): Promise<any> {
-    const { saleId } = request.params as unknown as GetSalesRouteParamsProps;
+    const { saleId } =
+      request.params as unknown as GetSaleProductByIdRouteParamsProps;
+
+    const { page } =
+      request.query as unknown as GetSaleProductByIdQueryParamsProps;
 
     const prismaSaleRepository = new PrismaSaleRepository();
 
@@ -25,10 +33,11 @@ export class GetSaleProductByIdController extends BaseController {
     );
 
     await getSaleProductByIdUseCase
-      .execute({ saleId })
-      .then(({ saleProduct }) => {
+      .execute({ saleId, page: Number(page) })
+      .then(({ data, page }) => {
         const message = GetSaleProductByIdViewModel.toHttp({
-          saleProduct,
+          data,
+          page,
         });
 
         return this.ok({
@@ -41,6 +50,18 @@ export class GetSaleProductByIdController extends BaseController {
           return this.clientError({
             response,
             message: error.message,
+          });
+        }
+
+        if (
+          Object.keys(request.query).length === 0 ||
+          Object.hasOwn(request.query, "page") ||
+          !Object.hasOwn(request.query, "page")
+        ) {
+          return this.clientError({
+            response,
+            message:
+              "The query parameters: page must be provided in the query parameters of the request",
           });
         }
       });

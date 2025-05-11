@@ -13,6 +13,10 @@ export abstract class SaleRepository {
     page: number,
     perPage: number,
   ): Promise<SaleProduct[]>;
+  abstract validateSaleProductIdsThatBelongToTheSale(
+    saleId: string,
+    saleProductIds: string[],
+  ): Promise<boolean>;
   abstract findMany(page: number, perPage: number): Promise<Sale[]>;
   abstract getTotalSalesCount(): Promise<number>;
 }

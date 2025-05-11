@@ -4,7 +4,6 @@ import { PurchaseRepository } from "@domain/repositories/purchase-repository";
 import { SaleRepository } from "@domain/repositories/sale-repository";
 
 import { BaseUseCase } from "../base-use-case";
-import { GetSaleProductByIdUseCase } from "../get-sale-product-by-id/get-sale-product-by-id-use-case";
 import { GlobalUseCaseErrors } from "../global-errors/global-use-case-errors";
 import { CreatePurchaseUseCaseErrors } from "./errors/these-products-are-not-part-of-this-sale-error";
 
@@ -29,30 +28,21 @@ export class CreatePurchaseUseCase
     saleId,
     saleProductId,
   }: CreatePurchaseRequest): Promise<CreatePurchaseResponse> {
-    const getSaleProductById = new GetSaleProductByIdUseCase(
-      this.saleRepository,
-    );
-
     const saleOrNull = await this.saleRepository.findById(saleId);
 
     if (saleOrNull === null) {
       throw new GlobalUseCaseErrors.SaleNotFoundError();
     }
 
-    const saleProductOrSaleProducts = await getSaleProductById.execute({
-      saleId: saleOrNull.id,
-    });
-
     const saleProductIds = saleProductId
       .split(",")
       .map((saleProductId) => saleProductId);
 
-    const isProductArePartFromSaleProduct = saleProductIds.every(
-      (saleProductId) =>
-        saleProductOrSaleProducts.data
-          .map((saleProduct) => saleProduct.id)
-          .includes(saleProductId),
-    );
+    const isProductArePartFromSaleProduct =
+      await this.saleRepository.validateSaleProductIdsThatBelongToTheSale(
+        saleId,
+        saleProductId.split(","),
+      );
 
     if (!isProductArePartFromSaleProduct) {
       throw new CreatePurchaseUseCaseErrors.TheseProductsAreNotPartOfThisSaleError();

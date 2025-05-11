@@ -143,6 +143,20 @@ export class PrismaSaleRepository implements SaleRepository {
     });
   }
 
+  async validateSaleProductIdsThatBelongToTheSale(
+    saleId: string,
+    saleProductIds: string[],
+  ): Promise<boolean> {
+    const count = await prisma.saleProduct.count({
+      where: {
+        saleId,
+        id: { in: saleProductIds },
+      },
+    });
+
+    return count === saleProductIds.length;
+  }
+
   async findMany(page: number, perPage: number): Promise<Sale[]> {
     const saleOrSales = await prisma.sale.findMany({
       include: {

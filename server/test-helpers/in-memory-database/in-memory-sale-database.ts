@@ -101,6 +101,19 @@ export class InMemorySaleDatabase implements SaleRepository {
     return saleProductOrNull.slice((page - 1) * perPage, page * perPage);
   }
 
+  async validateSaleProductIdsThatBelongToTheSale(
+    saleId: string,
+    saleProductIds: string[],
+  ): Promise<boolean> {
+    const validIds = new Set(
+      this.saleProducts
+        .filter((sp) => sp.sale?.id === saleId)
+        .map((sp) => sp.id),
+    );
+
+    return saleProductIds.every((id) => validIds.has(id));
+  }
+
   async findMany(page: number, perPage: number): Promise<Sale[]> {
     const saleOrSales = this.sales.map((sales) => sales);
 

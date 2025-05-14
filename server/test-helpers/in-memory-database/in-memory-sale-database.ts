@@ -94,11 +94,14 @@ export class InMemorySaleDatabase implements SaleRepository {
     page: number,
     perPage: number,
   ): Promise<SaleProduct[]> {
-    const saleProductOrNull = this.saleProducts.filter(
+    const saleProductOrSaleProducts = this.saleProducts.filter(
       (saleProduct) => saleProduct.props.saleId === saleId,
     );
 
-    return saleProductOrNull.slice((page - 1) * perPage, page * perPage);
+    return saleProductOrSaleProducts.slice(
+      (page - 1) * perPage,
+      page * perPage,
+    );
   }
 
   async validateSaleProductIdsThatBelongToTheSale(

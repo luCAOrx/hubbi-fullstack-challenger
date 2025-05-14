@@ -1,15 +1,16 @@
-import { Purchase } from "@domain/entities/purchase/purchase";
+import { PurchaseSaleProduct } from "@domain/entities/purchase-sale-product/purchase-sale-product";
 import { PurchaseRepository } from "@domain/repositories/purchase-repository";
 
 import { BaseUseCase } from "../base-use-case";
 import { GlobalUseCaseErrors } from "../global-errors/global-use-case-errors";
 
 interface GetPurchaseSaleProductByPurchaseIdRequest {
+  page?: number;
   purchaseId: string;
 }
 
 export interface GetPurchaseSaleProductByPurchaseIdResponse {
-  purchaseSaleProduct: Purchase;
+  data: PurchaseSaleProduct[];
 }
 
 export class GetPurchaseSaleProductByPurchaseIdUseCase
@@ -19,22 +20,25 @@ export class GetPurchaseSaleProductByPurchaseIdUseCase
       GetPurchaseSaleProductByPurchaseIdResponse
     >
 {
-  constructor(
-    private readonly purchaseSaleProductRepository: PurchaseRepository,
-  ) {}
+  constructor(private readonly purchaseRepository: PurchaseRepository) {}
 
   async execute({
+    page = 1,
     purchaseId,
   }: GetPurchaseSaleProductByPurchaseIdRequest): Promise<GetPurchaseSaleProductByPurchaseIdResponse> {
-    const purchaseOrNull =
-      await this.purchaseSaleProductRepository.findPurchaseSaleProductByPurchaseId(
+    const perPage = 10;
+
+    const purchaseSaleProductOrNull =
+      await this.purchaseRepository.findPurchaseSaleProductByPurchaseId(
         purchaseId,
+        page,
+        perPage,
       );
 
-    if (purchaseOrNull === null) {
+    if (purchaseSaleProductOrNull === null) {
       throw new GlobalUseCaseErrors.PurchaseNotFoundError();
     }
 
-    return { purchaseSaleProduct: purchaseOrNull };
+    return { data: purchaseSaleProductOrNull };
   }
 }

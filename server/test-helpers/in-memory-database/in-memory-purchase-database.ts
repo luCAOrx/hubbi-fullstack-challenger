@@ -73,6 +73,7 @@ export class InMemoryPurchaseDatabase implements PurchaseRepository {
       page * perPage,
     );
   }
+
   async getTotalPurchasesCount(): Promise<number> {
     return this.purchaseCounter.totalPurchases ?? 0;
   }

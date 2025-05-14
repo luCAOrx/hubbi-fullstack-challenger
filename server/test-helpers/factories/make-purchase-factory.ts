@@ -1,4 +1,3 @@
-import { PurchaseSaleProduct } from "@domain/entities/purchase-sale-product/purchase-sale-product";
 import { Purchase } from "@domain/entities/purchase/purchase";
 import { SaleProduct } from "@domain/entities/sale-product/sale-product";
 import { Sale } from "@domain/entities/sale/sale";
@@ -21,6 +20,9 @@ interface MakePurchaseFactoryToDomainResponse {
 }
 
 type Override = Partial<PurchaseProps>;
+
+export const inMemorySaleRecord: Sale[] = [];
+export const inMemorySaleProductRecord: SaleProduct[] = [];
 
 export class MakePurchaseFactory {
   public async toDomain({
@@ -82,27 +84,23 @@ export class MakePurchaseFactory {
       saleProducts,
     );
 
+    inMemorySaleDatabase.sales.map((inMemorySale) =>
+      inMemorySaleRecord.push(inMemorySale),
+    );
+
+    inMemorySaleDatabase.saleProducts.map((inMemorySaleProduct) =>
+      inMemorySaleProductRecord.push(inMemorySaleProduct),
+    );
+
     const { purchase } = await createPurchaseUseCase.execute({
       saleId: saleId ?? sale.id,
       saleProductId: `${inMemorySaleDatabase.saleProducts[0].id},${inMemorySaleDatabase.saleProducts[1].id},${inMemorySaleDatabase.saleProducts[2].id},${inMemorySaleDatabase.saleProducts[3].id},${inMemorySaleDatabase.saleProducts[4].id},${inMemorySaleDatabase.saleProducts[5].id},${inMemorySaleDatabase.saleProducts[6].id},${inMemorySaleDatabase.saleProducts[7].id},${inMemorySaleDatabase.saleProducts[8].id},${inMemorySaleDatabase.saleProducts[9].id},${inMemorySaleDatabase.saleProducts[10].id},${inMemorySaleDatabase.saleProducts[11].id},${inMemorySaleDatabase.saleProducts[12].id},${inMemorySaleDatabase.saleProducts[13].id},${inMemorySaleDatabase.saleProducts[14].id},${inMemorySaleDatabase.saleProducts[15].id},${inMemorySaleDatabase.saleProducts[16].id},${inMemorySaleDatabase.saleProducts[17].id},${inMemorySaleDatabase.saleProducts[18].id},${inMemorySaleDatabase.saleProducts[19].id}`,
       ...override,
     });
 
-    const purchaseSaleProducts = inMemorySaleDatabase.saleProducts.map(
-      (saleProduct) => {
-        return PurchaseSaleProduct.create(
-          {
-            purchaseId: purchase.id,
-            saleProductId: saleProduct.id,
-          },
-          { _saleProduct: saleProduct, _purchase: purchase },
-        );
-      },
-    );
-
     await inMemoryDatabase.transactionCreatePurchaseWithPurchaseSaleProductAndPurchaseCounter(
       purchase,
-      purchaseSaleProducts,
+      purchase.purchaseSaleProducts,
     );
 
     return { purchase, sale };

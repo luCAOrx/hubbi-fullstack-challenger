@@ -11,6 +11,10 @@ interface GetPurchaseSaleProductByPurchaseIdRouteParamsProps {
   purchaseId: string;
 }
 
+interface GetPurchaseSaleProductByPurchaseIdQueryParamsProps {
+  page: string;
+}
+
 export class GetPurchaseSaleProductByPurchaseIdController extends BaseController {
   protected async executeImplementation(
     request: Request,
@@ -19,16 +23,19 @@ export class GetPurchaseSaleProductByPurchaseIdController extends BaseController
     const { purchaseId } =
       request.params as unknown as GetPurchaseSaleProductByPurchaseIdRouteParamsProps;
 
+    const { page } =
+      request.query as unknown as GetPurchaseSaleProductByPurchaseIdQueryParamsProps;
+
     const prismaPurchaseRepository = new PrismaPurchaseRepository();
 
     const getPurchaseSaleProductByPurchaseId =
       new GetPurchaseSaleProductByPurchaseIdUseCase(prismaPurchaseRepository);
 
     await getPurchaseSaleProductByPurchaseId
-      .execute({ purchaseId })
-      .then(({ purchaseSaleProduct }) => {
+      .execute({ purchaseId, page: Number(page) })
+      .then(({ data }) => {
         const message = GetPurchaseSaleProductByPurchaseIdViewModel.toHttp({
-          purchaseSaleProduct,
+          data,
         });
 
         return this.ok({

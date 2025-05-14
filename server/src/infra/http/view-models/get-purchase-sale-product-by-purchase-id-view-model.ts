@@ -10,17 +10,15 @@ export interface GetPurchaseSaleProductByPurchaseIdToHttpResponse {
 
 export class GetPurchaseSaleProductByPurchaseIdViewModel {
   static toHttp({
-    purchaseSaleProduct,
+    data,
   }: GetPurchaseSaleProductByPurchaseIdResponse): GetPurchaseSaleProductByPurchaseIdToHttpResponse {
-    const purchaseSaleProducts = purchaseSaleProduct.purchaseSaleProducts.map(
-      ({ saleProduct, id, purchase }) => {
-        return {
-          purchaseSaleProductId: id,
-          productName: saleProduct!.product!.props.name,
-          saleName: purchase!.sale.props.name,
-        };
-      },
-    );
+    const purchaseSaleProducts = data.map(({ saleProduct, id, purchase }) => {
+      return {
+        purchaseSaleProductId: id,
+        productName: saleProduct!.product!.props.name,
+        saleName: purchase!.sale.props.name,
+      };
+    });
 
     return {
       data: purchaseSaleProducts,

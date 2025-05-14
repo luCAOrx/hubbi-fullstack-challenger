@@ -1,8 +1,10 @@
 import { PurchaseSaleProduct } from "@domain/entities/purchase-sale-product/purchase-sale-product";
 import { Purchase } from "@domain/entities/purchase/purchase";
-import { SaleProduct } from "@domain/entities/sale-product/sale-product";
-import { Sale } from "@domain/entities/sale/sale";
 import { PurchaseRepository } from "@domain/repositories/purchase-repository";
+import {
+  inMemorySaleProductRecord,
+  inMemorySaleRecord,
+} from "@test-helpers/factories/make-purchase-factory";
 
 interface PurchaseCounter {
   totalPurchases: number;
@@ -19,34 +21,13 @@ export class InMemoryPurchaseDatabase implements PurchaseRepository {
   ): Promise<Purchase> {
     this.purchaseCounter.totalPurchases++;
 
-    const sale = Sale.create(
-      {
-        name: "Make Purchase Test Unit",
-        products:
-          "893797b4-280b-4748-9967-3b02ecbee647,066371ee-1033-405e-8888-f0f9578876ef,803f41eb-62e1-4522-9f17-bd0c47f8f47d",
-      },
-      {},
-    );
-
-    const saleProducts = sale.props.products.split(",").map((productId) => {
-      const saleProduct = SaleProduct.create(
-        {
-          saleId: sale.id,
-          productId,
-        },
-        {},
-      );
-
-      return saleProduct;
-    });
-
-    purchaseSaleProduct = saleProducts.map((saleProduct) => {
+    purchaseSaleProduct = inMemorySaleProductRecord.map((saleProduct) => {
       const purchaseSaleProduct = PurchaseSaleProduct.create(
         {
-          purchaseId: purchase.id,
           saleProductId: saleProduct.id,
+          purchaseId: purchase.id,
         },
-        {},
+        { _purchase: purchase, _saleProduct: saleProduct },
       );
 
       return purchaseSaleProduct;
@@ -55,6 +36,15 @@ export class InMemoryPurchaseDatabase implements PurchaseRepository {
     purchaseSaleProduct.map((purchaseSaleProduct) => {
       this.purchaseSaleProducts.push(purchaseSaleProduct);
     });
+
+    purchase = Purchase.create(
+      { saleId: inMemorySaleRecord[0].id },
+      {
+        _sale: inMemorySaleRecord[0],
+        _purchaseSaleProducts: this.purchaseSaleProducts,
+        _id: purchase.id,
+      },
+    );
 
     this.purchases.push(purchase);
 
@@ -69,16 +59,20 @@ export class InMemoryPurchaseDatabase implements PurchaseRepository {
 
   async findPurchaseSaleProductByPurchaseId(
     purchaseId: string,
-  ): Promise<Purchase | null> {
+    page: number,
+    perPage: number,
+  ): Promise<PurchaseSaleProduct[] | null> {
     const purchaseOrNull = this.purchases.find(
       (purchase) => purchase.id === purchaseId,
     );
 
     if (purchaseOrNull == null) return null;
 
-    return purchaseOrNull;
+    return purchaseOrNull.purchaseSaleProducts.slice(
+      (page - 1) * perPage,
+      page * perPage,
+    );
   }
-
   async getTotalPurchasesCount(): Promise<number> {
     return this.purchaseCounter.totalPurchases ?? 0;
   }

@@ -12,7 +12,7 @@ export function getPurchaseSaleProductByPurchaseId(): void {
 
     it("should be able get purchase sale product by purchaseId", async () => {
       await MakeRequestFactory.execute({
-        url: `${String(process.env.TEST_SERVER_URL)}/get-purchase-sale-product-by-purchase-id/${purchaseId[1]}`,
+        url: `${String(process.env.TEST_SERVER_URL)}/get-purchase-sale-product-by-purchase-id/${purchaseId[0]}?page=1`,
         method: "GET",
         headers,
       }).then(async (response) => {
@@ -31,15 +31,6 @@ export function getPurchaseSaleProductByPurchaseId(): void {
         deepStrictEqual(data[7].saleName, "Doces A");
         deepStrictEqual(data[8].saleName, "Doces A");
         deepStrictEqual(data[9].saleName, "Doces A");
-        deepStrictEqual(data[10].saleName, "Doces A");
-        deepStrictEqual(data[12].saleName, "Doces A");
-        deepStrictEqual(data[13].saleName, "Doces A");
-        deepStrictEqual(data[14].saleName, "Doces A");
-        deepStrictEqual(data[15].saleName, "Doces A");
-        deepStrictEqual(data[16].saleName, "Doces A");
-        deepStrictEqual(data[17].saleName, "Doces A");
-        deepStrictEqual(data[18].saleName, "Doces A");
-        deepStrictEqual(data[19].saleName, "Doces A");
         deepStrictEqual(data[0].productName, "Bolo de chocolate");
         deepStrictEqual(data[1].productName, "Arroz integral");
         deepStrictEqual(data[2].productName, "Feijão preto");
@@ -50,24 +41,50 @@ export function getPurchaseSaleProductByPurchaseId(): void {
         deepStrictEqual(data[7].productName, "Leite condensado");
         deepStrictEqual(data[8].productName, "Manteiga de amendoim");
         deepStrictEqual(data[9].productName, "Coco ralado");
-        deepStrictEqual(data[10].productName, "Sabonete de limão");
-        deepStrictEqual(data[11].productName, "Shampoo de coco");
-        deepStrictEqual(data[12].productName, "Condizente para cabelo");
-        deepStrictEqual(data[13].productName, "Loção de barbear");
-        deepStrictEqual(data[14].productName, "Desodorante");
-        deepStrictEqual(data[15].productName, "Laca de unhas");
-        deepStrictEqual(data[16].productName, "Creme hidratante para pele");
-        deepStrictEqual(data[17].productName, "Kit de higiene bucal");
-        deepStrictEqual(data[18].productName, "Máscara para olhos");
-        deepStrictEqual(data[19].productName, "Sabão líquido");
 
-        deepStrictEqual(data.length, 20);
+        deepStrictEqual(data.length, 10);
+      });
+    });
+
+    it("should be able jump to next page on get purchase sale product by purchaseId list", async () => {
+      await MakeRequestFactory.execute({
+        url: `${String(process.env.TEST_SERVER_URL)}/get-purchase-sale-product-by-purchase-id/${purchaseId[0]}?page=2`,
+        method: "GET",
+        headers,
+      }).then(async (response) => {
+        const { data }: GetPurchaseSaleProductByPurchaseIdToHttpResponse =
+          (await response.json()) as GetPurchaseSaleProductByPurchaseIdToHttpResponse;
+
+        deepStrictEqual(response.status, 200);
+
+        deepStrictEqual(data[0].saleName, "Doces A");
+        deepStrictEqual(data[1].saleName, "Doces A");
+        deepStrictEqual(data[2].saleName, "Doces A");
+        deepStrictEqual(data[3].saleName, "Doces A");
+        deepStrictEqual(data[4].saleName, "Doces A");
+        deepStrictEqual(data[5].saleName, "Doces A");
+        deepStrictEqual(data[6].saleName, "Doces A");
+        deepStrictEqual(data[7].saleName, "Doces A");
+        deepStrictEqual(data[8].saleName, "Doces A");
+        deepStrictEqual(data[9].saleName, "Doces A");
+        deepStrictEqual(data[0].productName, "Sabonete de limão");
+        deepStrictEqual(data[1].productName, "Shampoo de coco");
+        deepStrictEqual(data[2].productName, "Condizente para cabelo");
+        deepStrictEqual(data[3].productName, "Loção de barbear");
+        deepStrictEqual(data[4].productName, "Desodorante");
+        deepStrictEqual(data[5].productName, "Laca de unhas");
+        deepStrictEqual(data[6].productName, "Creme hidratante para pele");
+        deepStrictEqual(data[7].productName, "Kit de higiene bucal");
+        deepStrictEqual(data[8].productName, "Máscara para olhos");
+        deepStrictEqual(data[9].productName, "Sabão líquido");
+
+        deepStrictEqual(data.length, 10);
       });
     });
 
     it("should not be able get purchase sale product with purchase inexistent", async () => {
       await MakeRequestFactory.execute({
-        url: `${String(process.env.TEST_SERVER_URL)}/get-purchase-sale-product-by-purchase-id/1234`,
+        url: `${String(process.env.TEST_SERVER_URL)}/get-purchase-sale-product-by-purchase-id/1234?page=1`,
         method: "GET",
         headers,
       }).then(async (response) => {

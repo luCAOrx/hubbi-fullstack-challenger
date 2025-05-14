@@ -105,7 +105,9 @@ export class PrismaPurchaseRepository implements PurchaseRepository {
 
   async findPurchaseSaleProductByPurchaseId(
     purchaseId: string,
-  ): Promise<Purchase | null> {
+    page: number,
+    perPage: number,
+  ): Promise<PurchaseSaleProduct[] | null> {
     const purchaseOrNull = await prisma.purchase.findUnique({
       where: { id: purchaseId },
       include: {
@@ -116,8 +118,15 @@ export class PrismaPurchaseRepository implements PurchaseRepository {
 
     if (purchaseOrNull === null) return null;
 
-    const purchaseSaleProducts = await Promise.all(
-      purchaseOrNull.purchaseSaleProducts.map(async (purchaseSaleProduct) => {
+    const purchaseSaleProducts = await prisma.purchaseSaleProduct.findMany({
+      where: { purchaseId },
+      orderBy: { created_at: "asc" },
+      skip: (page - 1) * perPage,
+      take: perPage,
+    });
+
+    const purchaseSaleProductWithDetails = await Promise.all(
+      purchaseSaleProducts.map(async (purchaseSaleProduct) => {
         const saleProduct = await prisma.saleProduct.findUnique({
           where: { id: purchaseSaleProduct.saleProductId },
           include: {
@@ -137,10 +146,10 @@ export class PrismaPurchaseRepository implements PurchaseRepository {
     const purchaseMapper = PurchaseMapper.toDomain({
       rawPrismaPurchase: purchaseOrNull,
       rawPrismaSale: purchaseOrNull.sale,
-      rawPurchaseSaleProducts: purchaseSaleProducts,
+      rawPurchaseSaleProducts: purchaseSaleProductWithDetails,
     });
 
-    return purchaseMapper;
+    return purchaseMapper.purchaseSaleProducts;
   }
 
   async getTotalPurchasesCount(): Promise<number> {

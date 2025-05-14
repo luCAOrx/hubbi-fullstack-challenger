@@ -43,6 +43,15 @@ export const swaggerComponents: Components = {
       },
     },
 
+    GetPurchaseSaleProductByPurchaseIdQueryParams: {
+      type: "number",
+      properties: {
+        page: {
+          type: "number",
+        },
+      },
+    },
+
     GetSaleProductByIdQueryParams: {
       type: "number",
       properties: {

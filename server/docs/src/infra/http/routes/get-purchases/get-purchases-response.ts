@@ -74,7 +74,7 @@ const httpBadRequestResponse: Response = {
       examples: {
         theQueryParametersShouldBeProvidedInTheRequestBody: {
           summary:
-            "The query parameters should be provided in the query params",
+            "Os parâmetros de busca devem ser fornecidos no parâmetro de busca da requisição",
           value: {
             statusCode: 400,
             message:

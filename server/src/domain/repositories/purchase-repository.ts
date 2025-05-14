@@ -9,6 +9,8 @@ export abstract class PurchaseRepository {
   abstract findMany(page: number, perPage: number): Promise<Purchase[]>;
   abstract findPurchaseSaleProductByPurchaseId(
     purchaseId: string,
-  ): Promise<Purchase | null>;
+    page: number,
+    perPage: number,
+  ): Promise<PurchaseSaleProduct[] | null>;
   abstract getTotalPurchasesCount(): Promise<number>;
 }

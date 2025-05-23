@@ -1,76 +1,83 @@
-import { randomUUID } from "node:crypto";
-
+import { Product } from "@domain/entities/product/product";
 import { prisma } from "@infra/http/libs/prisma-client";
-import { Prisma } from "@prisma/client";
+import { PrismaProductRepository } from "@infra/http/repositories/prisma-product-repository";
 
-const productsData: Prisma.ProductCreateInput[] = [
+const productsData = [
   {
-    id: randomUUID(),
     name: "Bolo de chocolate",
   },
-  { id: randomUUID(), name: "Arroz integral" },
-  { id: randomUUID(), name: "Feijão preto" },
-  { id: randomUUID(), name: "Açaí com granola" },
-  { id: randomUUID(), name: "Pão de queijo" },
-  { id: randomUUID(), name: "Torta de frutas" },
-  { id: randomUUID(), name: "Creme de leite" },
-  { id: randomUUID(), name: "Leite condensado" },
-  { id: randomUUID(), name: "Manteiga de amendoim" },
-  { id: randomUUID(), name: "Coco ralado" },
+  { name: "Arroz integral" },
+  { name: "Feijão preto" },
+  { name: "Açaí com granola" },
+  { name: "Pão de queijo" },
+  { name: "Torta de frutas" },
+  { name: "Creme de leite" },
+  { name: "Leite condensado" },
+  { name: "Manteiga de amendoim" },
+  { name: "Coco ralado" },
 
-  { id: randomUUID(), name: "Sabonete de limão" },
-  { id: randomUUID(), name: "Shampoo de coco" },
-  { id: randomUUID(), name: "Condizente para cabelo" },
-  { id: randomUUID(), name: "Loção de barbear" },
-  { id: randomUUID(), name: "Desodorante" },
-  { id: randomUUID(), name: "Laca de unhas" },
-  { id: randomUUID(), name: "Creme hidratante para pele" },
-  { id: randomUUID(), name: "Kit de higiene bucal" },
-  { id: randomUUID(), name: "Máscara para olhos" },
+  { name: "Sabonete de limão" },
+  { name: "Shampoo de coco" },
+  { name: "Condizente para cabelo" },
+  { name: "Loção de barbear" },
+  { name: "Desodorante" },
+  { name: "Laca de unhas" },
+  { name: "Creme hidratante para pele" },
+  { name: "Kit de higiene bucal" },
+  { name: "Máscara para olhos" },
 
-  { id: randomUUID(), name: "Sabão líquido" },
-  { id: randomUUID(), name: "Detergente em pó" },
-  { id: randomUUID(), name: "Lavagem de louça" },
-  { id: randomUUID(), name: "Limpeza de superfícies" },
-  { id: randomUUID(), name: "Desodorizante" },
-  { id: randomUUID(), name: "Pano de limpar" },
-  { id: randomUUID(), name: "Escova de chão" },
-  { id: randomUUID(), name: "Máscara para armário" },
+  { name: "Sabão líquido" },
+  { name: "Detergente em pó" },
+  { name: "Lavagem de louça" },
+  { name: "Limpeza de superfícies" },
+  { name: "Desodorizante" },
+  { name: "Pano de limpar" },
+  { name: "Escova de chão" },
+  { name: "Máscara para armário" },
 
-  { id: randomUUID(), name: "Prato de vidro" },
-  { id: randomUUID(), name: "Tigela de papel" },
-  { id: randomUUID(), name: "Colher de madeira" },
-  { id: randomUUID(), name: "Fork de plástico" },
-  { id: randomUUID(), name: "Lâmpada de mesa" },
-  { id: randomUUID(), name: "Cortina de cortinagem" },
-  { id: randomUUID(), name: "Máquina de fazer panquecas" },
+  { name: "Prato de vidro" },
+  { name: "Tigela de papel" },
+  { name: "Colher de madeira" },
+  { name: "Fork de plástico" },
+  { name: "Lâmpada de mesa" },
+  { name: "Cortina de cortinagem" },
+  { name: "Máquina de fazer panquecas" },
 
-  { id: randomUUID(), name: "Sofá de couro" },
-  { id: randomUUID(), name: "Cama de madeira" },
-  { id: randomUUID(), name: "Praia de sofá" },
-  { id: randomUUID(), name: "Armário de madeira" },
-  { id: randomUUID(), name: "Mesa de centro" },
-  { id: randomUUID(), name: "Lâmpada de mesa" },
-  { id: randomUUID(), name: "Cozinheiro de madeira" },
+  { name: "Sofá de couro" },
+  { name: "Cama de madeira" },
+  { name: "Praia de sofá" },
+  { name: "Armário de madeira" },
+  { name: "Mesa de centro" },
+  { name: "Lâmpada de mesa" },
+  { name: "Cozinheiro de madeira" },
 ];
 
 async function main() {
-  console.log(`Start seeding ...`);
+  process.stdout.write(`Start seeding ...\n`);
   for (const productData of productsData) {
-    const product = await prisma.product.create({
-      data: productData,
-    });
-    console.log(`Created product with id: ${product.id}`);
+    const productEntity = Product.create(
+      {
+        name: productData.name,
+      },
+      {},
+    );
+
+    const prismaProductRepository = new PrismaProductRepository();
+
+    await prismaProductRepository.transactionCreateProductWithProductProductAndProductCounter(
+      productEntity,
+    );
   }
-  console.log(`Seeding finished.`);
+
+  process.stdout.write(`Seeding finished.`);
 }
 
 main()
   .then(async () => {
     await prisma.$disconnect();
   })
-  .catch(async (e) => {
-    console.error(e);
+  .catch(async (error) => {
+    process.stdout.write(error);
     await prisma.$disconnect();
     process.exit(1);
   });

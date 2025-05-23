@@ -3,7 +3,6 @@ import { prisma } from "@infra/http/libs/prisma-client";
 import { PrismaProductRepository } from "@infra/http/repositories/prisma-product-repository";
 import { Prisma } from "@prisma/client";
 
-// Define the products data
 const productsData: Prisma.ProductCreateInput[] = [
   {
     id: "036de3a9-4b89-4578-b72a-6a99efb8c634",

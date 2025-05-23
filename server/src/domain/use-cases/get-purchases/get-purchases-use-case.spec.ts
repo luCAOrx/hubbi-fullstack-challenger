@@ -63,10 +63,10 @@ describe("Get purchases use case", () => {
 
   it("should be able jump to next page on purchases list", async () => {
     await getPurchasesUseCase
-      .execute({})
+      .execute({ page: 2 })
       .then(({ page, pages, perPage, totalPurchases, data }) => {
         notDeepStrictEqual(data.length, 11);
-        deepStrictEqual(page, 1);
+        deepStrictEqual(page, 2);
         deepStrictEqual(pages, 2);
         deepStrictEqual(perPage, 10);
         deepStrictEqual(totalPurchases, 20);

@@ -1,4 +1,6 @@
+import { Product } from "@domain/entities/product/product";
 import { prisma } from "@infra/http/libs/prisma-client";
+import { PrismaProductRepository } from "@infra/http/repositories/prisma-product-repository";
 import { Prisma } from "@prisma/client";
 
 // Define the products data
@@ -108,7 +110,7 @@ const productsData: Prisma.ProductCreateInput[] = [
   },
   {
     id: "223fce3b-1cdc-4d2d-9e93-3f14a1150c35",
-    name: "Lâmpada de mesa",
+    name: "Pratilheira de vidro",
   },
   {
     id: "b7e3cc2e-c09b-4a5d-945d-33f007f64265",
@@ -142,22 +144,32 @@ const productsData: Prisma.ProductCreateInput[] = [
   },
 ];
 async function main() {
-  console.log(`Start seeding ...`);
+  process.stdout.write(`Start seeding ...`);
   for (const productData of productsData) {
-    const product = await prisma.product.create({
-      data: productData,
-    });
-    console.log(`Created product with id: ${product.id}`);
+    const productEntity = Product.create(
+      {
+        name: productData.name,
+      },
+      { _id: productData.id },
+    );
+
+    const prismaProductRepository = new PrismaProductRepository();
+
+    const product =
+      await prismaProductRepository.transactionCreateProductWithProductProductAndProductCounter(
+        productEntity,
+      );
+    process.stdout.write(`Created product with id: ${product.id}`);
   }
-  console.log(`Seeding finished.`);
+  process.stdout.write(`Seeding finished.`);
 }
 
 main()
   .then(async () => {
     await prisma.$disconnect();
   })
-  .catch(async (e) => {
-    console.error(e);
+  .catch(async (error) => {
+    process.stdout.write(error);
     await prisma.$disconnect();
     process.exit(1);
   });

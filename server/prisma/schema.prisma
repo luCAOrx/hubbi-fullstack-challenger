@@ -74,6 +74,13 @@ model PurchaseSaleProduct {
   @@map("purchaseSaleProduct")
 }
 
+model ProductCounter {
+  id            Int @id @default(1)
+  totalProduct Int @default(0)
+
+  @@map("productCounter")
+}
+
 model SaleCounter {
   id        Int @id @default(1)
   totalSale Int @default(0)

@@ -4,6 +4,7 @@ import { PrismaTestEnvironment } from "prisma/prismaTestEnvironment";
 import { app } from "@infra/http/app";
 import { createPurchaseControllerEndToEndTests } from "@infra/http/controllers/create-purchase/create-purchase-controller.e2e-spec";
 import { createSaleControllerEndToEndTests } from "@infra/http/controllers/create-sale/create-sale-controller.e2e-spec";
+import { getProductsControllerEndToEndTests } from "@infra/http/controllers/get-products/get-products-controller-e2e-spec";
 import { getPurchaseSaleProductByPurchaseId } from "@infra/http/controllers/get-purchase-sale-product-by-purchase-id/get-purchase-sale-product-by-purchase-id-controller.e2e-spec";
 import { getPurchasesControllerEndToEndTests } from "@infra/http/controllers/get-purchases/get-purchases-controller-e2e-spec";
 import { getSaleProductByIdControllerEndToEndTests } from "@infra/http/controllers/get-sale-product-by-id/get-sale-product-by-id-controller.e2e-spec";
@@ -30,7 +31,7 @@ describe("End to end (E2E) tests", () => {
     await prismaTestEnvironment.setup();
     await new Promise((resolve) => server.once("listening", resolve));
 
-    process.stdout.write(`Registering 20 sales, wait...\n`);
+    process.stdout.write(`Registering 20 sales and purchases, wait...\n`);
 
     for (let i = 0; i < 20; i++) {
       const letter = String.fromCharCode(65 + i);
@@ -73,6 +74,7 @@ describe("End to end (E2E) tests", () => {
   getSaleProductByIdControllerEndToEndTests();
   getPurchasesControllerEndToEndTests();
   getPurchaseSaleProductByPurchaseId();
+  getProductsControllerEndToEndTests();
   pageNotFoundErrorEndToEndTests();
 
   after(async () => {

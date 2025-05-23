@@ -7,8 +7,8 @@ const httpResponseToSuccessRequest: Response = {
       example: {
         page: 1,
         perPage: 10,
-        pages: 0,
-        totalPurchases: 0,
+        pages: 2,
+        totalPurchases: 20,
         data: [
           {
             purchaseId: "87dda8dc-2eb3-4cda-9b86-4e4fc773c71f",

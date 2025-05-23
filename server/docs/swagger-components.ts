@@ -89,6 +89,15 @@ export const swaggerComponents: Components = {
       },
     },
 
+    GetProductsQueryParams: {
+      type: "number",
+      properties: {
+        page: {
+          type: "number",
+        },
+      },
+    },
+
     GlobalHttpError: {
       type: "object",
       properties: {

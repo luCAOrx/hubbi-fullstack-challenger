@@ -24,6 +24,9 @@ export const getPurchases = cache(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/get-purchases?page=${page}`,
       {
         method: "GET",
+        next: {
+          tags: ["get-purchases"],
+        },
       },
     );
 

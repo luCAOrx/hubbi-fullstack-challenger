@@ -19,7 +19,7 @@ describe("Create purchase use case", () => {
       })
       .then(({ purchase, sale }) => {
         deepStrictEqual(purchase.props.saleId, sale.id);
-        deepStrictEqual(sale.props.name, "Create Purchase Test Unit");
+        deepStrictEqual(sale.props.name, "Create Purchase");
         deepStrictEqual(sale.props.status, "Finalizada");
         deepStrictEqual(
           sale.props.products,

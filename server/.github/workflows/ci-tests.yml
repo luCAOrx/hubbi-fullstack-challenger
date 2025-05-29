@@ -2,10 +2,6 @@ name: CI Tests
 
 on:
   push:
-    paths:
-      - 'src/**/*.{ts,tsx}'
-      - '**.json'
-      - '**.yml'
     branches: [ main, development ]
 
 jobs:

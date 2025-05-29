@@ -159,7 +159,7 @@ describe("Get purchase sale product by purchaseId use case", async () => {
     await rejects(
       async () =>
         await getPurchaseSaleProductByPurchaseId.execute({
-          purchaseId: "f2983hf",
+          purchaseId: "b972efed-1d37-41c8-8ae3-597dba4d9cd5",
         }),
       GlobalUseCaseErrors.PurchaseNotFoundError,
     );

@@ -3,7 +3,7 @@ name: CI Tests
 on:
   push:
     paths:
-      - 'server/src/**/*.{ts,tsx}'
+      - 'src/**/*.{spec.ts,spec-e2e.ts}'
       - '**.json'
       - '**.yml'
     branches: [ main, development ]

@@ -15,7 +15,7 @@ describe("Create sale use case", () => {
   it("should be able to create a new sale", async () => {
     await createSaleUseCase
       .execute({
-        name: "Produtos A",
+        name: "Products A",
         products:
           "ab5b8162-553b-4807-920e-49693b4e7dfc,cf4523df-ae70-4e13-82d3-4f71314f0177,416a797d-bda4-449c-895b-b32462ae92e0",
       })
@@ -41,7 +41,7 @@ describe("Create sale use case", () => {
         deepStrictEqual(inMemorySaleDatabase.saleProducts.length, 3);
 
         deepStrictEqual(inMemorySaleDatabase.sales[0].props, {
-          name: "Produtos A",
+          name: "Products A",
           status: "Pendente",
           products:
             "ab5b8162-553b-4807-920e-49693b4e7dfc,cf4523df-ae70-4e13-82d3-4f71314f0177,416a797d-bda4-449c-895b-b32462ae92e0",
@@ -53,7 +53,7 @@ describe("Create sale use case", () => {
 
     await createSaleUseCase
       .execute({
-        name: "Produtos B",
+        name: "Products B",
         products:
           "444179a6-ff23-4d8b-8e55-8e65ccc0a32f,a0b368dc-4cd4-4529-9f71-8b1e5d729773,fdf5f18e-7e6c-4e87-8c04-3455d449af56",
       })
@@ -79,7 +79,7 @@ describe("Create sale use case", () => {
         deepStrictEqual(inMemorySaleDatabase.saleProducts.length, 6);
 
         deepStrictEqual(inMemorySaleDatabase.sales[1].props, {
-          name: "Produtos B",
+          name: "Products B",
           status: "Pendente",
           products:
             "444179a6-ff23-4d8b-8e55-8e65ccc0a32f,a0b368dc-4cd4-4529-9f71-8b1e5d729773,fdf5f18e-7e6c-4e87-8c04-3455d449af56",
@@ -92,7 +92,7 @@ describe("Create sale use case", () => {
 
     await createSaleUseCase
       .execute({
-        name: "Produtos C",
+        name: "Products C",
         products:
           "d95f56ae-71f8-49ee-927d-07d652f4ad42,de74d057-c3a5-40cc-a7ec-76099d828541,c8e4ce7f-2559-45a1-945b-043b6defd17b",
       })
@@ -118,7 +118,7 @@ describe("Create sale use case", () => {
         deepStrictEqual(inMemorySaleDatabase.saleProducts.length, 9);
 
         deepStrictEqual(inMemorySaleDatabase.sales[2].props, {
-          name: "Produtos C",
+          name: "Products C",
           status: "Pendente",
           products:
             "d95f56ae-71f8-49ee-927d-07d652f4ad42,de74d057-c3a5-40cc-a7ec-76099d828541,c8e4ce7f-2559-45a1-945b-043b6defd17b",

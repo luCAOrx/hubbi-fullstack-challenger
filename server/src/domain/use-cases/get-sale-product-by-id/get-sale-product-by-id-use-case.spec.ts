@@ -317,7 +317,7 @@ describe("Get sale product by id use case", () => {
           async () =>
             await getSaleProductById.execute({
               page: 1,
-              saleId: "f2983hf",
+              saleId: "09964c69-cba2-455d-8cb9-4da7db5d797a",
             }),
           GlobalUseCaseErrors.SaleNotFoundError,
         );

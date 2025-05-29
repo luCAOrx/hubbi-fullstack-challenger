@@ -305,22 +305,13 @@ describe("Get sale product by id use case", () => {
   });
 
   it("should not be able get sale product with sale inexistent", async () => {
-    await new MakeSaleFactory()
-      .toDomain({
-        inMemoryDatabase: inMemorySaleDatabase,
-        override: {
-          name: "Sale Two",
-        },
-      })
-      .then(async () => {
-        await rejects(
-          async () =>
-            await getSaleProductById.execute({
-              page: 1,
-              saleId: "09964c69-cba2-455d-8cb9-4da7db5d797a",
-            }),
-          GlobalUseCaseErrors.SaleNotFoundError,
-        );
-      });
+    await rejects(
+      async () =>
+        await getSaleProductById.execute({
+          page: 1,
+          saleId: "09964c69-cba2-455d-8cb9-4da7db5d797a",
+        }),
+      GlobalUseCaseErrors.SaleNotFoundError,
+    );
   });
 });

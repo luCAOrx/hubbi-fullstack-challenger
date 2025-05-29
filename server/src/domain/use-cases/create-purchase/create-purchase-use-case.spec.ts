@@ -92,7 +92,7 @@ describe("Create purchase use case", () => {
       async () =>
         await new MakePurchaseFactory().toDomain({
           inMemoryDatabase: inMemoryPurchaseDatabase,
-          saleId: "f3247",
+          saleId: "5f7dfc24-1463-4029-9935-9e44f16f066f",
         }),
       GlobalUseCaseErrors.SaleNotFoundError,
     );

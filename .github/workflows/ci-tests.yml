@@ -13,6 +13,9 @@ jobs:
   setup-and-test:
 
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'server'
 
     steps:
       - name: Checkout repository
@@ -22,9 +25,6 @@ jobs:
         uses: docker/setup-compose-action@v1
         with:
           version: latest
-
-      - name: Enter the server directory
-        run: cd server
 
       - name: Create .env file
         run: |
@@ -36,22 +36,20 @@ jobs:
         with:
           node-version: 22.16.0
 
-      - name: Install dependencies
-        run: |
-          ls
-          npm ci
-
       - name: Up containers
         run: make up
 
       - name: Wait for Database container are up to run tests
         run: sleep 10
 
+      - name: Install dependencies
+        run: npm ci
+
       - name: Run unit tests
-        run: make test-unit
+        run: npm test:unit
 
       - name: Run E2E tests
-        run: make test-e2e
+        run: npm run test:e2e
 
       - name: Down containers
         run: make down

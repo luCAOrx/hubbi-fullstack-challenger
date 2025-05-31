@@ -12,11 +12,18 @@ on:
 jobs:
   build-and-test:
 
-    runs-on: node:22.16.0-alpine
+    runs-on: ubuntu-latest
+    container:
+      image: node:22.16.0-alpine
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Create .env file
+        run: |
+          touch .env
+          echo "${{secrets.CI_TEST_SECRETS}}" >> .env
 
       - name: Install Docker Compose
         run: |

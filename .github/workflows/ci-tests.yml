@@ -10,7 +10,7 @@ on:
     branches: [ main, development ]
 
 jobs:
-  build-and-test:
+  setup-and-test:
 
     runs-on: ubuntu-latest
     container:
@@ -25,12 +25,8 @@ jobs:
           touch .env
           echo "${{secrets.CI_TEST_SECRETS}}" >> .env
 
-      - name: Install Docker Compose
-        run: |
-          rm /usr/local/bin/docker-compose
-          curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /tmp/docker-compose
-          chmod +x /tmp/docker-compose
-          mv /tmp/docker-compose /usr/local/bin/docker-compose
+      - name: Set up Docker Compose
+        uses: docker/setup-compose-action@v1
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v4

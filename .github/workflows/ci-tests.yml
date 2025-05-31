@@ -18,17 +18,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create .env file
-        run: |
-          touch .env
-          echo "${{secrets.CI_TEST_SECRETS}}" >> .env
-
-      - name: Install Docker Compose
+      - name: Set up Docker Compose
         run: |
           sudo rm /usr/local/bin/docker-compose
           curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /tmp/docker-compose
           chmod +x /tmp/docker-compose
           sudo mv /tmp/docker-compose /usr/local/bin/docker-compose
+
+      - name: Create .env file
+        run: |
+          touch .env
+          echo "${{secrets.CI_TEST_SECRETS}}" >> .env
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v4

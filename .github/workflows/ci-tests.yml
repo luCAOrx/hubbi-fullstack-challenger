@@ -30,6 +30,7 @@ jobs:
         run: |
           touch .env
           echo "${{secrets.CI_TEST_SECRETS}}" >> .env
+          cat .env
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
@@ -38,8 +39,6 @@ jobs:
 
       - name: Up containers
         run: |
-          ls -a
-          cat .env
           make up
 
       - name: Wait for Database container are up to run tests
@@ -47,7 +46,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          ls
           npm ci
 
       - name: Run unit tests

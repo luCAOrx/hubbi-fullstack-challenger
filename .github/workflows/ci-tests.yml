@@ -39,6 +39,9 @@ jobs:
       - name: Up containers
         run: make up
 
+      - name: Wait for Database container are up to run tests
+        run: sleep 10
+
       - name: Install dependencies
         run: npm ci
 

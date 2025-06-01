@@ -49,7 +49,9 @@ jobs:
         run: npm run test:unit
 
       - name: Run E2E tests
-        run: make test-e2e
+        run: |
+          ls prisma/migrations
+          make test-e2e
 
       - name: Down containers
         run: make down

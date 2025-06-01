@@ -37,7 +37,9 @@ jobs:
           node-version: 22.16.0
 
       - name: Up containers
-        run: make up
+        run: |
+          make up
+          make logs-server
 
       - name: Wait for Database container are up to run tests
         run: sleep 10

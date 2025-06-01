@@ -38,6 +38,7 @@ jobs:
 
       - name: Up containers
         run: |
+          ls
           make up
           make logs-server
 

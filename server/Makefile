@@ -42,16 +42,16 @@ stop-database:
 
 .PHONY: test-unit
 test-unit:
-	docker compose exec -u node hubbi-server sh -c 'npm run test:unit'
+	docker compose exec hubbi-server sh -c 'npm run test:unit'
 
 .PHONY: test-e2e
 test-e2e:
-	docker compose exec -u node hubbi-server sh -c 'npm run test:e2e'
+	docker compose exec hubbi-server sh -c 'npm run test:e2e'
 
 .PHONY: test-watch-e2e
 test-watch-e2e:
-	docker compose exec -u node hubbi-server sh -c 'npm run test:watch:e2e'
+	docker compose exec hubbi-server sh -c 'npm run test:watch:e2e'
 
 .PHONY: server-container-terminal
 server-container-terminal:
-	docker compose exec -u node hubbi-server sh
+	docker compose exec hubbi-server sh

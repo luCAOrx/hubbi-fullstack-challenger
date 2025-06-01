@@ -42,7 +42,7 @@ stop-database:
 
 .PHONY: test-unit
 test-unit:
-	docker compose exec -u node hubbi-server sh -c 'npm run test'
+	docker compose exec -u node hubbi-server sh -c 'npm run test:unit'
 
 .PHONY: test-e2e
 test-e2e:

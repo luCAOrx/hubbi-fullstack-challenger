@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { cn } from "@/lib/utils";
 
 import {
@@ -17,7 +17,6 @@ import { getSales } from "@api/get-sales";
 import { formatDateHelper } from "@/helpers/format-date-helper";
 
 import CreatePurchaseForm from "./form/create-purchase-form";
-import SalesSkeleton from "./sales-skeleton";
 import { Pagination } from "@/components/pagination";
 import CreateSaleForm from "./form/create-sale-form";
 
@@ -32,8 +31,16 @@ export default async function Sales({ saleSearchParam }: SalesProps) {
     <>
       <div className="flex justify-between mb-4">
         <div className="flex flex-col">
-          <h1 className="text-4xl font-semibold text-primary mb-4">Vendas</h1>
-          <span className="text-lg font-normal text-muted-foreground">
+          <h1
+            title="Titulo da aba vendas"
+            className="text-4xl font-semibold text-primary mb-4"
+          >
+            Vendas
+          </h1>
+          <span
+            title={`Descrição do total de ${sales.totalSales} vendas`}
+            className="text-lg font-normal text-muted-foreground"
+          >
             Total de {sales.totalSales} vendas
           </span>
         </div>
@@ -42,9 +49,13 @@ export default async function Sales({ saleSearchParam }: SalesProps) {
       <div className="border rounded-lg p-4 mb-10">
         <Table>
           {sales.data.length === 0 ? (
-            <TableCaption>Não há nenhuma venda no momento.</TableCaption>
+            <TableCaption title="Não há nenhuma venda no momento">
+              Não há nenhuma venda no momento.
+            </TableCaption>
           ) : (
-            <TableCaption>Uma lista de suas vendas.</TableCaption>
+            <TableCaption title="Uma lista de suas vendas">
+              Uma lista de suas vendas.
+            </TableCaption>
           )}
           <TableHeader>
             {sales.data.length === 0 ? (
@@ -63,34 +74,35 @@ export default async function Sales({ saleSearchParam }: SalesProps) {
               </TableRow>
             )}
           </TableHeader>
-          <TableBody>
+          <TableBody aria-label="Corpo da tabela">
             {sales.data.map((sale) => (
-              <Suspense key={sale.id} fallback={<SalesSkeleton />}>
-                <TableRow className="hover:bg-transparent">
-                  <TableCell className="w-[180px]">{sale.name}</TableCell>
-                  <TableCell
-                    className={cn(
-                      "w-52 flex gap-2 mt-1 items-center justify-center",
-                      sale.status === "Pendente"
-                        ? "text-red-600"
-                        : "text-green-600",
-                    )}
-                  >
-                    {sale.status}
-                    {sale.status === "Pendente" ? (
-                      <CircleAlert />
-                    ) : (
-                      <CheckCircle />
-                    )}
-                  </TableCell>
-                  <TableCell className="w-36">
-                    {formatDateHelper(sale.created_at)}
-                  </TableCell>
-                  <TableCell className="w-36">
-                    <CreatePurchaseForm saleId={sale.id} saleName={sale.name} />
-                  </TableCell>
-                </TableRow>
-              </Suspense>
+              <TableRow key={sale.id} className="hover:bg-transparent">
+                <TableCell className="w-[180px]">{sale.name}</TableCell>
+                <TableCell
+                  className={cn(
+                    "w-52 flex gap-2 mt-1 items-center justify-center",
+                    sale.status === "Pendente"
+                      ? "text-red-600"
+                      : "text-green-600",
+                  )}
+                >
+                  {sale.status}
+                  {sale.status === "Pendente" ? (
+                    <CircleAlert />
+                  ) : (
+                    <CheckCircle />
+                  )}
+                </TableCell>
+                <TableCell
+                  aria-label="Data da criação da venda"
+                  className="w-36"
+                >
+                  {formatDateHelper(sale.created_at)}
+                </TableCell>
+                <TableCell className="w-36">
+                  <CreatePurchaseForm saleId={sale.id} saleName={sale.name} />
+                </TableCell>
+              </TableRow>
             ))}
           </TableBody>
         </Table>

@@ -75,16 +75,20 @@ export default function PurchaseDetailsCardButton({
               Detalhes da compra da venda: {saleName}
             </DialogDescription>
           </DialogHeader>
-          <h1 className="font-semibold">
-            {purchaseSaleProducts.length > 1
-              ? "Foram comprados os produtos:"
-              : "Foi comprado o produto:"}
-          </h1>
-          <ScrollArea className="h-48 w-64 rounded-md border">
+          <h1 className="font-semibold">Foi comprado o(s) produto(s):</h1>
+          <ScrollArea
+            aria-label="Área de rolagem dos produtos"
+            className="h-48 w-64 rounded-md border"
+          >
             {purchaseSaleProducts.map(
               ({ purchaseSaleProductId, productName }) => (
                 <div className="mx-3 my-2" key={purchaseSaleProductId}>
-                  <span className="font-sm text-foreground">{productName}</span>
+                  <span
+                    aria-label="Nome do produto comprado"
+                    className="font-sm text-foreground"
+                  >
+                    {productName}
+                  </span>
                 </div>
               ),
             )}

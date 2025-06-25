@@ -121,12 +121,14 @@ export default function CreateSaleForm() {
           setIsDialogOpen(true);
         }}
       >
-        <Button>Cadastrar venda</Button>
+        <Button title="Botão para cadastrar venda">Cadastrar venda</Button>
       </DialogTrigger>
       <DialogContent className="flex flex-col items-start">
         <DialogHeader>
-          <DialogTitle>Nova venda</DialogTitle>
-          <DialogDescription>Cadastrar uma nova venda</DialogDescription>
+          <DialogTitle title="Título do formulário">Nova venda</DialogTitle>
+          <DialogDescription title="Descrição do formulário">
+            Cadastrar uma nova venda
+          </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
@@ -141,6 +143,7 @@ export default function CreateSaleForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel
+                    title="Título da entrada nome"
                     className={cn(
                       form.getFieldState("name").error ? "text-red-500" : null,
                     )}
@@ -162,6 +165,7 @@ export default function CreateSaleForm() {
                 <FormItem>
                   <div className="mb-4">
                     <FormLabel
+                      title="Título da entrada produtos"
                       className={cn(
                         form.getFieldState("products").error
                           ? "text-red-500"
@@ -171,7 +175,10 @@ export default function CreateSaleForm() {
                       Produtos
                     </FormLabel>
                   </div>
-                  <ScrollArea className="h-48 w-48 rounded-md border">
+                  <ScrollArea
+                    aria-label="Área de rolagem dos produtos"
+                    className="h-48 w-48 rounded-md border"
+                  >
                     {products.map((product) => (
                       <FormField
                         key={product.id}
@@ -201,6 +208,7 @@ export default function CreateSaleForm() {
                                 />
                               </FormControl>
                               <FormLabel
+                                aria-label="Título da caixa de seleção do campo produtos"
                                 className={cn(
                                   form.getFieldState("products").error
                                     ? "text-red-500"

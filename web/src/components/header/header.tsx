@@ -22,12 +22,7 @@ export default function Header() {
         aria-label="Botão da logo do site para ir ao início"
         className="max-md:hidden ml-4"
       >
-        <Image
-          src={Logo}
-          priority
-          alt="Logo da Top Aves Ornamentais"
-          className="h-16 w-16"
-        />
+        <Image src={Logo} alt="Logo da Hubbi" className="h-16 w-16" priority />
       </Link>
 
       <Button
@@ -42,11 +37,11 @@ export default function Header() {
       >
         <Sun
           aria-label="Ícone do tema claro"
-          className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
+          className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
         />
         <Moon
           aria-label="Ícone do tema escuro"
-          className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
+          className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
         />
         <span className="font-medium text-sm">Alterar tema</span>
         <span className="sr-only">Toggle theme</span>

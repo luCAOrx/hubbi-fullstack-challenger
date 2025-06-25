@@ -9,7 +9,11 @@ interface ButtonLoadingProps {
 
 export default function LoadingButton({ isSubmitting }: ButtonLoadingProps) {
   return (
-    <Button type="submit" disabled={isSubmitting}>
+    <Button
+      type="submit"
+      disabled={isSubmitting}
+      aria-label="Botão para cadastrar"
+    >
       {isSubmitting ? (
         <div className="inline-flex items-center justify-center h-9 w-[61px]">
           <Loader2 className="animate-spin" />

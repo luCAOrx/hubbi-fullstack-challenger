@@ -48,7 +48,7 @@ jobs:
         run: make test-e2e
 
       - name: Run Node.js server in development mode
-        run: npm run dev
+        run: npm run start:dev
 
       - name: Change directory from server to web
         run: cd ../web

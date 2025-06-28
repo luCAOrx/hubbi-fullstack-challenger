@@ -64,7 +64,10 @@ jobs:
         run: npm ci
 
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: npx playwright install firefox
+
+      - name: List package.json content
+        run: cat package.json
 
       - name: Run Next.js server in development mode
         run: npm run dev

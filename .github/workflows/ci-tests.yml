@@ -71,7 +71,7 @@ jobs:
 
       - name: Run Next.js server in development mode
         working-directory: web
-        run: npm run dev
+        run: npm run dev &
 
       - name: Run Playwright tests
         working-directory: web

@@ -6,7 +6,7 @@ up:
 
 .PHONY: down
 down:
-	docker compose down --remove-orphans
+	docker compose down --remove-orphans --volumes
 
 .PHONY: start-server
 start-server:

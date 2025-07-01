@@ -22,7 +22,7 @@ const swaggerOptions: OAS3Options = {
     },
     servers: [
       {
-        url: String(process.env.DOCUMENTATION_SERVER_URL),
+        url: String(process.env.SERVER_URL),
         description: "API de teste",
       },
     ],

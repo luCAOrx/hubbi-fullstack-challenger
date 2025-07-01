@@ -17,14 +17,14 @@ import { getSalesRoute } from "./routes/get-sales.routes";
 
 export const app = express();
 
-app.use(cors());
+app.use(cors({ origin: [`${process.env.SERVER_URL}`] }));
 app.use(express.json());
 app.use(
   "/api-docs",
   serve,
   setup(swaggerSpec, {
     customSiteTitle: "Desafio Full-Stack NodeJS & ReactJS",
-    swaggerUrl: String(process.env.DOCUMENTATION_SERVER_URL),
+    swaggerUrl: String(process.env.SERVER_URL),
   }),
 );
 

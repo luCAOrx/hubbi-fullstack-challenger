@@ -17,7 +17,11 @@ import { getSalesRoute } from "./routes/get-sales.routes";
 
 export const app = express();
 
-app.use(cors({ origin: [`${process.env.SERVER_URL}`] }));
+app.use(
+  cors({
+    origin: [String(process.env.WEB_APP_URL)],
+  }),
+);
 app.use(express.json());
 app.use(
   "/api-docs",

@@ -6,7 +6,7 @@ import createSaleFormComponent from "@/components/main/contents/sales/form/creat
 import salesComponent from "@/components/main/contents/sales/sales.e2e-spec";
 import test from "@playwright/test";
 
-const baseUrl = "http://localhost:3001";
+const baseUrl = "http://localhost:3000";
 
 test.beforeEach(async ({ page }) => {
   await page.goto(baseUrl);

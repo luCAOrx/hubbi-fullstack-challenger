@@ -24,7 +24,7 @@ export const createPurchase = async ({
   headers.append("Content-Type", "application/json");
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}/create-purchase/${saleId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/create-purchase/${saleId}`,
     {
       method: "POST",
       headers,

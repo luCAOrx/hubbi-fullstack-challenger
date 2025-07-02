@@ -27,7 +27,7 @@ export const createSale = async (
   headers.append("Content-Type", "application/json");
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}/create-sale`,
+    `${process.env.NEXT_PUBLIC_API_URL}/create-sale`,
     {
       method: "POST",
       headers,

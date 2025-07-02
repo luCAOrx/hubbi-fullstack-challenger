@@ -23,7 +23,7 @@ interface GetSalesQuery {
 export const getSales = cache(
   async ({ page = 1 }: GetSalesQuery): Promise<GetSalesResponse> => {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/get-sales?page=${page}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/get-sales?page=${page}`,
       {
         method: "GET",
         next: {

@@ -22,7 +22,7 @@ export const getPurchaseSaleProductByPurchaseId = cache(
     { page = 1 }: GetPurchaseSaleProductByPurchaseIdQueryParams,
   ): Promise<GetPurchaseSaleProductByPurchaseIdResponse> => {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/get-purchase-sale-product-by-purchase-id/${purchaseId}?page=${page}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/get-purchase-sale-product-by-purchase-id/${purchaseId}?page=${page}`,
       {
         method: "GET",
       },

@@ -21,7 +21,7 @@ interface GetPurchasesQuery {
 export const getPurchases = cache(
   async ({ page = 1 }: GetPurchasesQuery): Promise<GetPurchasesResponse> => {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/get-purchases?page=${page}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/get-purchases?page=${page}`,
       {
         method: "GET",
         next: {

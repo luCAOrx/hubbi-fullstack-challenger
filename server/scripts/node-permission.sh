@@ -7,4 +7,3 @@ node --permission \
   -r ts-node/register/transpile-only \
   -r tsconfig-paths/register \
   ./dist/src/infra/http/server.js \
-  --env-file=.env

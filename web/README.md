@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<h1 align="center">Hubbi UI</h1>
 
-## Getting Started
+## Descrição
 
-First, run the development server:
+Aplicação web para o teste de desenvolvedor full-stack Node.JS & React.JS
+
+<div align="center">
+    <h2>Modo escuro</h2>
+    <img src="../.github/assets/dark-mode-sale-page.jpg" width="400" alt="Modo escuro da página de venda"/>
+    <img src="../.github/assets/dark-mode-create-sale.jpg" width="400" alt="Modo escuro para criação da venda"/>
+    <img src="../.github/assets/dark-mode-create-purchase.jpg" width="400" alt="Modo escuro para criação da compra"/>
+    <img src="../.github/assets/dark-mode-purchase-page.jpg" width="400" alt="Modo escuro da página de compra"/>
+    <img src="../.github/assets/dark-mode-purchase-details.jpg" width="400" alt="Modo escuro dos detalhes da compra"/>
+    <h2>Modo claro</h2>
+    <img src="../.github/assets/light-mode-sale-page.jpg" width="400" alt="Modo claro da página de venda"/>
+    <img src="../.github/assets/light-mode-create-sale.jpg" width="400" alt="Modo claro para criação da venda"/>
+    <img src="../.github/assets/light-mode-create-purchase.jpg" width="400" alt="Modo claro para criação da compra"/>
+    <img src="../.github/assets/light-mode-purchase-page.jpg" width="400" alt="Modo claro da página de compra"/>
+    <img src="../.github/assets/light-mode-purchase-details.jpg" width="400" alt="Modo claro dos detalhes da compra"/>
+</div>
+
+## Tecnologias
+
+- [Node.js LTS](https://nodejs.org/pt-br/)
+- [Next.js](https://nextjs.org/)
+- [React.js](https://react.dev/)
+- [Shadcn/ui](https://ui.shadcn.com/)
+- [Tailwindcss](https://tailwindcss.com/)
+- [React Hook Form](https://react-hook-form.com/)
+- [Zod](https://zod.dev/)
+- [Playwright](https://playwright.dev/)
+- [Typescript](https://www.typescriptlang.org/)
+- [ESLint](https://eslint.org/)
+- [Prettier](https://prettier.io/)
+
+## Requisitos
+
+- [Node.js LTS](https://nodejs.org/pt-br/)
+
+## Inicializando a aplicação
+
+Primeiro, execute o servidor de desenvolvimento:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Após o servidor executar, abra [http://localhost:3000](http://localhost:3000) com seu navegador para ver o resultado.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts da aplicação
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+#### Para executar o servidor em modo de desenvolvimento
 
-## Learn More
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+#### Para transpilar o código em TypeScript para JavaScript
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run build
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+#### Para executar o código JavaScript
 
-## Deploy on Vercel
+```bash
+npm run start
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+#### Para fazer o lint no código
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run lint
+```
+
+#### Para executar os testes na linha de comando
+
+```bash
+npm run test:e2e
+```
+
+#### Para executar a interface gráfica dos testes
+
+```bash
+npm run test:e2e-ui
+```

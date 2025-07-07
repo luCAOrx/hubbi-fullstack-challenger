@@ -7,13 +7,13 @@
     "node": "v22.16.0"
   },
   "scripts": {
-    "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register ./dist/src/infra/http/server.js",
-    "start:dev": "tsx  --watch ./src/infra/http/server.ts --env-file=.env",
+    "start": "./scripts/node-permission.sh",
+    "start:dev": "./scripts/node-dev-permission.sh",
     "build": "tsc",
-    "test:unit": "tsx --test ./src/domain/**/**/*.spec.ts",
-    "test:e2e": "tsx --test ./test-helpers/main.e2e-spec.ts",
-    "test:watch": "tsx --test --watch ./src/domain/**/**/*.spec.ts",
-    "test:watch:e2e": "tsx --test --watch ./test-helpers/main.e2e-spec.ts",
+    "test:unit": "./scripts/node-unit-test-permission.sh",
+    "test:e2e": "./scripts/node-e2e-test-permission.sh",
+    "test:watch": "./scripts/node-watch-unit-test-permission.sh",
+    "test:watch:e2e": "./scripts/node-watch-e2e-test-permission.sh",
     "prisma:migrate": "npx prisma migrate dev",
     "prisma:seed:prod": "tsx ./prisma/seeds/create-products-seed-to-production.ts",
     "prisma:seed:test": "tsx ./prisma/seeds/create-products-seed-to-tests.ts"

@@ -1,8 +1,19 @@
 <h1 align="center">Hubbi UI</h1>
 
+<p align="center">
+  <a href="#descrição">Descrição</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#requisitos">Requisitos</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#inicializando-a-aplicação">Inicializando a aplicação</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <br/>
+  <a href="#scripts-da-aplicação">Scripts da aplicação</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#para-executar-os-testes-na-linha-de-comando">Teste</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#licença">Licença</a>
+</p>
+
 ## Descrição
 
-Aplicação web para o teste de desenvolvedor full-stack Node.JS & React.JS
+##### Aplicação web para o teste de desenvolvedor full-stack Node.JS & React.JS
 
 <div align="center">
     <h2>Modo escuro</h2>
@@ -39,7 +50,13 @@ Aplicação web para o teste de desenvolvedor full-stack Node.JS & React.JS
 
 ## Inicializando a aplicação
 
-Primeiro, execute o servidor de desenvolvimento:
+Primeiro, instale as dependências executando o comando:
+
+```bash
+npm install
+```
+
+segundo, execute o servidor de desenvolvimento:
 
 ```bash
 npm run dev
@@ -84,3 +101,25 @@ npm run test:e2e
 ```bash
 npm run test:e2e-ui
 ```
+
+## Teste
+
+#### Para executar os testes na linha de comando
+
+Execute o comando
+
+```bash
+npm run test:e2e
+```
+
+#### Para executar a interface gráfica dos testes
+
+Execute o comando
+
+```bash
+npm run test:e2e-ui
+```
+
+## Licença
+
+Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](../LICENSE.md) para mais detalhes.

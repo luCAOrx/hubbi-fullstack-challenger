@@ -28,7 +28,7 @@
 
 ## Descrição
 
-##### Aplicação web para o teste de desenvolvedor full-stack Node.JS & React.JS
+##### Teste de desenvolvedor full-stack Node.JS & React.JS
 
 ## Tecnologias
 

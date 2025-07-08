@@ -13,17 +13,17 @@
 
 <div align="center">
     <h2>Modo escuro</h2>
-    <img src="../.github/assets/dark-mode-sale-page.jpg" width="400" alt="Modo escuro da página de venda"/>
-    <img src="../.github/assets/dark-mode-create-sale.jpg" width="400" alt="Modo escuro para criação da venda"/>
-    <img src="../.github/assets/dark-mode-create-purchase.jpg" width="400" alt="Modo escuro para criação da compra"/>
-    <img src="../.github/assets/dark-mode-purchase-page.jpg" width="400" alt="Modo escuro da página de compra"/>
-    <img src="../.github/assets/dark-mode-purchase-details.jpg" width="400" alt="Modo escuro dos detalhes da compra"/>
+    <img src="./.github/assets/dark-mode-sale-page.jpg" width="400" alt="Modo escuro da página de venda"/>
+    <img src="./.github/assets/dark-mode-create-sale.jpg" width="400" alt="Modo escuro para criação da venda"/>
+    <img src="./.github/assets/dark-mode-create-purchase.jpg" width="400" alt="Modo escuro para criação da compra"/>
+    <img src="./.github/assets/dark-mode-purchase-page.jpg" width="400" alt="Modo escuro da página de compra"/>
+    <img src="./.github/assets/dark-mode-purchase-details.jpg" width="400" alt="Modo escuro dos detalhes da compra"/>
     <h2>Modo claro</h2>
-    <img src="../.github/assets/light-mode-sale-page.jpg" width="400" alt="Modo claro da página de venda"/>
-    <img src="../.github/assets/light-mode-create-sale.jpg" width="400" alt="Modo claro para criação da venda"/>
-    <img src="../.github/assets/light-mode-create-purchase.jpg" width="400" alt="Modo claro para criação da compra"/>
-    <img src="../.github/assets/light-mode-purchase-page.jpg" width="400" alt="Modo claro da página de compra"/>
-    <img src="../.github/assets/light-mode-purchase-details.jpg" width="400" alt="Modo claro dos detalhes da compra"/>
+    <img src="./.github/assets/light-mode-sale-page.jpg" width="400" alt="Modo claro da página de venda"/>
+    <img src="./.github/assets/light-mode-create-sale.jpg" width="400" alt="Modo claro para criação da venda"/>
+    <img src="./.github/assets/light-mode-create-purchase.jpg" width="400" alt="Modo claro para criação da compra"/>
+    <img src="./.github/assets/light-mode-purchase-page.jpg" width="400" alt="Modo claro da página de compra"/>
+    <img src="./.github/assets/light-mode-purchase-details.jpg" width="400" alt="Modo claro dos detalhes da compra"/>
 </div>
 
 ## Descrição

@@ -48,6 +48,10 @@ test-unit:
 test-e2e:
 	docker compose exec hubbi-server sh -c 'npm run test:e2e'
 
+.PHONY: test-watch-unit
+test-watch-unit:
+	docker compose exec hubbi-server sh -c 'npm run test:watch'
+
 .PHONY: test-watch-e2e
 test-watch-e2e:
 	docker compose exec hubbi-server sh -c 'npm run test:watch:e2e'

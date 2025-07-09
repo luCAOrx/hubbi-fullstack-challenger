@@ -68,6 +68,8 @@ npm install
 sudo make up
 ```
 
+Após o servidor executar, abra [http://localhost:3333/api-docs/](http://localhost:3333/api-docs/) com seu navegador para ver o resultado.
+
 ## Scripts da aplicação
 
 ### executar a aplicação em modo de desenvolvimento

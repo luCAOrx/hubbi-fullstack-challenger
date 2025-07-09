@@ -50,13 +50,22 @@
 
 ## Inicializando a aplicação
 
-Primeiro, instale as dependências executando o comando:
+**Primeiro**, adicione as variáveis de ambiente executando o comando:
+
+```bash
+cat .env.example >> .env
+```
+
+esse comando criará o arquivo .env com todo o conteúdo do arquivo .env.example, ou se preferir fazer manualmente,
+crie um arquivo na raiz do projeto chamado `.env`, copie os exemplos contidos neste arquivo [.env.example]('./.env.example') e cole dentro do arquivo `.env` recém criado, altere se necessário, os valores das variáveis.
+
+**Segundo**, instale as dependências executando o comando:
 
 ```bash
 npm install
 ```
 
-segundo, execute o servidor de desenvolvimento:
+**Terceiro**, execute o servidor de desenvolvimento:
 
 ```bash
 npm run dev

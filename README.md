@@ -4,6 +4,7 @@
 
 <p align="center">
   <a href="#descrição">Descrição</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="./REQUIREMENTS.md">Requerimentos do desafio</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#documentação-do-servidor">Documentação do servidor</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#documentação-do-servidor-web">Documentação do servidor web</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
@@ -29,6 +30,8 @@
 ## Descrição
 
 ##### Teste de desenvolvedor full-stack Node.JS & React.JS
+
+> Os requisitos do teste estão no arquivo [REQUIREMENTS.md](./REQUIREMENTS.md)
 
 ## Tecnologias
 
